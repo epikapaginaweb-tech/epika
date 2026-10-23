@@ -35,10 +35,9 @@ export function BankAccounts({ accounts }: { accounts: BankAccount[] }) {
           <p className="py-2 text-sm font-bold text-orange">{account.bank || "Cuenta bancaria"}</p>
           <div className="divide-y divide-line">
             <CopyValue label="Titular" value={account.holder} />
-            <CopyValue label="Cédula / cédula jurídica" value={account.idNumber} />
+            <CopyValue label="Cédula / RUC" value={account.idNumber} />
+            <CopyValue label="Tipo de cuenta" value={account.accountType} />
             <CopyValue label="Número de cuenta" value={account.account} />
-            <CopyValue label="IBAN" value={account.iban} />
-            <CopyValue label="SINPE Móvil" value={account.sinpe} />
           </div>
         </div>
       ))}

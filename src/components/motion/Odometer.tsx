@@ -4,8 +4,8 @@ import { motion } from "motion/react";
 
 const DIGITS = Array.from({ length: 10 }, (_, i) => i);
 
-export function Odometer({ value, prefix = "", suffix = "" }: { value: number; prefix?: string; suffix?: string }) {
-  const text = new Intl.NumberFormat("es-CR").format(value);
+export function Odometer({ value, prefix = "", suffix = "", plain = false }: { value: number; prefix?: string; suffix?: string; plain?: boolean }) {
+  const text = new Intl.NumberFormat("es-EC").format(value);
   const chars = text.split("");
   let digitIndex = 0;
 
@@ -19,7 +19,7 @@ export function Odometer({ value, prefix = "", suffix = "" }: { value: number; p
         whileInView="visible"
         viewport={{ once: true, amount: 0.6 }}
       >
-        {prefix && <span className="text-orange">{prefix}</span>}
+        {prefix && <span className={plain ? "" : "text-orange"}>{prefix}</span>}
         {chars.map((char, i) => {
           if (!/\d/.test(char)) return <span key={i}>{char === " " || char === " " ? " " : char}</span>;
           const digit = Number(char);

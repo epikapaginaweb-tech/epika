@@ -9,7 +9,7 @@ export const MODALITY_LABEL: Record<Modality, string> = {
 export function formatPrice(price: number | null, currency: string) {
   if (price === null || price === undefined) return null;
   try {
-    return new Intl.NumberFormat("es-CR", {
+    return new Intl.NumberFormat("es-EC", {
       style: "currency",
       currency,
       maximumFractionDigits: price % 1 === 0 ? 0 : 2,
@@ -23,7 +23,7 @@ export function formatDate(value: string | null, options: Intl.DateTimeFormatOpt
   if (!value) return null;
   const date = new Date(value.length === 10 ? `${value}T12:00:00` : value);
   if (Number.isNaN(date.getTime())) return null;
-  return new Intl.DateTimeFormat("es-CR", { timeZone: "America/Costa_Rica", ...options }).format(date);
+  return new Intl.DateTimeFormat("es-EC", { timeZone: "America/Guayaquil", ...options }).format(date);
 }
 
 export function slugify(value: string) {

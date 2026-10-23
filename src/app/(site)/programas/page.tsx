@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
+import { Suspense } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 import { WhatsAppLink } from "@/components/site/Buttons";
 import { CourseGrid } from "@/components/site/CourseGrid";
@@ -7,8 +8,7 @@ import { CoverArt } from "@/components/site/CoverArt";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { toCardData } from "@/lib/course-view";
 import { TAGS, getCourses, getSettings } from "@/lib/data";
-import { MODALITY_LABEL } from "@/lib/format";
-import { MODALITIES } from "@/lib/types";
+import { CATEGORIES, CATEGORY_LABEL } from "@/lib/types";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -23,10 +23,7 @@ export default async function CoursesPage() {
   cacheLife("hours");
 
   const [courses, settings] = await Promise.all([getCourses(), getSettings()]);
-  const filters = MODALITIES.filter((m) => courses.some((c) => c.modality === m)).map((m) => ({
-    key: m,
-    label: MODALITY_LABEL[m],
-  }));
+  const filters = CATEGORIES.map((c) => ({ key: c, label: CATEGORY_LABEL[c] }));
 
   return (
     <section className="container-page pb-10 pt-12 md:pt-20">
@@ -39,7 +36,9 @@ export default async function CoursesPage() {
       />
       <div className="mt-14">
         {courses.length > 0 ? (
-          <CourseGrid courses={courses.map((c) => ({ ...toCardData(c), modalityKey: c.modality }))} filters={filters} />
+          <Suspense fallback={null}>
+            <CourseGrid courses={courses.map((c) => ({ ...toCardData(c), categoryKey: c.category ?? "programa" }))} filters={filters} />
+          </Suspense>
         ) : (
           <Reveal>
             <div className="grid items-center gap-10 rounded-[2rem] bg-white p-8 md:grid-cols-[1fr_auto] md:p-12">

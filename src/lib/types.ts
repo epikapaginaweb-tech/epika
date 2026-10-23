@@ -7,6 +7,14 @@ export type InquiryStatus = (typeof INQUIRY_STATUSES)[number];
 export const PAYMENT_STATUSES = ["sin_comprobante", "en_revision", "aprobado", "rechazado"] as const;
 export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
 
+export const CATEGORIES = ["programa", "seminario", "otro"] as const;
+export type Category = (typeof CATEGORIES)[number];
+export const CATEGORY_LABEL: Record<Category, string> = {
+  programa: "Programas",
+  seminario: "Seminarios",
+  otro: "Otros",
+};
+
 export type CourseModule = { title: string; description: string };
 
 export type Teacher = {
@@ -30,6 +38,7 @@ export type Course = {
   slug: string;
   title: string;
   image_url: string | null;
+  category: Category;
   modality: Modality;
   short_description: string | null;
   summary: string | null;
@@ -99,9 +108,8 @@ export type BankAccount = {
   bank: string;
   holder: string;
   idNumber: string;
+  accountType: string;
   account: string;
-  iban: string;
-  sinpe: string;
 };
 
 export type TitledText = { title: string; text: string };

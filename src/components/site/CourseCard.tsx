@@ -9,6 +9,9 @@ export type CourseCardData = {
   title: string;
   image: string | null;
   modality: string;
+  category: string;
+  categoryKey: string;
+  price: string | null;
   description: string | null;
   meta: string[];
 };
@@ -51,11 +54,12 @@ export function CourseCard({ course, index = 0 }: { course: CourseCardData; inde
           </div>
           <span className="bubble absolute left-4 top-4 bg-white/95 text-navy shadow-sm backdrop-blur">
             <span className="size-1.5 rounded-full bg-orange" />
-            {course.modality}
+            {course.category}
           </span>
         </div>
         <div className="flex flex-1 flex-col px-3 pb-3 pt-5">
-          <h3 className="text-xl font-bold leading-snug tracking-tight text-navy">{course.title}</h3>
+          <p className="text-xs font-bold uppercase tracking-wider text-orange">{course.modality}</p>
+          <h3 className="mt-1 text-xl font-bold leading-snug tracking-tight text-navy">{course.title}</h3>
           {course.description && <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-ink/65">{course.description}</p>}
           {course.meta.length > 0 && (
             <ul className="mt-4 flex flex-wrap gap-2">
@@ -66,7 +70,8 @@ export function CourseCard({ course, index = 0 }: { course: CourseCardData; inde
               ))}
             </ul>
           )}
-          <div className="mt-auto pt-6">
+          <div className="mt-auto flex items-center justify-between gap-3 pt-6">
+            {course.price ? <span className="text-lg font-bold text-navy">{course.price}</span> : <span />}
             <Link
               href={`/programas/${course.slug}`}
               className="inline-flex items-center gap-2 rounded-full bg-navy px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange after:absolute after:inset-0 after:rounded-[var(--radius-card)]"

@@ -1,6 +1,6 @@
 import type { CourseCardData } from "@/components/site/CourseCard";
-import { MODALITY_LABEL, formatDate } from "./format";
-import type { Course } from "./types";
+import { MODALITY_LABEL, formatDate, formatPrice } from "./format";
+import { CATEGORY_LABEL, type Course } from "./types";
 
 export function courseMeta(course: Course) {
   const start = formatDate(course.start_date, { day: "numeric", month: "short" });
@@ -13,6 +13,9 @@ export function toCardData(course: Course): CourseCardData {
     title: course.title,
     image: course.image_url,
     modality: MODALITY_LABEL[course.modality],
+    category: CATEGORY_LABEL[course.category ?? "programa"],
+    categoryKey: course.category ?? "programa",
+    price: formatPrice(course.price, course.currency),
     description: course.short_description,
     meta: courseMeta(course),
   };

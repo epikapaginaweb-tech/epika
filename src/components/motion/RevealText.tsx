@@ -6,8 +6,8 @@ import { EASE_OUT } from "./ease";
 type Tone = "dark" | "light";
 
 const COLORS: Record<Tone, { from: string; base: string; accent: string }> = {
-  dark: { from: "#d4d7dc", base: "#0c1626", accent: "#fd8901" },
-  light: { from: "rgba(255,255,255,0.25)", base: "#ffffff", accent: "#fd8901" },
+  dark: { from: "#d4d7dc", base: "#0d284f", accent: "#ff9100" },
+  light: { from: "rgba(255,255,255,0.25)", base: "#ffffff", accent: "#ff9100" },
 };
 
 type Props = {
@@ -64,7 +64,7 @@ export function RevealText({ text, accent = "", as = "h2", tone = "dark", delay 
               <motion.path
                 d="M3 8.5C48 3 120 2.5 197 6"
                 fill="none"
-                stroke="#fd8901"
+                stroke="#ff9100"
                 strokeWidth="3"
                 strokeLinecap="round"
                 variants={{

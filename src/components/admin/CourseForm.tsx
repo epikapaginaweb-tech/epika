@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { saveCourse } from "@/actions/admin/content";
 import { MODALITY_LABEL } from "@/lib/format";
-import { MODALITIES, type Course } from "@/lib/types";
+import { CATEGORIES, CATEGORY_LABEL, MODALITIES, type Course } from "@/lib/types";
 import { MediaInput } from "./MediaInput";
 import { Repeater } from "./Repeater";
 import { Card, FormMessage, Label, SubmitButton, TextArea, TextInput, Toggle, useFormAction } from "./ui";
@@ -27,6 +27,16 @@ export function CourseForm({ course, teachers }: Props) {
           <TextInput label="Nombre del programa" name="title" defaultValue={course?.title} required className="md:col-span-2" />
           <TextInput label="Enlace" name="slug" defaultValue={course?.slug} hint="Se genera del nombre si lo dejas vacío" placeholder="ej. marketing-digital" />
           <div>
+            <Label htmlFor="category">Categoría</Label>
+            <select id="category" name="category" defaultValue={course?.category ?? "programa"} className="field">
+              {CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {CATEGORY_LABEL[c]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
             <Label htmlFor="modality">Modalidad</Label>
             <select id="modality" name="modality" defaultValue={course?.modality ?? "virtual"} className="field">
               {MODALITIES.map((m) => (
@@ -39,7 +49,7 @@ export function CourseForm({ course, teachers }: Props) {
           <TextArea label="Descripción breve" name="short_description" defaultValue={course?.short_description ?? ""} rows={2} hint="Aparece en la tarjeta del catálogo" className="md:col-span-2" />
           <TextArea label="Resumen" name="summary" defaultValue={course?.summary ?? ""} rows={4} className="md:col-span-2" />
           <div className="md:col-span-2">
-            <MediaInput name="image_url" label="Imagen del curso" folder="cursos" defaultValue={course?.image_url} hint="Vertical u horizontal, mínimo 1200 px" />
+            <MediaInput name="image_url" label="Imagen del programa" folder="cursos" defaultValue={course?.image_url} hint="Vertical u horizontal, mínimo 1200 px" />
           </div>
         </div>
       </Card>
@@ -85,11 +95,10 @@ export function CourseForm({ course, teachers }: Props) {
 
       <Card title="Inversión y certificado">
         <div className="grid gap-4 md:grid-cols-2">
-          <TextInput label="Precio" name="price" inputMode="decimal" defaultValue={course?.price ?? ""} placeholder="ej. 85000" />
+          <TextInput label="Precio" name="price" inputMode="decimal" defaultValue={course?.price ?? ""} placeholder="ej. 120" />
           <div>
             <Label htmlFor="currency">Moneda</Label>
-            <select id="currency" name="currency" defaultValue={course?.currency ?? "CRC"} className="field">
-              <option value="CRC">Colones (₡)</option>
+            <select id="currency" name="currency" defaultValue={course?.currency ?? "USD"} className="field">
               <option value="USD">Dólares ($)</option>
             </select>
           </div>

@@ -8,7 +8,7 @@ import { TAGS } from "@/lib/data";
 import { slugify } from "@/lib/format";
 import { resolveSettings } from "@/lib/settings";
 import { serviceClient } from "@/lib/supabase/service";
-import { MODALITIES, type CourseModule, type Stat } from "@/lib/types";
+import { CATEGORIES, MODALITIES, type CourseModule, type Stat } from "@/lib/types";
 import { MEDIA_MAX_BYTES, MEDIA_TYPES, extensionFor } from "@/lib/uploads";
 
 export type FormState = { error?: string; ok?: boolean };
@@ -61,6 +61,8 @@ export async function saveCourse(_prev: FormState, fd: FormData): Promise<FormSt
   if (!title) return { error: "El programa necesita un nombre." };
   const slug = slugify(text(fd, "slug") || title);
   if (!slug) return { error: "Revisa el enlace del programa." };
+  const categoryRaw = text(fd, "category");
+  const category = CATEGORIES.includes(categoryRaw as (typeof CATEGORIES)[number]) ? categoryRaw : "programa";
   const modality = text(fd, "modality");
   if (!MODALITIES.includes(modality as (typeof MODALITIES)[number])) return { error: "Elige una modalidad válida." };
 
@@ -71,6 +73,7 @@ export async function saveCourse(_prev: FormState, fd: FormData): Promise<FormSt
   const row = {
     title,
     slug,
+    category,
     modality,
     image_url: nullable(fd, "image_url"),
     short_description: nullable(fd, "short_description"),
@@ -84,7 +87,7 @@ export async function saveCourse(_prev: FormState, fd: FormData): Promise<FormSt
     schedule: nullable(fd, "schedule"),
     start_date: nullable(fd, "start_date"),
     price: number(fd, "price"),
-    currency: text(fd, "currency") || "CRC",
+    currency: text(fd, "currency") || "USD",
     payment_methods: lines(fd, "payment_methods"),
     includes: lines(fd, "includes"),
     certificate: nullable(fd, "certificate"),

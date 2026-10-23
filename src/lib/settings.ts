@@ -11,14 +11,20 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   address: "",
   hours: "",
   mapEmbed: "",
-  socials: { instagram: "", facebook: "", tiktok: "", linkedin: "", youtube: "" },
+  socials: {
+    instagram: "https://www.instagram.com/epika_academy/",
+    facebook: "https://www.facebook.com/EPIKAAcademiadeCapacitacion?locale=es_LA",
+    tiktok: "https://www.tiktok.com/@epika_academy",
+    linkedin: "",
+    youtube: "",
+  },
   bankAccounts: [],
   paymentNote:
-    "Realiza la transferencia o SINPE indicando tu nombre completo y el programa. Luego sube el comprobante aquí mismo.",
+    "Realiza la transferencia bancaria indicando tu nombre completo y el programa. Luego sube el comprobante aquí mismo.",
   hero: {
     eyebrow: "Épika Academy",
     title: "Desarrolla tu potencial",
-    highlight: "Lidera tu futuro.",
+    highlight: "",
     subtitle: "",
   },
   benefits: [
@@ -27,7 +33,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     { title: "100% virtual", text: "Estudia desde cualquier lugar, solo necesitas conexión a internet." },
     { title: "Comunidad Épika", text: "Conecta con personas que comparten tus metas y tu ritmo." },
   ],
-  stats: [],
+  stats: [{ value: "500", prefix: "+", suffix: "", label: "Profesionales certificados" }],
   about: {
     intro: "",
     history: "",

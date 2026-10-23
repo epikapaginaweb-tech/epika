@@ -17,7 +17,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
           <TextInput label="WhatsApp de ventas (asesor)" name="salesWhatsapp" defaultValue={settings.salesWhatsapp} placeholder="098 328 9076" hint="Botón «Habla con tu asesor»" />
           <TextInput label="Campus virtual (enlace)" name="campusUrl" defaultValue={settings.campusUrl} placeholder="https://" hint="Botón «Campus virtual» del menú" />
           <TextInput label="Etiqueta de la tarjeta central" name="promoLabel" defaultValue={settings.promoLabel} hint="Ej. Promoción, Programa estrella. Se aplica al programa marcado como destacado" />
-          <TextInput label="Código de país" name="countryCode" defaultValue={settings.countryCode} hint="593 = Ecuador, 506 = Costa Rica" />
+          <TextInput label="Código de país" name="countryCode" defaultValue={settings.countryCode} hint="593 = Ecuador" />
           <TextInput label="Correo" name="email" type="email" defaultValue={settings.email} />
           <TextInput label="Teléfono" name="phone" defaultValue={settings.phone} />
           <TextArea label="Dirección" name="address" defaultValue={settings.address} rows={2} />
@@ -51,10 +51,9 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
             fields={[
               { key: "bank", label: "Banco" },
               { key: "holder", label: "Titular" },
-              { key: "idNumber", label: "Cédula / cédula jurídica" },
+              { key: "idNumber", label: "Cédula / RUC" },
+              { key: "accountType", label: "Tipo de cuenta (ahorros / corriente)" },
               { key: "account", label: "Número de cuenta" },
-              { key: "iban", label: "IBAN" },
-              { key: "sinpe", label: "SINPE Móvil" },
             ]}
           />
           <TextArea label="Instrucciones de pago" name="paymentNote" defaultValue={settings.paymentNote} rows={3} />

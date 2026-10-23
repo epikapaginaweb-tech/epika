@@ -70,7 +70,7 @@ export function CourseFan({ items }: { items: FanItem[] }) {
           <FanCard key={item.key} item={item} index={i} total={total} progress={scrollYProgress} />
         ))}
       </div>
-      {first && (
+      {first && first.tag && (
         <motion.span
           className="bubble absolute left-[8%] top-[-0.5rem] z-30 bg-navy text-white md:left-[16%]"
           initial={{ opacity: 0, scale: 0.4, y: 10 }}
@@ -80,7 +80,7 @@ export function CourseFan({ items }: { items: FanItem[] }) {
           {first.tag}
         </motion.span>
       )}
-      {last && last !== first && (
+      {last && last !== first && last.tag && (
         <motion.span
           className="bubble absolute right-[8%] top-6 z-30 bg-orange text-white md:right-[16%]"
           initial={{ opacity: 0, scale: 0.4, y: 10 }}

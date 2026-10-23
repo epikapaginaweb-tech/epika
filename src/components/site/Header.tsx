@@ -7,6 +7,7 @@ import { Suspense, useEffect, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { NAV, isActive } from "@/lib/nav";
 import { EASE_OUT } from "../motion/ease";
+import { ArrowIcon } from "./icons";
 
 type NavProps = { pathname: string | null; onNavigate: () => void };
 
@@ -91,7 +92,7 @@ export function Header({ campusHref }: { campusHref: string }) {
       >
         <div className="container-page flex h-18 items-center justify-between gap-6">
           <Link href="/" className="relative z-50 shrink-0" onClick={close} aria-label="Épika Academy, inicio">
-            <Image src="/brand/logo.png" alt="Épika Academy" width={1459} height={470} className="h-9 w-auto md:h-10" loading="eager" />
+            <Image src="/brand/logo.png" alt="Épika Academy" width={1060} height={392} className="h-10 w-auto md:h-11" loading="eager" />
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex" aria-label="Principal">
@@ -103,9 +104,10 @@ export function Header({ campusHref }: { campusHref: string }) {
               href={campusHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-fill rounded-full bg-navy px-5 py-2.5 text-sm font-semibold text-white"
+              className="btn-fill inline-flex items-center gap-2 rounded-full bg-navy px-5 py-2.5 text-sm font-bold text-white"
             >
-              Campus virtual
+              Campus Virtual
+              <ArrowIcon className="size-3.5" />
             </a>
           </div>
 
@@ -146,9 +148,10 @@ export function Header({ campusHref }: { campusHref: string }) {
               href={campusHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-auto rounded-full bg-navy px-6 py-4 text-center font-semibold text-white"
+              className="mt-auto inline-flex items-center justify-center gap-2 rounded-full bg-navy px-6 py-4 text-center font-bold text-white"
             >
-              Campus virtual
+              Campus Virtual
+              <ArrowIcon className="size-4" />
             </a>
           </motion.nav>
         )}

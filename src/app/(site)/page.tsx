@@ -1,68 +1,61 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { cacheLife, cacheTag } from "next/cache";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { RevealText } from "@/components/motion/RevealText";
-import { FloatingShapes } from "@/components/motion/FloatingShapes";
-import { HeroBackdrop } from "@/components/motion/HeroBackdrop";
+import { Odometer } from "@/components/motion/Odometer";
 import { ParallaxOut } from "@/components/motion/ParallaxOut";
 import { ScrollText } from "@/components/motion/ScrollText";
-import { Tilt } from "@/components/motion/Tilt";
-import { ScrollScale } from "@/components/motion/ScrollScale";
-import { Spotlight } from "@/components/motion/Spotlight";
-import { PrimaryLink, WhatsAppLink } from "@/components/site/Buttons";
-import { CascadeCards, type CascadeItem } from "@/components/site/CascadeCards";
-import { CourseCard } from "@/components/site/CourseCard";
+import { PrimaryLink } from "@/components/site/Buttons";
 import { CourseFan, type FanItem } from "@/components/site/CourseFan";
 import { Faq } from "@/components/site/Faq";
 import { FloatingTiles } from "@/components/site/FloatingTiles";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import { Stats } from "@/components/site/Stats";
+import { Sticker, type StickerName } from "@/components/site/Sticker";
 import { StickySteps } from "@/components/site/StickySteps";
-import { toCardData, upcoming } from "@/lib/course-view";
 import { TAGS, getCourses, getFaqs, getSettings, getTeachers, getTestimonials } from "@/lib/data";
-import { MODALITY_LABEL, formatDate } from "@/lib/format";
 import type { CourseWithTeacher } from "@/lib/types";
 import { whatsappUrl } from "@/lib/whatsapp";
 
-const FAN_SIZE = 7;
-const SOON_TAGS = ["Virtual", "En línea", "100% virtual"];
+const FAN_SIZE = 5;
+const FAN_PHOTOS = ["/brand/fotos/hero-1.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-3.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-1.jpg"];
+const BENEFIT_ICONS: StickerName[] = ["carita", "reloj", "tecla-f9", "paz"];
+const DOT_COLORS = ["#f95d1b", "#ee1346", "#c07f2b"];
+
+const PROGRAM_GROUPS = [
+  { label: "Programas", key: "programa", image: "/brand/fotos/programas.jpg", alt: "Persona estudiando con su laptop" },
+  { label: "Seminarios", key: "seminario", image: "/brand/fotos/seminarios.jpg", alt: "Persona concentrada frente a su computadora" },
+  { label: "Otros", key: "otro", image: "/brand/fotos/otros.jpg", alt: "Persona trabajando en su escritorio" },
+];
 
 const STEPS = [
   { title: "Elige tu programa", text: "Brochure, el instructor y la fecha de inicio." },
   { title: "Solicita tu reserva", text: "Completa el formulario en menos de un minuto." },
-  { title: "Confirma tu pago", text: "Transfiere o paga por SINPE y sube tu comprobante desde el sitio." },
+  { title: "Confirma tu pago", text: "Transfiere y sube tu comprobante desde el sitio." },
   { title: "Recibe tus accesos", text: "Te enviamos tu usuario y contraseña por WhatsApp para empezar." },
 ];
 
+// El centro del abanico muestra el programa destacado (promoción / programa estrella).
 function fanItems(courses: CourseWithTeacher[], promoLabel: string): FanItem[] {
-  const toItem = (c: CourseWithTeacher): FanItem => ({
-    key: c.id,
-    title: c.title,
-    image: c.image_url,
-    tag: MODALITY_LABEL[c.modality],
-    href: `/programas/${c.slug}`,
-  });
-  const soon = (i: number): FanItem => ({
-    key: `soon-${i}`,
-    title: "Muy pronto",
-    seed: `Épika ${i}`,
-    image: null,
-    tag: SOON_TAGS[i % 3],
-    href: "/programas",
-  });
-
-  // La tarjeta central muestra el programa destacado (promoción / programa estrella).
   const center = Math.floor(FAN_SIZE / 2);
   const featured = courses.find((c) => c.featured);
   const rest = courses.filter((c) => c !== featured);
   let next = 0;
-  return Array.from({ length: FAN_SIZE }, (_, i) => {
-    if (i === center) {
-      return featured ? { ...toItem(featured), badge: promoLabel } : { ...soon(i), badge: promoLabel };
+
+  return Array.from({ length: FAN_SIZE }, (_, i): FanItem => {
+    const course = i === center ? featured : rest[next++];
+    if (course) {
+      return {
+        key: course.id,
+        title: course.title,
+        image: course.image_url ?? FAN_PHOTOS[i],
+        tag: "",
+        href: `/programas/${course.slug}`,
+        badge: i === center ? promoLabel : undefined,
+      };
     }
-    const course = rest[next++];
-    return course ? toItem(course) : soon(i);
+    return { key: `foto-${i}`, title: "Épika Academy", image: FAN_PHOTOS[i], tag: "", href: "/programas" };
   });
 }
 
@@ -84,38 +77,25 @@ export default async function HomePage() {
     getSettings(),
   ]);
 
-  const today = new Date().toISOString().slice(0, 10);
-  const next = upcoming(courses, today).slice(0, 5);
-  const cascade: CascadeItem[] = next.map((c) => ({
-    key: c.id,
-    title: c.title,
-    image: c.image_url,
-    tag: formatDate(c.start_date, { day: "numeric", month: "short" }) ?? MODALITY_LABEL[c.modality],
-    href: `/programas/${c.slug}`,
-  }));
-  const whatsapp = whatsappUrl(settings.whatsapp, "Hola, quiero información sobre los programas de Épika Academy.", settings.countryCode);
+  const help = whatsappUrl(settings.whatsapp, "Hola, quiero información sobre Épika Academy.", settings.countryCode);
   const advisor = whatsappUrl(settings.salesWhatsapp || settings.whatsapp, "Hola, quiero información sobre los programas de Épika Academy.", settings.countryCode);
   const { hero } = settings;
 
   return (
     <>
-      <section className="relative isolate overflow-hidden pb-16 pt-10 md:pb-24 md:pt-16">
-        <HeroBackdrop />
-        <ParallaxOut className="container-page text-center">
-          <Reveal y={12}>
-            <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-navy shadow-sm">
-              <span className="size-1.5 rounded-full bg-orange" />
-              {hero.eyebrow}
-            </span>
-          </Reveal>
+      {/* Portada */}
+      <section className="relative isolate overflow-hidden bg-white pb-20 pt-10 md:pb-28 md:pt-16">
+        <ParallaxOut className="container-page relative text-center">
+          <Sticker name="reloj" size={84} rotate={-10} className="absolute left-[2%] top-2 hidden md:left-[6%] md:top-6 md:block" />
           <RevealText
             as="h1"
             text={hero.title}
             accent={hero.highlight}
             delay={0.1}
             underline
-            className="mx-auto mt-6 max-w-4xl text-[2.6rem] font-bold leading-[1.02] tracking-tight sm:text-6xl md:text-7xl"
+            className="mx-auto max-w-2xl text-[2.9rem] font-bold leading-[0.95] sm:text-6xl md:text-7xl"
           />
+          {hero.subtitle && <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-ink/65 md:text-lg">{hero.subtitle}</p>}
         </ParallaxOut>
 
         <div className="mt-10 md:mt-14">
@@ -123,85 +103,107 @@ export default async function HomePage() {
         </div>
 
         <div className="container-page text-center">
-          <Reveal delay={0.6}>
-            {hero.subtitle && <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-ink/65 md:text-lg">{hero.subtitle}</p>}
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <PrimaryLink href="/programas">Ver programas</PrimaryLink>
-            </div>
+          <Reveal delay={0.5}>
+            <a
+              href={help}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-full bg-go px-6 py-3 text-sm font-bold text-white shadow-[0_14px_30px_-14px_rgba(52,180,74,0.8)] transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+            >
+              ¿En qué te podemos ayudar?
+            </a>
           </Reveal>
         </div>
       </section>
 
-      {settings.stats.length > 0 && (
-        <section className="container-page pb-8">
-          <Stats stats={settings.stats} />
-        </section>
-      )}
-
-      <section className="container-page grid items-center gap-12 py-24 md:grid-cols-[0.9fr_1.1fr] md:py-32">
-        <div>
-          <SectionHeading
-            eyebrow="Próximos programas"
-            title="Elige tu programa y"
-            accent="asegura tu lugar."
-            description={
-              next.length > 0
-                ? "Estas son las próximas aperturas. Revisa el temario, el instructor y la inversión de cada programa antes de reservar."
-                : "Muy pronto anunciaremos las próximas aperturas. Escríbenos y te avisamos primero."
-            }
-          />
-          <Reveal delay={0.2} className="mt-8 flex flex-wrap gap-3">
-            <PrimaryLink href="/programas">Ver todo el catálogo</PrimaryLink>
-            {next.length === 0 && <WhatsAppLink href={whatsapp}>Quiero que me avisen</WhatsAppLink>}
+      {/* Por qué Épika + cifra */}
+      <section className="relative isolate overflow-hidden bg-navy py-20 text-white md:py-28">
+        <div className="container-page text-center">
+          <Reveal>
+            <p className="text-xl font-light md:text-2xl">Porque</p>
+            <h2 className="mt-1 text-3xl font-bold leading-tight md:text-5xl">
+              Aprender con nosotros <span className="font-script inline-block whitespace-nowrap text-[1.35em] font-normal">se nota</span>
+            </h2>
           </Reveal>
-        </div>
-        {cascade.length > 0 ? (
-          <>
-            <div className="hidden md:block">
-              <CascadeCards items={cascade} />
-            </div>
-            <div className="grid gap-6 md:hidden">
-              {next.slice(0, 3).map((course, i) => (
-                <CourseCard key={course.id} course={toCardData(course)} index={i} />
-              ))}
-            </div>
-          </>
-        ) : (
-          <CascadeCards
-            items={Array.from({ length: 5 }, (_, i) => ({
-              key: `soon-${i}`,
-              title: "Muy pronto",
-              seed: `Épika ${i + 2}`,
-              image: null,
-              tag: "Próximamente",
-              href: "/contacto",
-            }))}
-          />
-        )}
-      </section>
 
-      <section className="relative isolate overflow-hidden bg-white py-24 md:py-32">
-        <FloatingShapes />
-        <div className="container-page">
-          <SectionHeading eyebrow="Por qué Épika" title="Estudiar con nosotros" accent="se nota." align="center" />
-          <RevealGroup className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {settings.benefits.map((benefit, i) => (
+          <RevealGroup className="mx-auto mt-14 grid max-w-5xl grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-4">
+            {settings.benefits.slice(0, 4).map((benefit, i) => (
               <RevealItem key={benefit.title}>
-                <Spotlight className="group h-full overflow-hidden rounded-[var(--radius-card)] bg-paper p-7 transition-transform duration-500 hover:-translate-y-2">
-                  <span className="text-sm font-bold text-orange">0{i + 1}</span>
-                  <h3 className="mt-10 text-xl font-bold tracking-tight text-navy">{benefit.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ink/65">{benefit.text}</p>
-                  <span
-                    aria-hidden
-                    className="absolute -bottom-6 -right-2 text-8xl font-extrabold leading-none text-navy/5 transition-transform duration-700 group-hover:-translate-y-3 group-hover:scale-110"
-                  >
-                    {i + 1}
-                  </span>
-                </Spotlight>
+                <div className="flex flex-col items-center">
+                  <Sticker name={BENEFIT_ICONS[i % BENEFIT_ICONS.length]} size={92} rotate={i % 2 ? 6 : -6} delay={i * 0.15} />
+                  <h3 className="mt-5 max-w-[10rem] text-lg font-bold leading-tight md:text-xl">{benefit.title}</h3>
+                </div>
               </RevealItem>
             ))}
           </RevealGroup>
+
+          {settings.stats.length > 0 && (
+            <div className="mt-20 flex flex-wrap items-end justify-center gap-x-16 gap-y-12 md:mt-28">
+              {settings.stats.map((stat, i) => (
+                <div key={`${stat.label}-${i}`}>
+                  <p className="font-display text-[8rem] leading-[0.95] sm:text-[11rem] md:text-[15rem]">
+                    <Odometer value={Number(stat.value) || 0} prefix={stat.prefix} suffix={stat.suffix} plain />
+                  </p>
+                  <p className="mt-2 text-2xl font-bold md:text-3xl">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+      </section>
+
+      {/* Testimonios */}
+      {testimonials.length > 0 && (
+        <section className="container-page py-24 md:py-32">
+          <Reveal>
+            <h2 className="text-center text-4xl font-bold text-navy md:text-5xl">Testimonios</h2>
+          </Reveal>
+          <RevealGroup className="mt-12 grid gap-5 md:grid-cols-3">
+            {testimonials.slice(0, 6).map((t, i) => (
+              <RevealItem key={t.id}>
+                <figure className="flex h-full flex-col rounded-[2rem] bg-[#fbf9f6] p-7">
+                  <figcaption className="flex items-center gap-3">
+                    <span aria-hidden className="size-8 shrink-0 rounded-full" style={{ background: DOT_COLORS[i % DOT_COLORS.length] }} />
+                    <span className="font-bold text-ink">{t.name}</span>
+                  </figcaption>
+                  <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-ink/80">{t.quote}</blockquote>
+                  {t.course && <p className="mt-4 text-xs font-semibold text-ink/45">{t.course}</p>}
+                </figure>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </section>
+      )}
+
+      {/* Nuestros programas */}
+      <section className="container-page py-20 md:py-28">
+        <Reveal className="relative text-center">
+          <h2 className="text-4xl font-bold leading-none text-navy md:text-5xl">Nuestros</h2>
+          <p className="font-script -mt-1 text-5xl leading-none text-navy md:text-6xl">programas</p>
+          <Sticker name="tecla-f9" size={72} rotate={8} className="absolute right-[6%] top-0 hidden sm:block md:right-[12%]" />
+        </Reveal>
+        <RevealGroup className="mx-auto mt-12 grid max-w-5xl gap-5 sm:grid-cols-3">
+          {PROGRAM_GROUPS.map((group) => (
+            <RevealItem key={group.key}>
+              <Link
+                href={`/programas?categoria=${group.key}`}
+                className="group relative block aspect-[3/4] overflow-hidden rounded-[2rem] bg-navy shadow-[0_30px_60px_-35px_rgba(13,40,79,0.6)]"
+              >
+                <Image
+                  src={group.image}
+                  alt={group.alt}
+                  fill
+                  sizes="(min-width: 640px) 33vw, 100vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-navy/55 via-transparent to-transparent" />
+                <span className="absolute inset-x-0 bottom-[16%] px-3 text-center text-4xl font-bold leading-[0.95] text-white [text-shadow:0_2px_18px_rgba(0,0,0,0.35)] md:text-[2.6rem]">
+                  {group.label}
+                </span>
+              </Link>
+            </RevealItem>
+          ))}
+        </RevealGroup>
       </section>
 
       {settings.about.mission && (
@@ -211,7 +213,7 @@ export default async function HomePage() {
           </p>
           <ScrollText
             text={settings.about.mission}
-            className="mt-6 max-w-5xl text-3xl font-bold leading-[1.2] tracking-tight text-navy md:text-5xl"
+            className="mt-6 max-w-5xl text-3xl font-bold leading-[1.2] text-navy md:text-5xl"
           />
         </section>
       )}
@@ -228,34 +230,6 @@ export default async function HomePage() {
               </Reveal>
             </div>
           </FloatingTiles>
-        </section>
-      )}
-
-      {testimonials.length > 0 && (
-        <section className="container-page py-24 md:py-32">
-          <SectionHeading eyebrow="Testimonios" title="Lo que dicen" accent="nuestros estudiantes." />
-          <RevealGroup className="mt-12 grid gap-5 md:grid-cols-3">
-            {testimonials.map((t, i) => (
-              <RevealItem key={t.id}>
-                <Tilt className="h-full">
-                  <figure
-                    className={`flex h-full flex-col rounded-[var(--radius-card)] p-7 ${i % 3 === 1 ? "bg-navy text-white" : "bg-white"}`}
-                  >
-                    <span aria-hidden className="text-5xl font-extrabold leading-none text-orange">
-                      “
-                    </span>
-                    <blockquote className={`mt-2 flex-1 leading-relaxed ${i % 3 === 1 ? "text-white/85" : "text-ink/75"}`}>
-                      {t.quote}
-                    </blockquote>
-                    <figcaption className="mt-6">
-                      <p className="font-bold">{t.name}</p>
-                      {t.course && <p className={`text-sm ${i % 3 === 1 ? "text-white/60" : "text-ink/50"}`}>{t.course}</p>}
-                    </figcaption>
-                  </figure>
-                </Tilt>
-              </RevealItem>
-            ))}
-          </RevealGroup>
         </section>
       )}
 
@@ -278,33 +252,28 @@ export default async function HomePage() {
         </section>
       )}
 
-      <section className="container-page pt-10">
-        <ScrollScale className="relative overflow-hidden bg-navy">
-          <div className="relative px-6 py-16 text-center md:px-16 md:py-24">
-            <div aria-hidden className="absolute -right-24 -top-24 size-72 animate-blob rounded-full bg-orange/90" />
-            <div aria-hidden className="absolute -bottom-32 -left-20 size-80 rounded-full bg-white/5" />
-            <div className="relative">
-              <RevealText
-                tone="light"
-                text="Listos para"
-                accent="transformar tu futuro."
-                className="mx-auto max-w-3xl text-4xl font-bold leading-tight tracking-tight md:text-6xl"
-              />
-              <p className="mx-auto mt-5 max-w-lg text-white/70">Cuéntanos qué decidiste para aprender y te ayudamos con tu inscripción.</p>
-              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link
-                  href="/programas"
-                  className="rounded-full bg-orange px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-navy"
-                >
-                  Ver programas
-                </Link>
-                <WhatsAppLink href={advisor} tone="dark">
-                  Habla con tu asesor
-                </WhatsAppLink>
-              </div>
-            </div>
+      {/* Llamado final (continúa en el pie de página azul) */}
+      <section data-flush-footer className="bg-navy px-5 pb-16 pt-24 text-center text-white md:pb-20 md:pt-32">
+        <Reveal>
+          <h2 className="mx-auto max-w-3xl text-4xl font-bold leading-[1.05] md:text-6xl">¿Listo para transformar tu futuro?</h2>
+          <p className="mx-auto mt-6 max-w-md text-lg font-light text-white/90">Cuéntanos qué decidiste para aprender y te ayudamos con tu inscripción.</p>
+          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href="/programas"
+              className="rounded-full bg-orange px-7 py-3.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+            >
+              Ver programas
+            </Link>
+            <a
+              href={advisor}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-go px-7 py-3.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+            >
+              Habla con tu asesor
+            </a>
           </div>
-        </ScrollScale>
+        </Reveal>
       </section>
     </>
   );

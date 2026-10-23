@@ -7,7 +7,7 @@ import { Suspense } from "react";
 import { ImageReveal } from "@/components/motion/ImageReveal";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { RevealText } from "@/components/motion/RevealText";
-import { PrimaryLink, WhatsAppLink } from "@/components/site/Buttons";
+import { WhatsAppLink } from "@/components/site/Buttons";
 import { CourseImage } from "@/components/site/CourseImage";
 import { CoverArt } from "@/components/site/CoverArt";
 import { PricingFan, type PriceCard } from "@/components/site/PricingFan";
@@ -15,6 +15,7 @@ import { StickyCta } from "@/components/site/StickyCta";
 import { CheckIcon } from "@/components/site/icons";
 import { TAGS, getCourse, getSettings } from "@/lib/data";
 import { MODALITY_LABEL, formatDate, formatPrice } from "@/lib/format";
+import { CATEGORY_LABEL } from "@/lib/types";
 import { courseMessage, whatsappUrl } from "@/lib/whatsapp";
 
 export async function generateMetadata({ params }: PageProps<"/programas/[slug]">): Promise<Metadata> {
@@ -68,6 +69,7 @@ async function CourseView({ slug }: { slug: string }) {
   const start = formatDate(course.start_date);
   const modality = MODALITY_LABEL[course.modality];
   const whatsapp = whatsappUrl(settings.whatsapp, courseMessage(course.title), settings.countryCode);
+  const advisor = whatsappUrl(settings.salesWhatsapp || settings.whatsapp, courseMessage(course.title), settings.countryCode);
   const reserveHref = `/reservar?curso=${encodeURIComponent(course.slug)}`;
   const teacher = course.teacher;
 
@@ -94,42 +96,66 @@ async function CourseView({ slug }: { slug: string }) {
       <StickyCta href={reserveHref} title={course.title} price={price} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
 
-      <section className="container-page grid items-center gap-12 pb-16 pt-10 md:grid-cols-[1.1fr_0.9fr] md:pt-16">
+      <section className="container-page grid items-center gap-12 pb-16 pt-10 md:grid-cols-[1fr_1fr] md:pt-16">
         <div>
           <Reveal y={12}>
             <Link href="/programas" className="text-sm font-medium text-ink/50 transition-colors hover:text-orange">
               ← Todos los programas
             </Link>
           </Reveal>
-          <Reveal y={12} delay={0.05} className="mt-6">
-            <span className="bubble bg-orange text-white">{modality}</span>
+          <Reveal y={12} delay={0.05} className="mt-6 flex flex-wrap gap-2">
+            <span className="bubble bg-orange text-white">{CATEGORY_LABEL[course.category ?? "programa"]}</span>
+            <span className="bubble bg-navy text-white">{modality}</span>
           </Reveal>
-          <RevealText as="h1" text={course.title} className="mt-5 text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl" />
+          <RevealText as="h1" text={course.title.toUpperCase()} className="mt-5 text-4xl font-bold leading-[0.98] md:text-6xl" />
+          {course.brief_url && course.brief_public && (
+            <Reveal delay={0.15} className="mt-7">
+              <a
+                href={course.brief_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex rounded-full bg-brochure px-6 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+              >
+                Descargar Brochure
+              </a>
+            </Reveal>
+          )}
           {(course.summary || course.short_description) && (
             <Reveal delay={0.2}>
-              <p className="mt-6 max-w-xl whitespace-pre-line text-lg leading-relaxed text-ink/65">
+              <p className="mt-7 max-w-xl whitespace-pre-line text-base font-semibold leading-relaxed text-ink md:text-lg">
                 {course.summary ?? course.short_description}
               </p>
             </Reveal>
           )}
           <Reveal delay={0.3}>
-            <dl className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href={reserveHref}
+                className="rounded-full bg-dark px-9 py-3.5 text-center text-base font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+              >
+                Comprar
+              </Link>
+              <a
+                href={advisor}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full bg-go px-9 py-3.5 text-center text-base font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+              >
+                Contactar con un asesor
+              </a>
+            </div>
+            <dl className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
               <Fact label="Inicio" value={start} />
               <Fact label="Duración" value={course.duration} />
-              <Fact label="Modalidad" value={modality} />
               <Fact label="Horario" value={course.schedule} />
               <Fact label="Inversión" value={price} />
             </dl>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <PrimaryLink href={reserveHref}>Solicitar reserva</PrimaryLink>
-              <WhatsAppLink href={whatsapp}>Consultar este programa por WhatsApp</WhatsAppLink>
-            </div>
           </Reveal>
         </div>
         <Reveal delay={0.15} y={60}>
-          <div className="shine relative mx-auto aspect-[4/5] w-full max-w-md rotate-2 overflow-hidden rounded-[2rem] bg-white shadow-[0_50px_90px_-40px_rgba(0,41,82,0.55)] ring-8 ring-white transition-transform duration-700 hover:rotate-0">
+          <div className="shine relative mx-auto aspect-[4/3] w-full max-w-xl overflow-hidden rounded-[2rem] bg-white shadow-[0_50px_90px_-50px_rgba(13,40,79,0.55)] ring-1 ring-ink/80">
             <ImageReveal className="absolute inset-0">
-              <CourseImage src={course.image_url} title={course.title} sizes="(min-width: 768px) 40vw, 100vw" eager label={course.title} />
+              <CourseImage src={course.image_url} title={course.title} sizes="(min-width: 768px) 45vw, 100vw" eager label={course.title} />
             </ImageReveal>
           </div>
         </Reveal>
