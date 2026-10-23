@@ -21,7 +21,9 @@ type Props = {
   linkClassName?: string;
   /** Efecto de "saltar al frente" al abrir la nube. */
   pop?: Pop;
-  /** Desplaza la nube en px hacia el centro para que no se salga de la pantalla. */
+  /** Lado de la tarjeta donde nace la burbuja. */
+  side?: "left" | "right";
+  /** Desplaza la burbuja en px hacia el centro para que no se salga de la pantalla. */
   shift?: number;
   /** Compensa escalas del contenedor para que el texto se lea igual. */
   cloudClassName?: string;
@@ -32,7 +34,7 @@ type Props = {
  * Tarjeta con nube informativa: con el cursor (o con un toque en pantallas táctiles)
  * la tarjeta se sobrepone y aparece una nube con datos del programa.
  */
-export function HoverCloud({ href, info, ariaLabel, className = "", linkClassName = "", pop, shift = 0, cloudClassName = "", children }: Props) {
+export function HoverCloud({ href, info, ariaLabel, className = "", linkClassName = "", pop, side = "left", shift = 0, cloudClassName = "", children }: Props) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const pointer = useRef<string>("mouse");
@@ -46,6 +48,7 @@ export function HoverCloud({ href, info, ariaLabel, className = "", linkClassNam
     return () => document.removeEventListener("pointerdown", close);
   }, [open]);
 
+  const right = side === "right";
   const { y = -12, scale = 1.05, rotate = 0 } = pop ?? {};
 
   return (
@@ -83,28 +86,31 @@ export function HoverCloud({ href, info, ariaLabel, className = "", linkClassNam
         {open && (
           <motion.div
             role="tooltip"
-            className="absolute bottom-[94%] left-1/2 z-50 w-60 origin-bottom"
-            style={{ x: `calc(-50% + ${shift}px)` }}
-            initial={{ opacity: 0, scale: 0.5, y: 18 }}
+            className={`absolute bottom-[97%] z-50 w-52 ${right ? "right-1 origin-bottom-right" : "left-1 origin-bottom-left"}`}
+            style={{ x: shift }}
+            initial={{ opacity: 0, scale: 0.4, y: 14 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.7, y: 10, transition: { duration: 0.14 } }}
-            transition={{ type: "spring", stiffness: 380, damping: 20 }}
+            exit={{ opacity: 0, scale: 0.7, y: 8, transition: { duration: 0.12 } }}
+            transition={{ type: "spring", stiffness: 420, damping: 19 }}
           >
-            <div className={`origin-bottom ${cloudClassName}`}>
-              <div className="relative rounded-[1.6rem] bg-white p-4 text-left text-navy shadow-[0_24px_60px_-18px_rgba(13,40,79,0.55)] ring-1 ring-navy/10">
-                <p className="text-base font-bold leading-tight tracking-tight">{info.title}</p>
-                {info.text && <p className="mt-1.5 line-clamp-4 text-[0.8rem] font-normal leading-snug tracking-normal text-ink/70">{info.text}</p>}
+            <div className={`${right ? "origin-bottom-right" : "origin-bottom-left"} ${cloudClassName}`}>
+              {/* Burbuja tipo chat (Messenger / iMessage) */}
+              <div
+                className={`relative bg-navy px-3.5 py-2.5 text-left text-white shadow-[0_12px_28px_-10px_rgba(13,40,79,0.6)] ring-1 ring-white/15 ${
+                  right ? "rounded-[1.1rem] rounded-br-[0.35rem]" : "rounded-[1.1rem] rounded-bl-[0.35rem]"
+                }`}
+              >
+                <p className="text-[0.86rem] font-bold leading-tight tracking-tight">{info.title}</p>
+                {info.text && <p className="mt-1 line-clamp-2 text-[0.72rem] font-normal leading-snug tracking-normal text-white/80">{info.text}</p>}
                 {info.chips && info.chips.length > 0 && (
-                  <ul className="mt-2.5 flex flex-wrap gap-1.5">
-                    {info.chips.map((chip) => (
-                      <li key={chip} className="rounded-full bg-paper px-2.5 py-0.5 text-[0.7rem] font-semibold tracking-normal text-navy">
-                        {chip}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="mt-1.5 text-[0.68rem] font-semibold leading-snug tracking-normal text-white/60">{info.chips.join(" · ")}</p>
                 )}
-                {info.cta && <p className="font-script mt-2 text-2xl leading-none text-orange">{info.cta} →</p>}
-                <span aria-hidden className="absolute -bottom-1.5 size-4 rotate-45 rounded-[3px] bg-white " style={{ left: `calc(50% - 0.5rem - ${shift}px)` }} />
+                {info.cta && <p className="mt-1.5 text-[0.72rem] font-bold tracking-normal text-orange">{info.cta} →</p>}
+                <span
+                  aria-hidden
+                  className={`absolute -bottom-[5px] size-3 bg-navy ${right ? "right-0" : "left-0"}`}
+                  style={{ clipPath: right ? "polygon(0 0, 100% 0, 100% 100%)" : "polygon(0 0, 100% 0, 0 100%)" }}
+                />
               </div>
             </div>
           </motion.div>

@@ -142,7 +142,7 @@ export default async function HomePage() {
           <Reveal>
             <p className="text-xl font-light md:text-2xl">Porque</p>
             <h2 className="mt-1 text-3xl font-bold leading-tight md:text-5xl">
-              Aprender con nosotros <span className="font-script inline-block whitespace-nowrap text-[1.35em] font-normal">se nota</span>
+              Aprender con nosotros <span className="font-script inline-block whitespace-nowrap text-[1.35em] font-normal text-orange">se nota</span>
             </h2>
           </Reveal>
 
@@ -199,16 +199,17 @@ export default async function HomePage() {
       <section className="container-page py-20 md:py-28">
         <Reveal className="relative text-center">
           <h2 className="text-4xl font-bold leading-none text-navy md:text-5xl">Nuestros</h2>
-          <p className="font-script -mt-1 text-5xl leading-none text-navy md:text-6xl">programas</p>
-          <Sticker name="tecla-f9" size={72} rotate={8} className="absolute right-[6%] top-0 hidden sm:block md:right-[12%]" />
+          <p className="font-script -mt-1 text-5xl leading-none text-orange md:text-6xl">programas</p>
+          <Sticker name="compu" size={76} rotate={8} className="absolute right-[6%] top-0 hidden sm:block md:right-[12%]" />
         </Reveal>
         <RevealGroup className="mx-auto mt-12 grid max-w-5xl gap-5 sm:grid-cols-3">
-          {PROGRAM_GROUPS.map((group) => (
+          {PROGRAM_GROUPS.map((group, index) => (
             <RevealItem key={group.key}>
               <HoverCloud
                 href={`/programas?categoria=${group.key}`}
                 ariaLabel={group.label}
                 pop={{ y: -10, scale: 1.04 }}
+                side={index === PROGRAM_GROUPS.length - 1 ? "right" : "left"}
                 info={{
                   title: group.label,
                   text: group.text,
@@ -237,7 +238,7 @@ export default async function HomePage() {
       {settings.about.mission && (
         <section className="container-page py-24 md:py-36">
           <p className="eyebrow">
-            Nuestra <span className="script-accent">misión</span>
+            Nuestra <span className="text-orange">misión</span>
           </p>
           <ScrollText
             text={settings.about.mission}

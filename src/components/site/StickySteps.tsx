@@ -21,10 +21,15 @@ export function StickySteps({ eyebrow, title, accent, steps }: { eyebrow: string
         <div className="container-page grid w-full items-center gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-16">
           <div>
             <p className="eyebrow">
-              {eyebrow.split(" ")[0]} <span className="script-accent">{eyebrow.split(" ").slice(1).join(" ")}</span>
+              {eyebrow.split(" ")[0]} <span className="text-orange">{eyebrow.split(" ").slice(1).join(" ")}</span>
             </p>
             <h2 className="mt-3 text-3xl font-bold leading-[1.1] tracking-tight text-navy md:text-5xl">
-              {title} <span className="font-script text-[1.3em] font-normal leading-[0.8]">{accent}</span>
+              {title}
+              {accent.trim().split(/\s+/).length >= 2 ? (
+                <span className="font-script mt-[0.12em] block text-[1.3em] font-normal leading-[0.9] text-orange">{accent}</span>
+              ) : (
+                <span className="text-orange"> {accent}</span>
+              )}
             </h2>
             <div className="mt-8 hidden items-end gap-3 md:flex">
               <motion.span key={active} initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-8xl font-extrabold leading-none tracking-tighter text-orange">

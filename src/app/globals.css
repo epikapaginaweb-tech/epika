@@ -114,16 +114,6 @@
     }
   }
 
-  .script-accent {
-    font-family: var(--font-script);
-    font-size: 2.1em;
-    font-weight: 400;
-    letter-spacing: -0.075em;
-    text-transform: none;
-    line-height: 0.6;
-    vertical-align: -0.12em;
-  }
-
   .eyebrow {
     font-size: 0.7rem;
     font-weight: 700;
@@ -337,11 +327,8 @@ html[data-theme="night"] a.bg-navy {
 .logo-night { display: none; }
 html[data-theme="night"] .logo-day { display: none; }
 html[data-theme="night"] .logo-night { display: block; }
-html[data-theme="night"] [data-tone="dark"] span {
+html[data-theme="night"] [data-tone="dark"] span:not([data-accent]) {
   color: var(--night-text) !important;
-}
-html[data-theme="night"] [data-tone="dark"] span.font-script {
-  color: #fff !important;
 }
 html[data-theme="night"] .text-navy\/60 {
   color: color-mix(in oklab, var(--night-text) 65%, transparent);

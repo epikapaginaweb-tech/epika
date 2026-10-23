@@ -38,14 +38,15 @@ export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", t
   const base = split(text);
   const accents = split(accent);
   const total = base.length + accents.length;
+  const phrase = accents.length >= 2 && base.length > 0;
 
   const words = (list: string[], color: string, offset: number, extra = "") =>
     list.map((word, i) => (
       <span key={`${offset}-${i}`} aria-hidden>
-        <motion.span className={`inline-block ${extra}`} variants={wordVariants(colors.from, color)}>
+        <motion.span data-accent={extra ? "" : undefined} className={`inline-block ${extra}`} variants={wordVariants(colors.from, color)}>
           {word}
         </motion.span>
-        {offset + i < total - 1 && " "}
+        {!(phrase && offset + i === total - 1) && offset + i < total - 1 && " "}
       </span>
     ));
 
@@ -61,7 +62,13 @@ export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", t
       variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07, delayChildren: delay } } }}
     >
       {words(base, colors.base, 0)}
-      {accents.length > 0 && words(accents, colors.base, base.length, "font-script mr-[0.14em] text-[1.3em] font-normal leading-[0.8]")}
+      {accents.length > 0 &&
+        (phrase ? (
+          // Dos frases: la segunda va en cursiva de la marca, en naranja y en su propia línea.
+          <span className="mt-[0.12em] block">{words(accents, colors.accent, base.length, "font-script text-[1.3em] font-normal leading-[0.9]")}</span>
+        ) : (
+          words(accents, colors.accent, base.length)
+        ))}
     </Tag>
   );
 }

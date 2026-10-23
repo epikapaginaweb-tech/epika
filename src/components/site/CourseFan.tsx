@@ -60,7 +60,8 @@ function FanCard({ item, index, total, progress }: { item: FanItem; index: numbe
           ariaLabel={item.title}
           info={info}
           pop={{ y: -22, scale: 1.06, rotate: -rotate }}
-          shift={-x * 0.3}
+          side={x > 0 ? "right" : "left"}
+          shift={-x * 0.28}
           cloudClassName="scale-[1.6] sm:scale-125 lg:scale-100"
           linkClassName="shine group relative block h-56 w-44 overflow-hidden rounded-[1.4rem] bg-white shadow-[0_24px_50px_-20px_rgba(0,41,82,0.45)] ring-4 ring-white md:h-64 md:w-50"
         >

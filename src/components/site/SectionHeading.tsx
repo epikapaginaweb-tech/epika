@@ -15,7 +15,7 @@ export function SectionHeading({ eyebrow, title, accent, description, align = "l
     <div className={centered ? "mx-auto max-w-3xl text-center" : "max-w-2xl"}>
       {eyebrow && (
         <p className="eyebrow">
-          {eyebrow.split(" ")[0]} <span className="script-accent">{eyebrow.split(" ").slice(1).join(" ")}</span>
+          {eyebrow.split(" ")[0]} <span className="text-orange">{eyebrow.split(" ").slice(1).join(" ")}</span>
         </p>
       )}
       <RevealText
