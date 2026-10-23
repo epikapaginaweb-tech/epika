@@ -29,7 +29,7 @@ export default async function InquiryPage({ params }: PageProps<"/admin/solicitu
   const isPdf = inquiry.receipt_path?.endsWith(".pdf");
   const contactHref = whatsappUrl(
     inquiry.phone,
-    `Hola ${inquiry.full_name.split(" ")[0]}, te escribimos de Épika Academy${inquiry.course_title ? ` sobre el curso «${inquiry.course_title}»` : ""}.`,
+    `Hola ${inquiry.full_name.split(" ")[0]}, te escribimos de Épika Academy${inquiry.course_title ? ` sobre el programa «${inquiry.course_title}»` : ""}.`,
     settings.countryCode,
   );
 
@@ -51,7 +51,7 @@ export default async function InquiryPage({ params }: PageProps<"/admin/solicitu
               {[
                 ["Correo", inquiry.email],
                 ["Teléfono", inquiry.phone],
-                ["Curso", inquiry.course_title ?? "Consulta general"],
+                ["Programa", inquiry.course_title ?? "Consulta general"],
                 ["Tipo", inquiry.kind === "reserva" ? "Solicitud de reserva" : "Consulta"],
                 ["Recibida", formatDate(inquiry.created_at, { dateStyle: "long", timeStyle: "short" })],
               ].map(([label, value]) => (

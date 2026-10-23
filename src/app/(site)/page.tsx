@@ -29,24 +29,41 @@ const FAN_SIZE = 7;
 const SOON_TAGS = ["Virtual", "En línea", "100% virtual"];
 
 const STEPS = [
-  { title: "Elige tu curso", text: "Revisa el temario, el docente, las fechas y la inversión de cada curso." },
+  { title: "Elige tu programa", text: "Brochure, el instructor y la fecha de inicio." },
   { title: "Solicita tu reserva", text: "Completa el formulario en menos de un minuto." },
   { title: "Confirma tu pago", text: "Transfiere o paga por SINPE y sube tu comprobante desde el sitio." },
   { title: "Recibe tus accesos", text: "Te enviamos tu usuario y contraseña por WhatsApp para empezar." },
 ];
 
-function fanItems(courses: CourseWithTeacher[]): FanItem[] {
-  const items: FanItem[] = courses.slice(0, FAN_SIZE).map((c) => ({
+function fanItems(courses: CourseWithTeacher[], promoLabel: string): FanItem[] {
+  const toItem = (c: CourseWithTeacher): FanItem => ({
     key: c.id,
     title: c.title,
     image: c.image_url,
     tag: MODALITY_LABEL[c.modality],
-    href: `/cursos/${c.slug}`,
-  }));
-  for (let i = items.length; i < FAN_SIZE; i++) {
-    items.push({ key: `soon-${i}`, title: "Muy pronto", seed: `Épika ${i}`, image: null, tag: SOON_TAGS[i % 3], href: "/cursos" });
-  }
-  return items;
+    href: `/programas/${c.slug}`,
+  });
+  const soon = (i: number): FanItem => ({
+    key: `soon-${i}`,
+    title: "Muy pronto",
+    seed: `Épika ${i}`,
+    image: null,
+    tag: SOON_TAGS[i % 3],
+    href: "/programas",
+  });
+
+  // La tarjeta central muestra el programa destacado (promoción / programa estrella).
+  const center = Math.floor(FAN_SIZE / 2);
+  const featured = courses.find((c) => c.featured);
+  const rest = courses.filter((c) => c !== featured);
+  let next = 0;
+  return Array.from({ length: FAN_SIZE }, (_, i) => {
+    if (i === center) {
+      return featured ? { ...toItem(featured), badge: promoLabel } : { ...soon(i), badge: promoLabel };
+    }
+    const course = rest[next++];
+    return course ? toItem(course) : soon(i);
+  });
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -74,9 +91,10 @@ export default async function HomePage() {
     title: c.title,
     image: c.image_url,
     tag: formatDate(c.start_date, { day: "numeric", month: "short" }) ?? MODALITY_LABEL[c.modality],
-    href: `/cursos/${c.slug}`,
+    href: `/programas/${c.slug}`,
   }));
-  const whatsapp = whatsappUrl(settings.whatsapp, "Hola, quiero información sobre los cursos de Épika Academy.", settings.countryCode);
+  const whatsapp = whatsappUrl(settings.whatsapp, "Hola, quiero información sobre los programas de Épika Academy.", settings.countryCode);
+  const advisor = whatsappUrl(settings.salesWhatsapp || settings.whatsapp, "Hola, quiero información sobre los programas de Épika Academy.", settings.countryCode);
   const { hero } = settings;
 
   return (
@@ -101,15 +119,14 @@ export default async function HomePage() {
         </ParallaxOut>
 
         <div className="mt-10 md:mt-14">
-          <CourseFan items={fanItems(courses)} />
+          <CourseFan items={fanItems(courses, settings.promoLabel)} />
         </div>
 
         <div className="container-page text-center">
           <Reveal delay={0.6}>
             {hero.subtitle && <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-ink/65 md:text-lg">{hero.subtitle}</p>}
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <PrimaryLink href="/cursos">Ver cursos</PrimaryLink>
-              <WhatsAppLink href={whatsapp}>Hablar por WhatsApp</WhatsAppLink>
+              <PrimaryLink href="/programas">Ver programas</PrimaryLink>
             </div>
           </Reveal>
         </div>
@@ -124,17 +141,17 @@ export default async function HomePage() {
       <section className="container-page grid items-center gap-12 py-24 md:grid-cols-[0.9fr_1.1fr] md:py-32">
         <div>
           <SectionHeading
-            eyebrow="Próximos cursos"
-            title="Elige tu curso y"
+            eyebrow="Próximos programas"
+            title="Elige tu programa y"
             accent="asegura tu lugar."
             description={
               next.length > 0
-                ? "Estas son las próximas aperturas. Revisa el temario, el docente y la inversión de cada curso antes de reservar."
+                ? "Estas son las próximas aperturas. Revisa el temario, el instructor y la inversión de cada programa antes de reservar."
                 : "Muy pronto anunciaremos las próximas aperturas. Escríbenos y te avisamos primero."
             }
           />
           <Reveal delay={0.2} className="mt-8 flex flex-wrap gap-3">
-            <PrimaryLink href="/cursos">Ver todo el catálogo</PrimaryLink>
+            <PrimaryLink href="/programas">Ver todo el catálogo</PrimaryLink>
             {next.length === 0 && <WhatsAppLink href={whatsapp}>Quiero que me avisen</WhatsAppLink>}
           </Reveal>
         </div>
@@ -205,9 +222,9 @@ export default async function HomePage() {
         <section className="py-24 md:py-32">
           <FloatingTiles tiles={teachers.map((t) => ({ key: t.id, name: t.name, image: t.photo_url }))}>
             <div className="container-page text-center">
-              <SectionHeading eyebrow="Nuestros docentes" title="Aprende con quienes" accent="lo viven cada día." align="center" />
+              <SectionHeading eyebrow="Nuestros instructores" title="Aprende con quienes" accent="lo viven cada día." align="center" />
               <Reveal delay={0.2} className="mt-8 flex justify-center">
-                <PrimaryLink href="/docentes">Conocer al equipo</PrimaryLink>
+                <PrimaryLink href="/instructores">Conocer al equipo</PrimaryLink>
               </Reveal>
             </div>
           </FloatingTiles>
@@ -269,20 +286,20 @@ export default async function HomePage() {
             <div className="relative">
               <RevealText
                 tone="light"
-                text="¿Listo para tu"
-                accent="próximo nivel?"
+                text="Listos para"
+                accent="transformar tu futuro."
                 className="mx-auto max-w-3xl text-4xl font-bold leading-tight tracking-tight md:text-6xl"
               />
-              <p className="mx-auto mt-5 max-w-lg text-white/70">Cuéntanos qué quieres aprender y te ayudamos a elegir el curso ideal.</p>
+              <p className="mx-auto mt-5 max-w-lg text-white/70">Cuéntanos qué decidiste para aprender y te ayudamos con tu inscripción.</p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
-                  href="/cursos"
+                  href="/programas"
                   className="rounded-full bg-orange px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-navy"
                 >
-                  Ver cursos
+                  Ver programas
                 </Link>
-                <WhatsAppLink href={whatsapp} tone="dark">
-                  Hablar por WhatsApp
+                <WhatsAppLink href={advisor} tone="dark">
+                  Habla con tu asesor
                 </WhatsAppLink>
               </div>
             </div>

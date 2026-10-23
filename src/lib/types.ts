@@ -110,6 +110,9 @@ export type Stat = { value: string; prefix: string; suffix: string; label: strin
 
 export type SiteSettings = {
   whatsapp: string;
+  salesWhatsapp: string;
+  campusUrl: string;
+  promoLabel: string;
   countryCode: string;
   email: string;
   phone: string;

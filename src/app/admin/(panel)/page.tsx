@@ -27,13 +27,13 @@ export default async function DashboardPage() {
   const stats = [
     { label: "Solicitudes nuevas", value: fresh, href: "/admin/solicitudes?estado=nueva", accent: true },
     { label: "Pagos por revisar", value: toReview, href: "/admin/solicitudes?pago=en_revision" },
-    { label: "Cursos publicados", value: courses, href: "/admin/cursos" },
-    { label: "Docentes", value: teachers, href: "/admin/docentes" },
+    { label: "Programas publicados", value: courses, href: "/admin/programas" },
+    { label: "Instructores", value: teachers, href: "/admin/instructores" },
   ];
 
   return (
     <>
-      <PageHeader title="Resumen" description="Lo más importante de la academia en un vistazo." action={{ href: "/admin/cursos/nuevo", label: "+ Nuevo curso" }} />
+      <PageHeader title="Resumen" description="Lo más importante de la academia en un vistazo." action={{ href: "/admin/programas/nuevo", label: "+ Nuevo programa" }} />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map((stat) => (
           <Link

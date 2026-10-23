@@ -58,9 +58,9 @@ export async function saveCourse(_prev: FormState, fd: FormData): Promise<FormSt
   await requireAdmin();
   const id = text(fd, "id");
   const title = text(fd, "title");
-  if (!title) return { error: "El curso necesita un nombre." };
+  if (!title) return { error: "El programa necesita un nombre." };
   const slug = slugify(text(fd, "slug") || title);
-  if (!slug) return { error: "Revisa el enlace del curso." };
+  if (!slug) return { error: "Revisa el enlace del programa." };
   const modality = text(fd, "modality");
   if (!MODALITIES.includes(modality as (typeof MODALITIES)[number])) return { error: "Elige una modalidad válida." };
 
@@ -98,13 +98,13 @@ export async function saveCourse(_prev: FormState, fd: FormData): Promise<FormSt
   const db = serviceClient().from("courses");
   const { error } = id ? await db.update(row).eq("id", id) : await db.insert(row);
   if (error) {
-    if (error.code === "23505") return { error: "Ya existe un curso con ese enlace. Cambia el campo «Enlace»." };
+    if (error.code === "23505") return { error: "Ya existe un programa con ese enlace. Cambia el campo «Enlace»." };
     console.error("saveCourse", error.message);
-    return { error: "No se pudo guardar el curso." };
+    return { error: "No se pudo guardar el programa." };
   }
 
   touch(TAGS.courses);
-  redirect("/admin/cursos");
+  redirect("/admin/programas");
 }
 
 export async function setCourseVisibility(id: string, visible: boolean) {
@@ -123,7 +123,7 @@ export async function saveTeacher(_prev: FormState, fd: FormData): Promise<FormS
   await requireAdmin();
   const id = text(fd, "id");
   const name = text(fd, "name");
-  if (!name) return { error: "Escribe el nombre del docente." };
+  if (!name) return { error: "Escribe el nombre del instructor." };
 
   const row = {
     name,
@@ -140,11 +140,11 @@ export async function saveTeacher(_prev: FormState, fd: FormData): Promise<FormS
   const { error } = id ? await db.update(row).eq("id", id) : await db.insert(row);
   if (error) {
     console.error("saveTeacher", error.message);
-    return { error: "No se pudo guardar el docente." };
+    return { error: "No se pudo guardar el instructor." };
   }
 
   touch(TAGS.teachers);
-  redirect("/admin/docentes");
+  redirect("/admin/instructores");
 }
 
 export async function setTeacherVisibility(id: string, visible: boolean) {
@@ -222,7 +222,10 @@ export async function saveSettings(_prev: FormState, fd: FormData): Promise<Form
 
   const settings = resolveSettings({
     whatsapp: text(fd, "whatsapp"),
-    countryCode: text(fd, "countryCode").replace(/\D/g, "") || "506",
+    salesWhatsapp: text(fd, "salesWhatsapp"),
+    campusUrl: text(fd, "campusUrl"),
+    promoLabel: text(fd, "promoLabel") || "Promoción",
+    countryCode: text(fd, "countryCode").replace(/\D/g, "") || "593",
     email: text(fd, "email"),
     phone: text(fd, "phone"),
     address: text(fd, "address"),

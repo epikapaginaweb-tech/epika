@@ -8,8 +8,8 @@ import { isActive } from "@/lib/nav";
 const LINKS = [
   { href: "/admin", label: "Resumen" },
   { href: "/admin/solicitudes", label: "Solicitudes" },
-  { href: "/admin/cursos", label: "Cursos" },
-  { href: "/admin/docentes", label: "Docentes" },
+  { href: "/admin/programas", label: "Programas" },
+  { href: "/admin/instructores", label: "Instructores" },
   { href: "/admin/contenido", label: "Contenido" },
   { href: "/admin/faq", label: "Preguntas" },
   { href: "/admin/testimonios", label: "Testimonios" },

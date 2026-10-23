@@ -9,7 +9,7 @@ import { requireAdmin } from "@/lib/auth";
 import { serviceClient } from "@/lib/supabase/service";
 import type { Teacher } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Docentes" };
+export const metadata: Metadata = { title: "Instructores" };
 
 export default async function AdminTeachersPage() {
   await requireAdmin();
@@ -18,8 +18,8 @@ export default async function AdminTeachersPage() {
 
   return (
     <>
-      <PageHeader title="Docentes" description="Perfiles que aparecen en la página Docentes y en cada curso." action={{ href: "/admin/docentes/nuevo", label: "+ Nuevo docente" }} />
-      {teachers.length === 0 && <p className="rounded-3xl bg-white p-10 text-center text-sm text-ink/55">Aún no hay docentes registrados.</p>}
+      <PageHeader title="Instructores" description="Perfiles que aparecen en la página Instructores y en cada programa." action={{ href: "/admin/instructores/nuevo", label: "+ Nuevo instructor" }} />
+      {teachers.length === 0 && <p className="rounded-3xl bg-white p-10 text-center text-sm text-ink/55">Aún no hay instructores registrados.</p>}
       <ul className="grid gap-3 md:grid-cols-2">
         {teachers.map((t) => (
           <li key={t.id} className="flex items-center gap-4 rounded-3xl bg-white p-3 pr-4">
@@ -27,7 +27,7 @@ export default async function AdminTeachersPage() {
               {t.photo_url ? <Image src={t.photo_url} alt="" fill sizes="64px" className="object-cover" /> : <CoverArt seed={t.name} />}
             </div>
             <div className="min-w-0 flex-1">
-              <Link href={`/admin/docentes/${t.id}`} className="font-bold text-navy hover:text-orange">
+              <Link href={`/admin/instructores/${t.id}`} className="font-bold text-navy hover:text-orange">
                 {t.name}
               </Link>
               <p className="truncate text-xs text-ink/50">{t.headline ?? t.specialty ?? "Sin perfil"}</p>
@@ -37,7 +37,7 @@ export default async function AdminTeachersPage() {
                 {t.visible ? "Ocultar" : "Mostrar"}
               </SubmitButton>
             </form>
-            <ConfirmForm action={deleteTeacher.bind(null, t.id)} message={`¿Eliminar a ${t.name}? Los cursos asignados quedarán sin docente.`}>
+            <ConfirmForm action={deleteTeacher.bind(null, t.id)} message={`¿Eliminar a ${t.name}? Los programas asignados quedarán sin instructor.`}>
               <button type="submit" className="text-xs font-semibold text-red-600" aria-label={`Eliminar ${t.name}`}>
                 Eliminar
               </button>

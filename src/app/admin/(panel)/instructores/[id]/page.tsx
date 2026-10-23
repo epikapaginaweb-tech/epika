@@ -6,9 +6,9 @@ import { requireAdmin } from "@/lib/auth";
 import { serviceClient } from "@/lib/supabase/service";
 import type { Teacher } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Editar docente" };
+export const metadata: Metadata = { title: "Editar instructor" };
 
-export default async function EditTeacherPage({ params }: PageProps<"/admin/docentes/[id]">) {
+export default async function EditTeacherPage({ params }: PageProps<"/admin/instructores/[id]">) {
   await requireAdmin();
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
@@ -18,7 +18,7 @@ export default async function EditTeacherPage({ params }: PageProps<"/admin/doce
 
   return (
     <>
-      <PageHeader title="Editar docente" description={teacher.name} />
+      <PageHeader title="Editar instructor" description={teacher.name} />
       <TeacherForm teacher={teacher} />
     </>
   );

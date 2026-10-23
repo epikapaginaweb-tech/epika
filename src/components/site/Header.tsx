@@ -61,7 +61,7 @@ function Links({ render, onNavigate }: { render: (props: NavProps) => React.Reac
   );
 }
 
-export function Header({ whatsappHref }: { whatsappHref: string }) {
+export function Header({ campusHref }: { campusHref: string }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
   const [scrolled, setScrolled] = useState(false);
@@ -100,12 +100,12 @@ export function Header({ whatsappHref }: { whatsappHref: string }) {
 
           <div className="hidden items-center gap-2 md:flex">
             <a
-              href={whatsappHref}
+              href={campusHref}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-fill rounded-full bg-navy px-5 py-2.5 text-sm font-semibold text-white"
             >
-              Hablar por WhatsApp
+              Campus virtual
             </a>
           </div>
 
@@ -143,12 +143,12 @@ export function Header({ whatsappHref }: { whatsappHref: string }) {
               <Links render={MobileLinks} onNavigate={close} />
             </ul>
             <a
-              href={whatsappHref}
+              href={campusHref}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-auto rounded-full bg-navy px-6 py-4 text-center font-semibold text-white"
             >
-              Hablar por WhatsApp
+              Campus virtual
             </a>
           </motion.nav>
         )}

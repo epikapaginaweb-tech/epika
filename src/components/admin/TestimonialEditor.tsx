@@ -19,7 +19,7 @@ export function TestimonialEditor({ testimonial, onSaved }: { testimonial?: Test
       <form onSubmit={onSubmit} className="grid gap-4 md:grid-cols-2">
         {t && <input type="hidden" name="id" value={t.id} />}
         <TextInput label="Nombre" name="name" defaultValue={t?.name} required />
-        <TextInput label="Curso" name="course" defaultValue={t?.course ?? ""} />
+        <TextInput label="Programa" name="course" defaultValue={t?.course ?? ""} />
         <TextArea label="Testimonio" name="quote" defaultValue={t?.quote} rows={3} className="md:col-span-2" required />
         <div className="md:col-span-2">
           <MediaInput name="photo_url" label="Foto (opcional)" folder="testimonios" defaultValue={t?.photo_url} />

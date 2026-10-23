@@ -1,8 +1,11 @@
 import type { SiteSettings } from "./types";
 
 export const DEFAULT_SETTINGS: SiteSettings = {
-  whatsapp: "",
-  countryCode: "506",
+  whatsapp: "098 038 1003",
+  salesWhatsapp: "098 328 9076",
+  campusUrl: "https://campusvirtual.epika.education/",
+  promoLabel: "Promoción",
+  countryCode: "593",
   email: "",
   phone: "",
   address: "",
@@ -11,11 +14,11 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   socials: { instagram: "", facebook: "", tiktok: "", linkedin: "", youtube: "" },
   bankAccounts: [],
   paymentNote:
-    "Realiza la transferencia o SINPE indicando tu nombre completo y el curso. Luego sube el comprobante aquí mismo.",
+    "Realiza la transferencia o SINPE indicando tu nombre completo y el programa. Luego sube el comprobante aquí mismo.",
   hero: {
     eyebrow: "Épika Academy",
-    title: "Aprende hoy lo que",
-    highlight: "te lleva más lejos.",
+    title: "Desarrolla tu potencial",
+    highlight: "Lidera tu futuro.",
     subtitle: "",
   },
   benefits: [
@@ -34,9 +37,9 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     gallery: [],
   },
   privacy:
-    "En Épika Academy usamos los datos que nos compartes (nombre, correo, teléfono y mensaje) únicamente para responder tu consulta, gestionar tu reserva y enviarte información sobre el curso de tu interés.\n\nNo vendemos ni compartimos tu información con terceros. Los comprobantes de pago se almacenan de forma privada y solo el equipo administrativo puede consultarlos.\n\nPuedes solicitar en cualquier momento la actualización o eliminación de tus datos escribiéndonos por los canales de contacto publicados en este sitio.",
+    "En Épika Academy usamos los datos que nos compartes (nombre, correo, teléfono y mensaje) únicamente para responder tu consulta, gestionar tu reserva y enviarte información sobre el programa de tu interés.\n\nNo vendemos ni compartimos tu información con terceros. Los comprobantes de pago se almacenan de forma privada y solo el equipo administrativo puede consultarlos.\n\nPuedes solicitar en cualquier momento la actualización o eliminación de tus datos escribiéndonos por los canales de contacto publicados en este sitio.",
   seoDescription:
-    "Épika Academy: cursos virtuales con docentes especializados. Conoce el catálogo y solicita tu reserva.",
+    "Épika Academy: programas virtuales con instructores especializados. Conoce el catálogo y solicita tu reserva.",
 };
 
 type Plain = Record<string, unknown>;

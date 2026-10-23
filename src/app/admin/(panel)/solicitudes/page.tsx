@@ -48,7 +48,7 @@ export default async function InquiriesPage({ searchParams }: PageProps<"/admin/
           tab(PAYMENT_LABEL[s as PaymentStatus], `/admin/solicitudes?pago=${s}`, pago === s),
         )}
         <form className="ml-auto w-full sm:w-64">
-          <input type="search" name="q" defaultValue={q} placeholder="Buscar nombre, correo, curso…" className="field py-2.5" />
+          <input type="search" name="q" defaultValue={q} placeholder="Buscar nombre, correo, programa…" className="field py-2.5" />
         </form>
       </div>
 
@@ -59,7 +59,7 @@ export default async function InquiriesPage({ searchParams }: PageProps<"/admin/
               <tr>
                 <th className="px-5 py-3 font-semibold">Fecha</th>
                 <th className="px-5 py-3 font-semibold">Nombre</th>
-                <th className="px-5 py-3 font-semibold">Curso</th>
+                <th className="px-5 py-3 font-semibold">Programa</th>
                 <th className="px-5 py-3 font-semibold">Tipo</th>
                 <th className="px-5 py-3 font-semibold">Estado</th>
                 <th className="px-5 py-3 font-semibold">Pago</th>

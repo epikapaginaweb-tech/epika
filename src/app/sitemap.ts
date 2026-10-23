@@ -4,9 +4,9 @@ import { SITE_URL } from "@/lib/env";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const courses = await getCourses();
-  const pages = ["", "/nosotros", "/cursos", "/docentes", "/contacto", "/reservar", "/privacidad"];
+  const pages = ["", "/nosotros", "/programas", "/instructores", "/contacto", "/reservar", "/privacidad"];
   return [
     ...pages.map((path) => ({ url: `${SITE_URL}${path}`, changeFrequency: "weekly" as const, priority: path ? 0.7 : 1 })),
-    ...courses.map((course) => ({ url: `${SITE_URL}/cursos/${course.slug}`, changeFrequency: "weekly" as const, priority: 0.8 })),
+    ...courses.map((course) => ({ url: `${SITE_URL}/programas/${course.slug}`, changeFrequency: "weekly" as const, priority: 0.8 })),
   ];
 }

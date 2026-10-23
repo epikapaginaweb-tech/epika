@@ -16,6 +16,13 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
     ],
   },
+  async redirects() {
+    return [
+      { source: "/cursos", destination: "/programas", permanent: true },
+      { source: "/cursos/:slug", destination: "/programas/:slug", permanent: true },
+      { source: "/docentes", destination: "/instructores", permanent: true },
+    ];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

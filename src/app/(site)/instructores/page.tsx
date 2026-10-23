@@ -9,9 +9,9 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { TAGS, getTeachers } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Docentes",
-  description: "Conoce al equipo docente de Épika Academy: perfil profesional, experiencia, especialidad y cursos que imparte.",
-  alternates: { canonical: "/docentes" },
+  title: "Instructores",
+  description: "Conoce al equipo de instructores de Épika Academy: perfil profesional, experiencia, especialidad y programas que imparte.",
+  alternates: { canonical: "/instructores" },
 };
 
 export default async function TeachersPage() {
@@ -26,13 +26,13 @@ export default async function TeachersPage() {
       <SectionHeading
         as="h1"
         eyebrow="Equipo Épika"
-        title="Docentes que enseñan"
+        title="Instructores que te guían"
         accent="desde la experiencia."
         description="Profesionales activos en su área, comprometidos con que aprendas haciendo."
       />
 
       {teachers.length === 0 ? (
-        <p className="mt-14 rounded-[2rem] bg-white p-10 text-ink/60">Muy pronto presentaremos a nuestro equipo docente.</p>
+        <p className="mt-14 rounded-[2rem] bg-white p-10 text-ink/60">Muy pronto presentaremos a nuestro equipo de instructores.</p>
       ) : (
         <RevealGroup className="mt-14 grid gap-7 md:grid-cols-2">
           {teachers.map((teacher, i) => (
@@ -76,7 +76,7 @@ export default async function TeachersPage() {
                           {teacher.courses.map((course) => (
                             <li key={course.id}>
                               <Link
-                                href={`/cursos/${course.slug}`}
+                                href={`/programas/${course.slug}`}
                                 className="inline-block rounded-full border border-line px-3 py-1.5 text-xs font-semibold text-navy transition-colors hover:border-orange hover:bg-orange hover:text-white"
                               >
                                 {course.title}

@@ -12,6 +12,7 @@ export type FanItem = {
   tag: string;
   href: string;
   seed?: string;
+  badge?: string;
 };
 
 const SPREAD = 150;
@@ -43,6 +44,11 @@ function FanCard({ item, index, total, progress }: { item: FanItem; index: numbe
             aria-label={item.title}
           >
             <CourseImage src={item.image} title={item.title} sizes="200px" eager label={item.title} seed={item.seed} />
+            {item.badge && (
+              <span className="absolute left-3 top-3 z-10 rounded-full bg-orange px-3 py-1 text-[0.68rem] font-bold uppercase tracking-wide text-white shadow-md">
+                {item.badge}
+              </span>
+            )}
           </Link>
         </motion.div>
       </motion.div>

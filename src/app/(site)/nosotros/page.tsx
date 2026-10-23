@@ -116,7 +116,7 @@ export default async function AboutPage() {
 
       <section className="container-page pt-10 text-center">
         <Reveal>
-          <PrimaryLink href="/cursos">Ver cursos disponibles</PrimaryLink>
+          <PrimaryLink href="/programas">Ver programas disponibles</PrimaryLink>
         </Reveal>
       </section>
     </>

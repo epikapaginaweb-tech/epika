@@ -68,7 +68,7 @@ export function CourseCard({ course, index = 0 }: { course: CourseCardData; inde
           )}
           <div className="mt-auto pt-6">
             <Link
-              href={`/cursos/${course.slug}`}
+              href={`/programas/${course.slug}`}
               className="inline-flex items-center gap-2 rounded-full bg-navy px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange after:absolute after:inset-0 after:rounded-[var(--radius-card)]"
             >
               Ver información

@@ -38,8 +38,8 @@ export default async function ContactPage() {
         <SectionHeading
           as="h1"
           eyebrow="Contacto Épika"
-          title="Hablemos de lo que"
-          accent="quieres aprender."
+          title="En qué te podemos"
+          accent="ayudar."
           description="Déjanos tu consulta y te respondemos a la brevedad. Si prefieres, escríbenos directo por WhatsApp."
         />
       </section>

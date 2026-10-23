@@ -13,8 +13,11 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
     <form onSubmit={onSubmit} className="space-y-5">
       <Card title="Contacto" description="Se usa en el botón flotante, el encabezado, el pie de página y la página Contacto.">
         <div className="grid gap-4 md:grid-cols-2">
-          <TextInput label="WhatsApp" name="whatsapp" defaultValue={settings.whatsapp} placeholder="8888 8888" hint="Número de la academia" />
-          <TextInput label="Código de país" name="countryCode" defaultValue={settings.countryCode} hint="506 = Costa Rica" />
+          <TextInput label="WhatsApp general" name="whatsapp" defaultValue={settings.whatsapp} placeholder="098 038 1003" hint="Botón flotante, pie de página y Contacto" />
+          <TextInput label="WhatsApp de ventas (asesor)" name="salesWhatsapp" defaultValue={settings.salesWhatsapp} placeholder="098 328 9076" hint="Botón «Habla con tu asesor»" />
+          <TextInput label="Campus virtual (enlace)" name="campusUrl" defaultValue={settings.campusUrl} placeholder="https://" hint="Botón «Campus virtual» del menú" />
+          <TextInput label="Etiqueta de la tarjeta central" name="promoLabel" defaultValue={settings.promoLabel} hint="Ej. Promoción, Programa estrella. Se aplica al programa marcado como destacado" />
+          <TextInput label="Código de país" name="countryCode" defaultValue={settings.countryCode} hint="593 = Ecuador, 506 = Costa Rica" />
           <TextInput label="Correo" name="email" type="email" defaultValue={settings.email} />
           <TextInput label="Teléfono" name="phone" defaultValue={settings.phone} />
           <TextArea label="Dirección" name="address" defaultValue={settings.address} rows={2} />
@@ -38,7 +41,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         </div>
       </Card>
 
-      <Card title="Pagos" description="Se muestran al completar el formulario de reserva o consulta con curso.">
+      <Card title="Pagos" description="Se muestran al completar el formulario de reserva o consulta con programa.">
         <div className="space-y-4">
           <Repeater
             name="bankAccounts"

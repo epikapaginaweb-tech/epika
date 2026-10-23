@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: "Épika Academy", template: "%s · Épika Academy" },
   description:
-    "Épika Academy: cursos virtuales con docentes especializados. Conoce el catálogo y solicita tu reserva.",
+    "Épika Academy: programas virtuales con instructores especializados. Conoce el catálogo y solicita tu reserva.",
   applicationName: "Épika Academy",
   openGraph: { type: "website", locale: "es_CR", siteName: "Épika Academy" },
   twitter: { card: "summary_large_image" },

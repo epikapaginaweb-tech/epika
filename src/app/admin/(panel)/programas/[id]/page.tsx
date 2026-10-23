@@ -6,9 +6,9 @@ import { requireAdmin } from "@/lib/auth";
 import { serviceClient } from "@/lib/supabase/service";
 import type { Course } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Editar curso" };
+export const metadata: Metadata = { title: "Editar programa" };
 
-export default async function EditCoursePage({ params }: PageProps<"/admin/cursos/[id]">) {
+export default async function EditCoursePage({ params }: PageProps<"/admin/programas/[id]">) {
   await requireAdmin();
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
@@ -21,7 +21,7 @@ export default async function EditCoursePage({ params }: PageProps<"/admin/curso
 
   return (
     <>
-      <PageHeader title="Editar curso" description={(course as Course).title} />
+      <PageHeader title="Editar programa" description={(course as Course).title} />
       <CourseForm course={course as Course} teachers={teachers ?? []} />
     </>
   );

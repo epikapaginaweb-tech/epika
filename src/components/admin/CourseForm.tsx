@@ -24,7 +24,7 @@ export function CourseForm({ course, teachers }: Props) {
 
       <Card title="Información principal">
         <div className="grid gap-4 md:grid-cols-2">
-          <TextInput label="Nombre del curso" name="title" defaultValue={course?.title} required className="md:col-span-2" />
+          <TextInput label="Nombre del programa" name="title" defaultValue={course?.title} required className="md:col-span-2" />
           <TextInput label="Enlace" name="slug" defaultValue={course?.slug} hint="Se genera del nombre si lo dejas vacío" placeholder="ej. marketing-digital" />
           <div>
             <Label htmlFor="modality">Modalidad</Label>
@@ -64,10 +64,10 @@ export function CourseForm({ course, teachers }: Props) {
         </div>
       </Card>
 
-      <Card title="Docente, fechas y horario">
+      <Card title="Instructor, fechas y horario">
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <Label htmlFor="teacher_id">Docente</Label>
+            <Label htmlFor="teacher_id">Instructor</Label>
             <select id="teacher_id" name="teacher_id" defaultValue={course?.teacher_id ?? ""} className="field">
               <option value="">Sin asignar</option>
               {teachers.map((t) => (
@@ -99,26 +99,26 @@ export function CourseForm({ course, teachers }: Props) {
         </div>
       </Card>
 
-      <Card title="Brief del curso" description="Documento PDF con la información completa del curso.">
+      <Card title="Brief del programa" description="Documento PDF con la información completa del programa.">
         <div className="grid gap-4 md:grid-cols-2">
           <MediaInput name="brief_url" label="Archivo PDF" folder="briefs" kind="pdf" defaultValue={course?.brief_url} />
           <div className="self-end">
-            <Toggle name="brief_public" label="Permitir descarga pública" hint="Muestra el botón en la página del curso" defaultChecked={course?.brief_public} />
+            <Toggle name="brief_public" label="Permitir descarga pública" hint="Muestra el botón en la página del programa" defaultChecked={course?.brief_public} />
           </div>
         </div>
       </Card>
 
       <Card title="Publicación">
         <div className="grid gap-3 md:grid-cols-3">
-          <Toggle name="visible" label="Visible en el sitio" hint="Si está apagado, el curso queda oculto" defaultChecked={course?.visible ?? false} />
+          <Toggle name="visible" label="Visible en el sitio" hint="Si está apagado, el programa queda oculto" defaultChecked={course?.visible ?? false} />
           <Toggle name="featured" label="Destacado" hint="Aparece primero en el inicio" defaultChecked={course?.featured} />
           <TextInput label="Orden" name="sort" type="number" defaultValue={course?.sort ?? 0} hint="Menor = primero" />
         </div>
       </Card>
 
       <div className="sticky bottom-4 z-10 flex flex-wrap items-center gap-3 rounded-3xl bg-white/90 p-4 shadow-lg backdrop-blur">
-        <SubmitButton pending={pending}>{course ? "Guardar cambios" : "Crear curso"}</SubmitButton>
-        <Link href="/admin/cursos" className="rounded-full px-4 py-2.5 text-sm font-semibold text-ink/60 hover:text-navy">
+        <SubmitButton pending={pending}>{course ? "Guardar cambios" : "Crear programa"}</SubmitButton>
+        <Link href="/admin/programas" className="rounded-full px-4 py-2.5 text-sm font-semibold text-ink/60 hover:text-navy">
           Cancelar
         </Link>
         <div className="flex-1">

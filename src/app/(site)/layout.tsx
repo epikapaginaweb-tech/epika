@@ -10,7 +10,7 @@ import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
 import { TAGS, getSettings } from "@/lib/data";
 import { whatsappUrl } from "@/lib/whatsapp";
 
-const GREETING = "Hola, quiero información sobre los cursos de Épika Academy.";
+const GREETING = "Hola, quiero información sobre los programas de Épika Academy.";
 
 async function Chrome({ children }: { children: React.ReactNode }) {
   "use cache";
@@ -18,10 +18,11 @@ async function Chrome({ children }: { children: React.ReactNode }) {
   cacheLife("hours");
   const settings = await getSettings();
   const whatsapp = whatsappUrl(settings.whatsapp, GREETING, settings.countryCode);
+  const campus = settings.campusUrl || "/contacto";
 
   return (
     <>
-      <Header whatsappHref={whatsapp} />
+      <Header campusHref={campus} />
       <main id="contenido">{children}</main>
       <Footer settings={settings} year={new Date().getFullYear()} />
       <WhatsAppFloat href={whatsapp} />

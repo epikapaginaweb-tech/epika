@@ -82,7 +82,7 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
       ["Nombre", input.full_name],
       ["Correo", input.email],
       ["Teléfono", input.phone],
-      ["Curso", courseTitle],
+      ["Programa", courseTitle],
       ["Mensaje", input.message],
     ],
   });
@@ -135,7 +135,7 @@ export async function confirmReceipt(input: { id: string; token: string; path: s
     subject: `Comprobante recibido: ${inquiry.full_name}`,
     lines: [
       ["Nombre", inquiry.full_name],
-      ["Curso", inquiry.course_title],
+      ["Programa", inquiry.course_title],
       ["Estado", "Pendiente de revisión en el panel"],
     ],
   });

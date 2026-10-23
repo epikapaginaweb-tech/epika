@@ -17,15 +17,15 @@ import { TAGS, getCourse, getSettings } from "@/lib/data";
 import { MODALITY_LABEL, formatDate, formatPrice } from "@/lib/format";
 import { courseMessage, whatsappUrl } from "@/lib/whatsapp";
 
-export async function generateMetadata({ params }: PageProps<"/cursos/[slug]">): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<"/programas/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const course = await getCourse(slug);
-  if (!course) return { title: "Curso no encontrado" };
+  if (!course) return { title: "Programa no encontrado" };
   const description = course.short_description ?? course.summary ?? undefined;
   return {
     title: course.title,
     description,
-    alternates: { canonical: `/cursos/${course.slug}` },
+    alternates: { canonical: `/programas/${course.slug}` },
     openGraph: {
       title: course.title,
       description,
@@ -97,8 +97,8 @@ async function CourseView({ slug }: { slug: string }) {
       <section className="container-page grid items-center gap-12 pb-16 pt-10 md:grid-cols-[1.1fr_0.9fr] md:pt-16">
         <div>
           <Reveal y={12}>
-            <Link href="/cursos" className="text-sm font-medium text-ink/50 transition-colors hover:text-orange">
-              ← Todos los cursos
+            <Link href="/programas" className="text-sm font-medium text-ink/50 transition-colors hover:text-orange">
+              ← Todos los programas
             </Link>
           </Reveal>
           <Reveal y={12} delay={0.05} className="mt-6">
@@ -122,7 +122,7 @@ async function CourseView({ slug }: { slug: string }) {
             </dl>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <PrimaryLink href={reserveHref}>Solicitar reserva</PrimaryLink>
-              <WhatsAppLink href={whatsapp}>Consultar este curso por WhatsApp</WhatsAppLink>
+              <WhatsAppLink href={whatsapp}>Consultar este programa por WhatsApp</WhatsAppLink>
             </div>
           </Reveal>
         </div>
@@ -180,7 +180,7 @@ async function CourseView({ slug }: { slug: string }) {
         )}
 
         {course.modules.length > 0 && (
-          <Block eyebrow="Temario" title="Módulos del curso">
+          <Block eyebrow="Temario" title="Módulos del programa">
             <ol className="divide-y divide-line overflow-hidden rounded-[var(--radius-card)] bg-white">
               {course.modules.map((mod, i) => (
                 <li key={`${mod.title}-${i}`}>
@@ -203,7 +203,7 @@ async function CourseView({ slug }: { slug: string }) {
         )}
 
         {teacher && (
-          <Block eyebrow="Docente" title="Quién te acompaña">
+          <Block eyebrow="Instructor" title="Quién te acompaña">
             <div className="flex flex-col gap-6 rounded-[var(--radius-card)] bg-white p-6 sm:flex-row sm:items-center">
               <div className="relative size-32 shrink-0 overflow-hidden rounded-3xl">
                 {teacher.photo_url ? (
@@ -216,7 +216,7 @@ async function CourseView({ slug }: { slug: string }) {
                 <p className="text-xl font-bold text-navy">{teacher.name}</p>
                 {teacher.headline && <p className="text-sm font-medium text-orange">{teacher.headline}</p>}
                 {teacher.bio && <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-ink/65">{teacher.bio}</p>}
-                <Link href="/docentes" className="mt-3 inline-block text-sm font-semibold text-navy underline decoration-orange underline-offset-4">
+                <Link href="/instructores" className="mt-3 inline-block text-sm font-semibold text-navy underline decoration-orange underline-offset-4">
                   Ver perfil completo
                 </Link>
               </div>
@@ -245,7 +245,7 @@ async function CourseView({ slug }: { slug: string }) {
                   rel="noopener noreferrer"
                   className="mt-5 inline-flex items-center gap-2 rounded-full bg-paper px-5 py-2.5 text-sm font-semibold text-navy transition-colors hover:bg-orange hover:text-white"
                 >
-                  Descargar brief del curso ↓
+                  Descargar brief del programa ↓
                 </a>
               )}
             </div>
@@ -276,7 +276,7 @@ async function CourseView({ slug }: { slug: string }) {
   );
 }
 
-async function CourseFromParams({ params }: { params: PageProps<"/cursos/[slug]">["params"] }) {
+async function CourseFromParams({ params }: { params: PageProps<"/programas/[slug]">["params"] }) {
   const { slug } = await params;
   return <CourseView slug={slug} />;
 }
@@ -294,7 +294,7 @@ function CourseSkeleton() {
   );
 }
 
-export default function CoursePage({ params }: PageProps<"/cursos/[slug]">) {
+export default function CoursePage({ params }: PageProps<"/programas/[slug]">) {
   return (
     <Suspense fallback={<CourseSkeleton />}>
       <CourseFromParams params={params} />

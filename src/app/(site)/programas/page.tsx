@@ -12,9 +12,9 @@ import { MODALITIES } from "@/lib/types";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Cursos",
-  description: "Explora el catálogo de cursos de Épika Academy: modalidad, temario, docentes, fechas e inversión.",
-  alternates: { canonical: "/cursos" },
+  title: "Programas",
+  description: "Explora el catálogo de programas de Épika Academy: modalidad, temario, instructores, fechas e inversión.",
+  alternates: { canonical: "/programas" },
 };
 
 export default async function CoursesPage() {
@@ -33,9 +33,9 @@ export default async function CoursesPage() {
       <SectionHeading
         as="h1"
         eyebrow="Catálogo Épika"
-        title="Cursos para dar"
+        title="Programas para dar"
         accent="tu siguiente paso."
-        description="Cursos 100% virtuales. Cada uno incluye su temario, docente, fechas e inversión."
+        description="Programas 100% virtuales. Cada uno incluye su temario, instructor, fechas e inversión."
       />
       <div className="mt-14">
         {courses.length > 0 ? (
@@ -46,10 +46,10 @@ export default async function CoursesPage() {
               <div>
                 <h2 className="text-2xl font-bold tracking-tight text-navy">Estamos preparando el catálogo.</h2>
                 <p className="mt-3 max-w-lg text-ink/65">
-                  Muy pronto publicaremos los próximos cursos. Escríbenos y te avisamos apenas abran las inscripciones.
+                  Muy pronto publicaremos los próximos programas. Escríbenos y te avisamos apenas abran las inscripciones.
                 </p>
                 <div className="mt-6">
-                  <WhatsAppLink href={whatsappUrl(settings.whatsapp, "Hola, quiero que me avisen cuando abran los cursos de Épika Academy.", settings.countryCode)}>
+                  <WhatsAppLink href={whatsappUrl(settings.whatsapp, "Hola, quiero que me avisen cuando abran los programas de Épika Academy.", settings.countryCode)}>
                     Quiero que me avisen
                   </WhatsAppLink>
                 </div>

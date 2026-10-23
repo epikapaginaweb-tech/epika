@@ -11,7 +11,7 @@ import { whatsappUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Solicitar reserva",
-  description: "Solicita tu cupo en un curso de Épika Academy. Te contactaremos para confirmar disponibilidad.",
+  description: "Solicita tu cupo en un programa de Épika Academy. Te contactaremos para confirmar disponibilidad.",
   alternates: { canonical: "/reservar" },
 };
 
@@ -38,7 +38,7 @@ async function ReserveForm({ slug }: { slug: string | undefined }) {
             paymentNote={settings.paymentNote}
             whatsappHref={whatsappUrl(
               settings.whatsapp,
-              `Hola, envío mi comprobante de pago${selected ? ` del curso «${selected.title}»` : ""}.`,
+              `Hola, envío mi comprobante de pago${selected ? ` del programa «${selected.title}»` : ""}.`,
               settings.countryCode,
             )}
           />

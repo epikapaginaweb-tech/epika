@@ -71,7 +71,7 @@ function PaymentStep({ state, bankAccounts, paymentNote, whatsappHref }: { state
           ✓
         </motion.span>
         <p className="mt-5 text-xl font-bold leading-snug">{CONFIRMATION}</p>
-        {state.courseTitle && <p className="mt-3 text-sm text-white/60">Curso: {state.courseTitle}</p>}
+        {state.courseTitle && <p className="mt-3 text-sm text-white/60">Programa: {state.courseTitle}</p>}
       </div>
 
       {showPayment && (
@@ -172,9 +172,9 @@ export function InquiryForm({ kind, courses, defaultCourseId, bankAccounts, paym
             </Field>
           </div>
 
-          <Field label="Curso de interés" name="course_id" error={errors.course_id}>
+          <Field label="Programa de interés" name="course_id" error={errors.course_id}>
             <select id="course_id" name="course_id" defaultValue={values.course_id ?? defaultCourseId ?? ""} className="field appearance-none bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23002952%22 stroke-width=%222%22><path d=%22m6 9 6 6 6-6%22/></svg>')] bg-[length:1.1rem] bg-[right_1rem_center] bg-no-repeat pr-10">
-              <option value="">{courses.length ? "Selecciona un curso (opcional)" : "Aún no hay cursos publicados"}</option>
+              <option value="">{courses.length ? "Selecciona un programa (opcional)" : "Aún no hay programas publicados"}</option>
               {courses.map((course) => (
                 <option key={course.id} value={course.id}>
                   {course.title}
