@@ -40,6 +40,7 @@ const ENTRIES: [string, string][] = [
 
   // Inicio
   ["Desarrolla tu potencial", "Develop your potential"],
+  ["Lidera tu futuro", "Lead your future"],
   ["¿En qué te podemos ayudar?", "How can we help you?"],
   ["Porque", "Because"],
   ["Aprender con nosotros", "Learning with us"],

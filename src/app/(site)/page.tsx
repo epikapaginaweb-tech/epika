@@ -111,7 +111,7 @@ export default async function HomePage() {
           <RevealText
             as="h1"
             text={hero.title}
-            accent={hero.highlight}
+            accent={hero.highlight || "Lidera tu futuro"}
             delay={0.1}
             className="mx-auto max-w-2xl text-[2.9rem] font-bold leading-[0.95] sm:text-6xl md:text-7xl"
           />

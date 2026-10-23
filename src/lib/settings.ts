@@ -24,7 +24,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   hero: {
     eyebrow: "Épika Academy",
     title: "Desarrolla tu potencial",
-    highlight: "",
+    highlight: "Lidera tu futuro",
     subtitle: "",
   },
   benefits: [
