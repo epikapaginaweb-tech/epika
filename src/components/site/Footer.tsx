@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { SiteSettings } from "@/lib/types";
 import { NAV } from "@/lib/nav";
 import { whatsappUrl } from "@/lib/whatsapp";
+import { LangSwitch } from "./LangSwitch";
+import { NightToggle } from "./NightToggle";
 import { SocialIcon, WhatsAppIcon } from "./icons";
 
 export function Footer({ settings, year }: { settings: SiteSettings; year: number }) {
@@ -90,11 +92,15 @@ export function Footer({ settings, year }: { settings: SiteSettings; year: numbe
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-white/15 pt-6 text-xs text-white/55 md:flex-row md:items-center md:justify-between">
+        <div className="mt-14 flex flex-col gap-3 border-t border-white/15 pt-6 text-xs text-white/55 md:flex-row md:items-center md:justify-between md:pr-24">
           <p>© {year} Épika Academy. Todos los derechos reservados.</p>
-          <Link href="/privacidad" className="hover:text-orange">
-            Aviso de privacidad
-          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/privacidad" className="mr-2 hover:text-orange">
+              Aviso de privacidad
+            </Link>
+            <NightToggle />
+            <LangSwitch tone="dark" />
+          </div>
         </div>
       </div>
     </footer>

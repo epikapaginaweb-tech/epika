@@ -114,6 +114,16 @@
     }
   }
 
+  .script-accent {
+    font-family: var(--font-script);
+    font-size: 2.1em;
+    font-weight: 400;
+    letter-spacing: -0.075em;
+    text-transform: none;
+    line-height: 0.6;
+    vertical-align: -0.12em;
+  }
+
   .eyebrow {
     font-size: 0.7rem;
     font-weight: 700;
@@ -272,4 +282,67 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+/* ───────── Modo azul (botón del pie de página) ───────── */
+html[data-theme="night"] {
+  color-scheme: dark;
+  --night-bg: #061a3d;
+  --night-card: #0f3068;
+  --night-text: #eaf1ff;
+  --color-paper: #061a3d;
+  --color-surface: #0f3068;
+  --color-ink: #dbe6fb;
+  --color-line: rgba(255, 255, 255, 0.14);
+  --color-orange-soft: rgba(255, 145, 0, 0.18);
+}
+
+html[data-theme="night"] body {
+  background: radial-gradient(120% 80% at 50% 0%, #0b2a63 0%, var(--night-bg) 60%) fixed;
+  color: var(--night-text);
+}
+
+html[data-theme="night"] .text-navy {
+  color: var(--night-text);
+}
+html[data-theme="night"] .bg-navy .text-navy,
+html[data-theme="night"] .bg-orange .text-navy {
+  color: #fff;
+}
+html[data-theme="night"] .bg-white,
+html[data-theme="night"] .bg-\[\#fbf9f6\] {
+  background-color: var(--night-card);
+}
+html[data-theme="night"] .bg-white\/95 {
+  background-color: color-mix(in oklab, var(--night-card) 95%, transparent);
+}
+html[data-theme="night"] .bg-white\/90 {
+  background-color: color-mix(in oklab, var(--night-card) 90%, transparent);
+}
+html[data-theme="night"] .ring-white {
+  --tw-ring-color: var(--night-card);
+}
+/* Secciones a todo ancho: transparentes para dejar ver las partículas. */
+html[data-theme="night"] section.bg-white {
+  background-color: transparent;
+}
+html[data-theme="night"] section.bg-navy,
+html[data-theme="night"] .site-footer {
+  background-color: color-mix(in oklab, var(--color-navy) 58%, transparent);
+}
+html[data-theme="night"] .bg-navy.rounded-full,
+html[data-theme="night"] a.bg-navy {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+.logo-night { display: none; }
+html[data-theme="night"] .logo-day { display: none; }
+html[data-theme="night"] .logo-night { display: block; }
+html[data-theme="night"] [data-tone="dark"] span {
+  color: var(--night-text) !important;
+}
+html[data-theme="night"] [data-tone="dark"] span.font-script {
+  color: #fff !important;
+}
+html[data-theme="night"] .text-navy\/60 {
+  color: color-mix(in oklab, var(--night-text) 65%, transparent);
 }

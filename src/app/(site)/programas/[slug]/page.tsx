@@ -242,7 +242,7 @@ async function CourseView({ slug }: { slug: string }) {
                 <p className="text-xl font-bold text-navy">{teacher.name}</p>
                 {teacher.headline && <p className="text-sm font-medium text-orange">{teacher.headline}</p>}
                 {teacher.bio && <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-ink/65">{teacher.bio}</p>}
-                <Link href="/instructores" className="mt-3 inline-block text-sm font-semibold text-navy underline decoration-orange underline-offset-4">
+                <Link href="/instructores" className="mt-3 inline-block text-sm font-semibold text-navy font-script text-[1.3em] hover:text-orange">
                   Ver perfil completo
                 </Link>
               </div>

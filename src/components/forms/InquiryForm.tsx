@@ -199,7 +199,7 @@ export function InquiryForm({ kind, courses, defaultCourseId, bankAccounts, paym
               />
               <span>
                 Acepto el{" "}
-                <Link href="/privacidad" target="_blank" className="font-semibold text-navy underline decoration-orange underline-offset-4">
+                <Link href="/privacidad" target="_blank" className="font-semibold text-navy font-script text-[1.3em] hover:text-orange">
                   aviso de privacidad
                 </Link>
                 .

@@ -2,10 +2,12 @@ import { cacheLife, cacheTag } from "next/cache";
 import { BackToTop } from "@/components/motion/BackToTop";
 import { Cursor } from "@/components/motion/Cursor";
 import { MotionProvider } from "@/components/motion/MotionProvider";
+import { NightParticles } from "@/components/motion/NightParticles";
 import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
+import { Translator } from "@/components/site/Translator";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
 import { TAGS, getSettings } from "@/lib/data";
 import { whatsappUrl } from "@/lib/whatsapp";
@@ -36,6 +38,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <SmoothScroll />
       <ScrollProgress />
       <Cursor />
+      <NightParticles />
+      <Translator />
       <BackToTop />
       <Chrome>{children}</Chrome>
     </MotionProvider>

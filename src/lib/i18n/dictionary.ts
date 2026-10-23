@@ -1,0 +1,294 @@
+// Diccionario ES → EN del sitio público. Las claves son el texto exacto (con espacios colapsados)
+// tal como aparece en pantalla; el contenido que viene de la base de datos queda en su idioma original.
+const ENTRIES: [string, string][] = [
+  // Navegación y chrome
+  ["Inicio", "Home"],
+  ["Nosotros", "About us"],
+  ["Programas", "Programs"],
+  ["Instructores", "Instructors"],
+  ["Contacto", "Contact"],
+  ["Campus Virtual", "Virtual Campus"],
+  ["Solicitar Reserva", "Request a spot"],
+  ["Explora", "Explore"],
+  ["Principal", "Main"],
+  ["Pie de página", "Footer"],
+  ["Abrir menú", "Open menu"],
+  ["Cerrar menú", "Close menu"],
+  ["Épika Academy, inicio", "Épika Academy, home"],
+  ["Volver arriba", "Back to top"],
+  ["¿Hablamos?", "Shall we talk?"],
+  ["Escríbenos por WhatsApp", "Message us on WhatsApp"],
+  ["Épika Academy. Todos los derechos reservados.", "Épika Academy. All rights reserved."],
+  ["Aviso de privacidad", "Privacy notice"],
+  ["aviso de privacidad", "privacy notice"],
+  ["Aviso de", "Privacy"],
+  ["privacidad", "notice"],
+  ["Cómo", "How"],
+  ["funciona", "it works"],
+  ["Catálogo", "Catalog"],
+  ["Preguntas", "Frequently asked"],
+  ["frecuentes", "questions"],
+  ["Sobre", "About"],
+  ["Equipo", "Team"],
+  ["Reserva", "Booking"],
+  ["instructores", "instructors"],
+  ["En Épika Academy usamos los datos que nos compartes (nombre, correo, teléfono y mensaje) únicamente para responder tu consulta, gestionar tu reserva y enviarte información sobre el programa de tu interés. No vendemos ni compartimos tu información con terceros. Los comprobantes de pago se almacenan de forma privada y solo el equipo administrativo puede consultarlos. Puedes solicitar en cualquier momento la actualización o eliminación de tus datos escribiéndonos por los canales de contacto publicados en este sitio.",
+    "At Épika Academy we use the data you share with us (name, email, phone and message) only to answer your inquiry, manage your booking and send you information about the program you are interested in.\n\nWe do not sell or share your information with third parties. Payment receipts are stored privately and only the administrative team can view them.\n\nYou may request the update or deletion of your data at any time by writing to us through the contact channels published on this site."],
+  ["Modo azul", "Blue mode"],
+  ["Modo claro", "Light mode"],
+  ["Cambiar idioma", "Change language"],
+
+  // Inicio
+  ["Desarrolla tu potencial", "Develop your potential"],
+  ["¿En qué te podemos ayudar?", "How can we help you?"],
+  ["Porque", "Because"],
+  ["Aprender con nosotros", "Learning with us"],
+  ["se nota", "shows"],
+  ["Aprendizaje práctico", "Hands-on learning"],
+  ["Cada módulo está pensado para aplicarse desde el primer día.", "Every module is designed to be applied from day one."],
+  ["Acompañamiento cercano", "Close support"],
+  ["Resolvemos tus dudas durante todo el proceso, no solo en clase.", "We answer your questions throughout the whole process, not just in class."],
+  ["100% virtual", "100% online"],
+  ["Estudia desde cualquier lugar, solo necesitas conexión a internet.", "Study from anywhere, all you need is an internet connection."],
+  ["Comunidad Épika", "Épika Community"],
+  ["Conecta con personas que comparten tus metas y tu ritmo.", "Connect with people who share your goals and your pace."],
+  ["Profesionales certificados", "Certified professionals"],
+  ["Testimonios", "Testimonials"],
+  ["Nuestros", "Our"],
+  ["programas", "programs"],
+  ["Seminarios", "Seminars"],
+  ["Otros", "Other"],
+  ["Persona estudiando con su laptop", "Person studying on a laptop"],
+  ["Persona concentrada frente a su computadora", "Person focused in front of a computer"],
+  ["Persona trabajando en su escritorio", "Person working at a desk"],
+  ["Formación completa con instructor, módulos, certificación y acompañamiento.", "Complete training with an instructor, modules, certification and support."],
+  ["Sesiones intensivas y puntuales para aprender algo concreto en poco tiempo.", "Short, intensive sessions to learn something specific in no time."],
+  ["Talleres, mentorías y experiencias especiales para completar tu perfil.", "Workshops, mentoring and special experiences to round out your profile."],
+  ["Próximamente", "Coming soon"],
+  ["Explorar", "Explore"],
+  ["Ver programa", "View program"],
+  ["Nuestra", "Our"],
+  ["misión", "mission"],
+  ["Cómo funciona", "How it works"],
+  ["Del clic a tu primera clase", "From click to your first class"],
+  ["en 4 pasos.", "in 4 steps."],
+  ["Elige tu programa", "Choose your program"],
+  ["Brochure, el instructor y la fecha de inicio.", "Brochure, instructor and start date."],
+  ["Solicita tu reserva", "Request your spot"],
+  ["Completa el formulario en menos de un minuto.", "Fill in the form in under a minute."],
+  ["Confirma tu pago", "Confirm your payment"],
+  ["Transfiere y sube tu comprobante desde el sitio.", "Transfer the payment and upload your receipt right here."],
+  ["Recibe tus accesos", "Get your access"],
+  ["Te enviamos tu usuario y contraseña por WhatsApp para empezar.", "We send your username and password via WhatsApp so you can start."],
+  ["Nuestros instructores", "Our instructors"],
+  ["Aprende con quienes", "Learn from those who"],
+  ["lo viven cada día.", "live it every day."],
+  ["Conocer al equipo", "Meet the team"],
+  ["Preguntas frecuentes", "Frequently asked questions"],
+  ["Pagos, modalidades", "Payments, formats"],
+  ["y certificados.", "and certificates."],
+  ["¿No encuentras tu respuesta?", "Can't find your answer?"],
+  ["Escríbenos", "Write to us"],
+  ["¿Listo para transformar tu futuro?", "Ready to transform your future?"],
+  ["Cuéntanos qué decidiste para aprender y te ayudamos con tu inscripción.", "Tell us what you chose to learn and we'll help you enroll."],
+  ["Ver programas", "View programs"],
+  ["Habla con tu asesor", "Talk to your advisor"],
+  ["Promoción", "Promotion"],
+
+  // Programas
+  ["Catálogo Épika", "Épika Catalog"],
+  ["Programas para dar", "Programs to take"],
+  ["tu siguiente paso.", "your next step."],
+  ["Programas 100% virtuales. Cada uno incluye su temario, instructor, fechas e inversión.", "100% online programs. Each one includes its syllabus, instructor, dates and price."],
+  ["Filtrar por categoría", "Filter by category"],
+  ["Muy pronto publicaremos programas en esta categoría.", "We'll publish programs in this category very soon."],
+  ["Estamos preparando el catálogo.", "We're getting the catalog ready."],
+  ["Muy pronto publicaremos los próximos programas. Escríbenos y te avisamos apenas abran las inscripciones.", "We'll publish our upcoming programs very soon. Message us and we'll let you know as soon as enrollment opens."],
+  ["Quiero que me avisen", "Notify me"],
+  ["Ver información", "See details"],
+  ["Programa", "Program"],
+  ["Seminario", "Seminar"],
+  ["Otro", "Other"],
+  ["Presencial", "In person"],
+  ["Virtual", "Online"],
+  ["Híbrida", "Hybrid"],
+  ["Por confirmar", "To be confirmed"],
+  ["← Todos los programas", "← All programs"],
+  ["Descargar Brochure", "Download brochure"],
+  ["Descargar brief del programa ↓", "Download program brief ↓"],
+  ["Comprar", "Buy"],
+  ["Contactar con un asesor", "Contact an advisor"],
+  ["Consultar por WhatsApp", "Ask on WhatsApp"],
+  ["Solicitar reserva", "Request a spot"],
+  ["Enviar consulta", "Send inquiry"],
+  ["Enviando…", "Sending…"],
+  ["Inversión", "Investment"],
+  ["Duración", "Duration"],
+  ["Certificación", "Certification"],
+  ["Al finalizar", "Upon completion"],
+  ["Dirigido a", "Aimed at"],
+  ["¿A quién va dirigido?", "Who is it for?"],
+  ["Lo que vas a lograr", "What you will achieve"],
+  ["Lo que recibes", "What you get"],
+  ["Módulos del programa", "Program modules"],
+  ["Precio, pagos", "Price, payments"],
+  ["y lo que incluye.", "and what's included."],
+  ["Formas de pago", "Payment methods"],
+  ["Quién te acompaña", "Who guides you"],
+  ["Ver perfil completo", "View full profile"],
+  ["Solicita tu reserva y te confirmamos disponibilidad.", "Request your spot and we'll confirm availability."],
+  ["Programa no encontrado", "Program not found"],
+  ["¿Te interesa", "Interested in"],
+
+  // Nosotros
+  ["Sobre Épika", "About Épika"],
+  ["Una academia hecha para", "An academy made for"],
+  ["quienes van por más.", "those who go for more."],
+  ["Conoce la historia, misión, visión y metodología de Épika Academy.", "Learn about the story, mission, vision and methodology of Épika Academy."],
+  ["Cómo empezó", "How it started"],
+  ["Misión", "Mission"],
+  ["Visión", "Vision"],
+  ["Metodología", "Methodology"],
+  ["Así aprendes", "How you learn"],
+  ["en Épika.", "at Épika."],
+  ["Estamos preparando esta sección. Muy pronto compartiremos nuestra historia y la forma en que enseñamos.", "We're preparing this section. Very soon we'll share our story and the way we teach."],
+  ["Ver programas disponibles", "View available programs"],
+
+  // Instructores
+  ["Equipo Épika", "Épika Team"],
+  ["Instructores que te guían", "Instructors who guide you"],
+  ["desde la experiencia.", "from experience."],
+  ["Profesionales activos en su área, comprometidos con que aprendas haciendo.", "Active professionals in their field, committed to helping you learn by doing."],
+  ["Muy pronto presentaremos a nuestro equipo de instructores.", "We'll introduce our instructors very soon."],
+  ["Conoce al equipo de instructores de Épika Academy: perfil profesional, experiencia, especialidad y programas que imparte.", "Meet the instructors of Épika Academy: professional profile, experience, specialty and the programs they teach."],
+
+  // Contacto
+  ["Contacto Épika", "Contact Épika"],
+  ["Resolvemos tus", "We answer your"],
+  ["En qué te podemos", "How can we"],
+  ["Respuesta rápida", "Quick reply"],
+  ["Dirección", "Address"],
+  ["Teléfono", "Phone"],
+  ["Horario de atención", "Opening hours"],
+  ["Ubicación de Épika Academy", "Épika Academy location"],
+  ["Déjanos tu consulta y te respondemos a la brevedad. Si prefieres, escríbenos directo por WhatsApp.", "Leave us your inquiry and we'll reply shortly. If you prefer, message us directly on WhatsApp."],
+  ["Escríbenos por WhatsApp, correo o el formulario de consultas. El equipo de Épika Academy te responde.", "Write to us on WhatsApp, by email or through the inquiry form. The Épika Academy team will reply."],
+  ["Hola, envío mi comprobante de pago para Épika Academy.", "Hello, I'm sending my payment receipt for Épika Academy."],
+  ["Hola, tengo una consulta sobre Épika Academy.", "Hello, I have a question about Épika Academy."],
+
+  // Reservar y formularios
+  ["Reserva Épika", "Épika Booking"],
+  ["Solicita tu", "Request your"],
+  ["Solicita tu cupo en un programa de Épika Academy. Te contactaremos para confirmar disponibilidad.", "Request your spot in an Épika Academy program. We'll contact you to confirm availability."],
+  ["¿Cómo funciona?", "How does it work?"],
+  ["Envía tu solicitud.", "Send your request."],
+  ["Completa tus datos. Esta solicitud no confirma el cupo: nuestro equipo te contactará para confirmar disponibilidad.", "Fill in your details. This request does not confirm your spot: our team will contact you to confirm availability."],
+  ["Confirmamos tu cupo y te enviamos tus accesos.", "We confirm your spot and send you your access."],
+  ["Realiza el pago y sube el comprobante.", "Make the payment and upload the receipt."],
+  ["Adelanta tu pago", "Pay in advance"],
+  ["Nombre completo", "Full name"],
+  ["Correo electrónico", "Email"],
+  ["Número de teléfono", "Phone number"],
+  ["Programa de interés", "Program of interest"],
+  ["Mensaje o consulta", "Message or question"],
+  ["Sitio web", "Website"],
+  ["Selecciona un programa (opcional)", "Select a program (optional)"],
+  ["Aún no hay programas publicados", "No programs published yet"],
+  ["Acepto el", "I accept the"],
+  ["¿Prefieres enviarlo por WhatsApp?", "Prefer to send it via WhatsApp?"],
+  ["Recibimos tu solicitud. Nuestro equipo te contactará para confirmar disponibilidad y explicarte cómo completar tu inscripción.", "We received your request. Our team will contact you to confirm availability and explain how to complete your enrollment."],
+  ["Te compartiremos los datos de pago al confirmar tu cupo.", "We'll share the payment details once your spot is confirmed."],
+  ["Realiza la transferencia bancaria indicando tu nombre completo y el programa. Luego sube el comprobante aquí mismo.", "Make the bank transfer stating your full name and the program. Then upload the receipt right here."],
+  ["Subir comprobante de pago", "Upload payment receipt"],
+  ["Comprobante recibido ✓", "Receipt received ✓"],
+  ["JPG, PNG, WEBP o PDF · máximo 8 MB", "JPG, PNG, WEBP or PDF · max 8 MB"],
+  ["Cuenta bancaria", "Bank account"],
+  ["Titular", "Account holder"],
+  ["Cédula / RUC", "ID / Tax ID"],
+  ["Tipo de cuenta", "Account type"],
+  ["Número de cuenta", "Account number"],
+  ["Copiar", "Copy"],
+  ["Copiado", "Copied"],
+  ["Archivo no válido.", "Invalid file."],
+  ["Debes aceptar el aviso de privacidad.", "You must accept the privacy notice."],
+  ["El archivo supera los 8 MB.", "The file exceeds 8 MB."],
+  ["Escribe tu nombre completo.", "Enter your full name."],
+  ["No encontramos el archivo subido.", "We couldn't find the uploaded file."],
+  ["No encontramos tu solicitud.", "We couldn't find your request."],
+  ["No pudimos enviar el formulario. Intenta de nuevo en unos segundos.", "We couldn't send the form. Please try again in a few seconds."],
+  ["No pudimos preparar la carga. Intenta de nuevo.", "We couldn't prepare the upload. Please try again."],
+  ["No pudimos registrar el comprobante.", "We couldn't register the receipt."],
+  ["No pudimos registrar tu solicitud. Intenta de nuevo o escríbenos por WhatsApp.", "We couldn't register your request. Try again or message us on WhatsApp."],
+  ["No pudimos subir el archivo.", "We couldn't upload the file."],
+  ["No pudimos subir el archivo. Intenta de nuevo.", "We couldn't upload the file. Please try again."],
+  ["Revisa el correo electrónico.", "Check the email address."],
+  ["Revisa el número de teléfono.", "Check the phone number."],
+  ["Revisa los campos marcados.", "Check the highlighted fields."],
+  ["Sube una imagen (JPG, PNG, WEBP) o un PDF.", "Upload an image (JPG, PNG, WEBP) or a PDF."],
+  ["Tu pago ya fue aprobado.", "Your payment has already been approved."],
+
+  // Mensajes de WhatsApp / varios
+  ["Hola, quiero información sobre Épika Academy.", "Hello, I'd like information about Épika Academy."],
+  ["Hola, quiero información sobre los programas de Épika Academy.", "Hello, I'd like information about Épika Academy's programs."],
+  ["Hola, quiero que me avisen cuando abran los programas de Épika Academy.", "Hello, please let me know when Épika Academy programs open."],
+
+  // 404
+  ["Ir al inicio", "Go to home"],
+  ["No encontramos esta página.", "We couldn't find this page."],
+  ["Puede que el programa ya no esté disponible.", "The program may no longer be available."],
+];
+
+const MONTHS: Record<string, string> = {
+  ene: "Jan", feb: "Feb", mar: "Mar", abr: "Apr", may: "May", jun: "Jun",
+  jul: "Jul", ago: "Aug", sep: "Sep", sept: "Sep", oct: "Oct", nov: "Nov", dic: "Dec",
+};
+
+const UNITS: [RegExp, string][] = [
+  [/\bsemanas\b/gi, "weeks"],
+  [/\bsemana\b/gi, "week"],
+  [/\bmeses\b/gi, "months"],
+  [/\bmes\b/gi, "month"],
+  [/\bhoras\b/gi, "hours"],
+  [/\bhora\b/gi, "hour"],
+  [/\bclases\b/gi, "classes"],
+  [/\bdías\b/gi, "days"],
+  [/\bsesiones\b/gi, "sessions"],
+];
+
+const norm = (value: string) => value.replace(/\s+/g, " ").trim();
+const DICT = new Map(ENTRIES.map(([es, en]) => [norm(es), en]));
+
+/** Traduce un fragmento de texto; si no hay equivalente, lo devuelve intacto. */
+export function translate(value: string): string {
+  const key = norm(value);
+  if (!key) return value;
+  const lead = value.match(/^\s*/)?.[0] ?? "";
+  const trail = value.match(/\s*$/)?.[0] ?? "";
+  const hit = DICT.get(key);
+  if (hit !== undefined) return lead + hit + trail;
+
+  let m = key.match(/^Inicia (\d{1,2}) (\p{L}{3,4})\.?(?: (\d{4}))?$/u);
+  if (m) {
+    const month = MONTHS[m[2].toLowerCase()];
+    if (month) return `${lead}Starts ${month} ${m[1]}${m[3] ? `, ${m[3]}` : ""}${trail}`;
+  }
+  m = key.match(/^Paso (\d+)$/);
+  if (m) return `${lead}Step ${m[1]}${trail}`;
+  m = key.match(/^(\d+) (disponibles?)$/);
+  if (m) return `${lead}${m[1]} available${trail}`;
+  m = key.match(/^» quedó en revisión\. Te avisaremos cuando confirmemos el pago\.$/);
+  if (m) return `${lead}» is under review. We'll let you know once we confirm the payment.${trail}`;
+  m = key.match(/^© (\d{4}) (.+)$/);
+  if (m) {
+    const rest = DICT.get(norm(m[2]));
+    if (rest) return `${lead}© ${m[1]} ${rest}${trail}`;
+  }
+
+  // Duraciones y unidades sueltas dentro de textos cortos (p. ej. "8 semanas").
+  if (key.length <= 40 && /\d/.test(key)) {
+    let out = key;
+    for (const [re, en] of UNITS) out = out.replace(re, en);
+    if (out !== key) return lead + out + trail;
+  }
+  return value;
+}

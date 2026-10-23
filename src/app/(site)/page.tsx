@@ -8,25 +8,27 @@ import { Odometer } from "@/components/motion/Odometer";
 import { ParallaxOut } from "@/components/motion/ParallaxOut";
 import { ScrollText } from "@/components/motion/ScrollText";
 import { PrimaryLink } from "@/components/site/Buttons";
+import { HoverCloud } from "@/components/site/HoverCloud";
 import { CourseFan, type FanItem } from "@/components/site/CourseFan";
 import { Faq } from "@/components/site/Faq";
 import { FloatingTiles } from "@/components/site/FloatingTiles";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { Sticker, type StickerName } from "@/components/site/Sticker";
 import { StickySteps } from "@/components/site/StickySteps";
+import { toCardData } from "@/lib/course-view";
 import { TAGS, getCourses, getFaqs, getSettings, getTeachers, getTestimonials } from "@/lib/data";
 import type { CourseWithTeacher } from "@/lib/types";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 const FAN_SIZE = 5;
 const FAN_PHOTOS = ["/brand/fotos/hero-1.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-3.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-1.jpg"];
-const BENEFIT_ICONS: StickerName[] = ["carita", "reloj", "tecla-f9", "paz"];
+const BENEFIT_ICONS: StickerName[] = ["carita", "reloj", "compu", "paz"];
 const DOT_COLORS = ["#f95d1b", "#ee1346", "#c07f2b"];
 
 const PROGRAM_GROUPS = [
-  { label: "Programas", key: "programa", image: "/brand/fotos/programas.jpg", alt: "Persona estudiando con su laptop" },
-  { label: "Seminarios", key: "seminario", image: "/brand/fotos/seminarios.jpg", alt: "Persona concentrada frente a su computadora" },
-  { label: "Otros", key: "otro", image: "/brand/fotos/otros.jpg", alt: "Persona trabajando en su escritorio" },
+  { label: "Programas", key: "programa", image: "/brand/fotos/programas.jpg", alt: "Persona estudiando con su laptop", text: "Formación completa con instructor, módulos, certificación y acompañamiento." },
+  { label: "Seminarios", key: "seminario", image: "/brand/fotos/seminarios.jpg", alt: "Persona concentrada frente a su computadora", text: "Sesiones intensivas y puntuales para aprender algo concreto en poco tiempo." },
+  { label: "Otros", key: "otro", image: "/brand/fotos/otros.jpg", alt: "Persona trabajando en su escritorio", text: "Talleres, mentorías y experiencias especiales para completar tu perfil." },
 ];
 
 const STEPS = [
@@ -46,16 +48,30 @@ function fanItems(courses: CourseWithTeacher[], promoLabel: string): FanItem[] {
   return Array.from({ length: FAN_SIZE }, (_, i): FanItem => {
     const course = i === center ? featured : rest[next++];
     if (course) {
+      const card = toCardData(course);
       return {
+        info: {
+          title: course.title,
+          text: card.description,
+          chips: [card.category, card.modality, card.price, ...card.meta].filter(Boolean) as string[],
+          cta: "Ver programa",
+        },
+        tag: i === center ? "" : card.category,
         key: course.id,
         title: course.title,
         image: course.image_url ?? FAN_PHOTOS[i],
-        tag: "",
         href: `/programas/${course.slug}`,
         badge: i === center ? promoLabel : undefined,
       };
     }
-    return { key: `foto-${i}`, title: "Épika Academy", image: FAN_PHOTOS[i], tag: "", href: "/programas" };
+    return {
+      key: `foto-${i}`,
+      title: "Épika Academy",
+      image: FAN_PHOTOS[i],
+      tag: "",
+      href: "/programas",
+      info: { title: "Épika Academy", text: "Programas virtuales con instructores especializados. Muy pronto más opciones.", cta: "Ver programas" },
+    };
   });
 }
 
@@ -80,6 +96,11 @@ export default async function HomePage() {
   const help = whatsappUrl(settings.whatsapp, "Hola, quiero información sobre Épika Academy.", settings.countryCode);
   const advisor = whatsappUrl(settings.salesWhatsapp || settings.whatsapp, "Hola, quiero información sobre los programas de Épika Academy.", settings.countryCode);
   const { hero } = settings;
+  const counts = courses.reduce<Record<string, number>>((acc, c) => {
+    const key = c.category ?? "programa";
+    acc[key] = (acc[key] ?? 0) + 1;
+    return acc;
+  }, {});
 
   return (
     <>
@@ -92,7 +113,6 @@ export default async function HomePage() {
             text={hero.title}
             accent={hero.highlight}
             delay={0.1}
-            underline
             className="mx-auto max-w-2xl text-[2.9rem] font-bold leading-[0.95] sm:text-6xl md:text-7xl"
           />
           {hero.subtitle && <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-ink/65 md:text-lg">{hero.subtitle}</p>}
@@ -103,7 +123,7 @@ export default async function HomePage() {
         </div>
 
         <div className="container-page text-center">
-          <Reveal delay={0.5}>
+          <Reveal delay={3.1}>
             <a
               href={help}
               target="_blank"
@@ -185,9 +205,17 @@ export default async function HomePage() {
         <RevealGroup className="mx-auto mt-12 grid max-w-5xl gap-5 sm:grid-cols-3">
           {PROGRAM_GROUPS.map((group) => (
             <RevealItem key={group.key}>
-              <Link
+              <HoverCloud
                 href={`/programas?categoria=${group.key}`}
-                className="group relative block aspect-[3/4] overflow-hidden rounded-[2rem] bg-navy shadow-[0_30px_60px_-35px_rgba(13,40,79,0.6)]"
+                ariaLabel={group.label}
+                pop={{ y: -10, scale: 1.04 }}
+                info={{
+                  title: group.label,
+                  text: group.text,
+                  chips: [counts[group.key] ? `${counts[group.key]} ${counts[group.key] === 1 ? "disponible" : "disponibles"}` : "Próximamente"],
+                  cta: "Explorar",
+                }}
+                linkClassName="group relative block aspect-[3/4] overflow-hidden rounded-[2rem] bg-navy shadow-[0_30px_60px_-35px_rgba(13,40,79,0.6)]"
               >
                 <Image
                   src={group.image}
@@ -200,7 +228,7 @@ export default async function HomePage() {
                 <span className="absolute inset-x-0 bottom-[16%] px-3 text-center text-4xl font-bold leading-[0.95] text-white [text-shadow:0_2px_18px_rgba(0,0,0,0.35)] md:text-[2.6rem]">
                   {group.label}
                 </span>
-              </Link>
+              </HoverCloud>
             </RevealItem>
           ))}
         </RevealGroup>
@@ -209,7 +237,7 @@ export default async function HomePage() {
       {settings.about.mission && (
         <section className="container-page py-24 md:py-36">
           <p className="eyebrow">
-            Nuestra <span className="text-orange">misión</span>
+            Nuestra <span className="script-accent">misión</span>
           </p>
           <ScrollText
             text={settings.about.mission}
@@ -240,7 +268,7 @@ export default async function HomePage() {
             <Reveal delay={0.2}>
               <p className="mt-6 text-sm text-ink/60">
                 ¿No encuentras tu respuesta?{" "}
-                <Link href="/contacto" className="font-semibold text-navy underline decoration-orange underline-offset-4">
+                <Link href="/contacto" className="font-semibold text-navy font-script text-[1.3em] hover:text-orange">
                   Escríbenos
                 </Link>
               </p>

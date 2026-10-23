@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "motion/react";
+import { useT } from "@/lib/i18n/store";
 import { EASE_OUT } from "./ease";
 
 type Tone = "dark" | "light";
@@ -16,7 +17,6 @@ type Props = {
   as?: "h1" | "h2" | "h3" | "p";
   tone?: Tone;
   delay?: number;
-  underline?: boolean;
   className?: string;
 };
 
@@ -29,17 +29,20 @@ function wordVariants(from: string, to: string): Variants {
   };
 }
 
-export function RevealText({ text, accent = "", as = "h2", tone = "dark", delay = 0, underline = false, className }: Props) {
+export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", tone = "dark", delay = 0, className }: Props) {
+  const t = useT();
+  const text = t(rawText);
+  const accent = t(rawAccent);
   const Tag = motion[as];
   const colors = COLORS[tone];
   const base = split(text);
   const accents = split(accent);
   const total = base.length + accents.length;
 
-  const words = (list: string[], color: string, offset: number) =>
+  const words = (list: string[], color: string, offset: number, extra = "") =>
     list.map((word, i) => (
       <span key={`${offset}-${i}`} aria-hidden>
-        <motion.span className="inline-block" variants={wordVariants(colors.from, color)}>
+        <motion.span className={`inline-block ${extra}`} variants={wordVariants(colors.from, color)}>
           {word}
         </motion.span>
         {offset + i < total - 1 && " "}
@@ -49,6 +52,8 @@ export function RevealText({ text, accent = "", as = "h2", tone = "dark", delay 
   return (
     <Tag
       className={className}
+      data-no-translate
+      data-tone={tone}
       aria-label={[text, accent].filter(Boolean).join(" ")}
       initial="hidden"
       whileInView="visible"
@@ -56,27 +61,7 @@ export function RevealText({ text, accent = "", as = "h2", tone = "dark", delay 
       variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07, delayChildren: delay } } }}
     >
       {words(base, colors.base, 0)}
-      {accents.length > 0 &&
-        (underline ? (
-          <span className="relative inline-block">
-            {words(accents, colors.accent, base.length)}
-            <svg aria-hidden viewBox="0 0 200 12" preserveAspectRatio="none" className="absolute -bottom-[0.12em] left-0 h-[0.22em] w-full overflow-visible">
-              <motion.path
-                d="M3 8.5C48 3 120 2.5 197 6"
-                fill="none"
-                stroke="#ff9100"
-                strokeWidth="3"
-                strokeLinecap="round"
-                variants={{
-                  hidden: { pathLength: 0, opacity: 0 },
-                  visible: { pathLength: 1, opacity: 1, transition: { duration: 0.9, ease: EASE_OUT, delay: 0.35 } },
-                }}
-              />
-            </svg>
-          </span>
-        ) : (
-          words(accents, colors.accent, base.length)
-        ))}
+      {accents.length > 0 && words(accents, colors.base, base.length, "font-script mr-[0.14em] text-[1.3em] font-normal leading-[0.8]")}
     </Tag>
   );
 }

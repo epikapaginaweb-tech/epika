@@ -12,7 +12,8 @@ export type StickerName =
   | "firma-lapiz"
   | "paz"
   | "cursor"
-  | "lapiz";
+  | "lapiz"
+  | "compu";
 
 // Dimensiones reales de cada PNG (ancho × alto) para conservar la proporción.
 const DIMENSIONS: Record<StickerName, [number, number]> = {
@@ -25,6 +26,7 @@ const DIMENSIONS: Record<StickerName, [number, number]> = {
   paz: [470, 520],
   cursor: [397, 520],
   lapiz: [422, 484],
+  compu: [520, 489],
 };
 
 type Props = {

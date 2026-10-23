@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { LangSwitch } from "./LangSwitch";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
@@ -92,14 +93,16 @@ export function Header({ campusHref }: { campusHref: string }) {
       >
         <div className="container-page flex h-18 items-center justify-between gap-6">
           <Link href="/" className="relative z-50 shrink-0" onClick={close} aria-label="Épika Academy, inicio">
-            <Image src="/brand/logo.png" alt="Épika Academy" width={1060} height={392} className="h-10 w-auto md:h-11" loading="eager" />
+            <Image src="/brand/logo.png" alt="Épika Academy" width={1060} height={392} className="logo-day h-10 w-auto md:h-11" loading="eager" />
+            <Image src="/brand/logo-light.png" alt="Épika Academy" width={1186} height={438} className="logo-night h-10 w-auto md:h-11" loading="eager" />
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex" aria-label="Principal">
             <Links render={DesktopLinks} onNavigate={close} />
           </nav>
 
-          <div className="hidden items-center gap-2 md:flex">
+          <div className="hidden items-center gap-3 md:flex">
+            <LangSwitch />
             <a
               href={campusHref}
               target="_blank"
@@ -144,11 +147,12 @@ export function Header({ campusHref }: { campusHref: string }) {
             <ul className="space-y-1">
               <Links render={MobileLinks} onNavigate={close} />
             </ul>
+            <LangSwitch className="mt-auto self-start" />
             <a
               href={campusHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-auto inline-flex items-center justify-center gap-2 rounded-full bg-navy px-6 py-4 text-center font-bold text-white"
+              className="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-navy px-6 py-4 text-center font-bold text-white"
             >
               Campus Virtual
               <ArrowIcon className="size-4" />

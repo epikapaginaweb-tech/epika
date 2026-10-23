@@ -19,7 +19,7 @@ export function ScrollText({ text, className }: { text: string; className?: stri
   const words = text.split(/\s+/).filter(Boolean);
 
   return (
-    <p ref={ref} className={className} aria-label={text}>
+    <p ref={ref} className={className} aria-label={text} data-no-translate>
       {words.map((word, i) => (
         <span key={i} aria-hidden>
           <Word word={word} progress={scrollYProgress} range={[i / words.length, (i + 1) / words.length]} />{" "}
