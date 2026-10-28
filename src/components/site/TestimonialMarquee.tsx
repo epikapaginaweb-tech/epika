@@ -17,18 +17,19 @@ function Card({ item, index }: { item: Item; index: number }) {
   );
 }
 
-/** Carrusel lento e infinito que avanza de derecha a izquierda; se pausa al pasar el cursor. */
+/** Carrusel lento e infinito que avanza de derecha a izquierda sin detenerse. */
 export function TestimonialMarquee({ items, className = "" }: { items: Item[]; className?: string }) {
   if (items.length === 0) return null;
   // Repetimos la lista para que la banda siempre cubra la pantalla aunque haya pocos testimonios.
   const base: Item[] = [];
   while (base.length < 8) base.push(...items);
-  const duration = `${base.length * 9}s`;
+  // Más lento y sin pausas: sigue moviéndose aunque pases el cursor o bajes por la página.
+  const duration = `${base.length * 16}s`;
 
   return (
-    <div className={`group relative overflow-hidden ${className}`}>
+    <div className={`relative overflow-hidden ${className}`}>
       <div
-        className="flex w-max animate-marquee gap-5 pr-5 group-hover:[animation-play-state:paused] motion-reduce:animate-none"
+        className="flex w-max animate-marquee gap-5 pr-5 motion-reduce:animate-none"
         style={{ "--marquee-duration": duration } as React.CSSProperties}
       >
         {[0, 1].map((copy) => (
