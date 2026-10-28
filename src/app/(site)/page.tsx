@@ -138,7 +138,7 @@ export default async function HomePage() {
           <Reveal>
             <p className="text-2xl font-light md:text-3xl">Porque</p>
             <h2 className="bolder mt-1 text-3xl font-bold leading-tight md:text-5xl">
-              Aprender con nosotros <span className="font-script inline-block whitespace-nowrap text-[1.75em] font-normal leading-none text-orange [-webkit-text-stroke:0]">se nota</span>
+              Aprender con nosotros <span className="font-script inline-block whitespace-nowrap text-[2em] font-normal leading-none text-orange [-webkit-text-stroke:0]">se nota</span>
             </h2>
           </Reveal>
 

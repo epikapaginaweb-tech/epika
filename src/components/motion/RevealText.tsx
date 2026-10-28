@@ -36,7 +36,7 @@ function wordVariants(from: string, to: string): Variants {
   };
 }
 
-const SCRIPT = "font-script text-[1.75em] font-normal leading-[0.8]";
+const SCRIPT = "font-script text-[2em] font-normal leading-[0.8]";
 const SANS = "text-[0.42em] font-normal leading-tight tracking-normal";
 
 export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", tone = "dark", delay = 0, accentFont = "auto", className }: Props) {
@@ -54,7 +54,7 @@ export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", t
   const words = (list: string[], color: string, offset: number, extra = "") =>
     list.map((word, i) => (
       <span key={`${offset}-${i}`} aria-hidden>
-        <motion.span data-accent={extra ? "" : undefined} className={`inline-block ${extra}`} variants={wordVariants(colors.from, color)}>
+        <motion.span data-accent={extra ? "" : undefined} className="inline-block" variants={wordVariants(colors.from, color)}>
           {word}
         </motion.span>
         {!(own && offset + i === total - 1) && offset + i < total - 1 && " "}
@@ -76,8 +76,9 @@ export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", t
       {accents.length > 0 &&
         (own ? (
           // Segunda frase: va en su propia línea y en naranja.
-          <span className={`block ${font === "script" ? "-mt-[0.3em]" : "mt-[0.1em]"}`}>
-            {words(accents, colors.accent, base.length, font === "script" ? SCRIPT : SANS)}
+          // El tamaño va en el contenedor para que los espacios entre palabras también se ajusten.
+          <span className={`block [word-spacing:normal] ${font === "script" ? `${SCRIPT} -mt-[0.15em]` : `${SANS} mt-[0.25em]`}`}>
+            {words(accents, colors.accent, base.length, "accent")}
           </span>
         ) : (
           words(accents, colors.accent, base.length)

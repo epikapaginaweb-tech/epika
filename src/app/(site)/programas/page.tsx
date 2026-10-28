@@ -53,7 +53,7 @@ export default async function CoursesPage() {
         ) : (
           <Reveal>
             <h1 className="bolder mb-10 text-center text-5xl font-bold text-navy md:text-6xl">
-              Nuestros <span className="font-script block text-[1.75em] leading-[0.8] font-normal text-orange">programas</span>
+              Nuestros <span className="font-script block text-[2em] leading-[0.8] font-normal text-orange">programas</span>
             </h1>
             <div className="grid items-center gap-10 rounded-[2rem] bg-white p-8 md:grid-cols-[1fr_auto] md:p-12">
               <div>

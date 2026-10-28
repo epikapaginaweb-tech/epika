@@ -88,7 +88,7 @@ export function Header({ campusHref }: { campusHref: string }) {
         animate={{ y: hidden && !open ? "-100%" : "0%" }}
         transition={{ duration: 0.35, ease: EASE_OUT }}
         className={`sticky top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-300 ${
-          scrolled || open ? "bg-paper/85 shadow-[0_1px_0_rgba(12,22,38,0.06)] backdrop-blur-xl" : "bg-transparent"
+          scrolled || open ? "bg-white/85 shadow-[0_1px_0_rgba(12,22,38,0.06)] backdrop-blur-xl" : "bg-transparent"
         }`}
       >
         <div className="container-page flex h-18 items-center justify-between gap-6">
@@ -138,7 +138,7 @@ export function Header({ campusHref }: { campusHref: string }) {
           <motion.nav
             id="mobile-nav"
             aria-label="Principal"
-            className="fixed inset-0 z-40 flex flex-col bg-paper px-6 pb-10 pt-28 md:hidden"
+            className="fixed inset-0 z-40 flex flex-col bg-white px-6 pb-10 pt-28 md:hidden"
             initial={{ clipPath: "circle(0% at 92% 4%)" }}
             animate={{ clipPath: "circle(150% at 92% 4%)" }}
             exit={{ clipPath: "circle(0% at 92% 4%)" }}
