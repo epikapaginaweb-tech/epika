@@ -59,6 +59,9 @@ export type Course = {
   brief_public: boolean;
   visible: boolean;
   featured: boolean;
+  rating: number;
+  show_ecuador: boolean;
+  coming_soon: boolean;
   sort: number;
   created_at: string;
 };
@@ -114,6 +117,8 @@ export type BankAccount = {
 
 export type TitledText = { title: string; text: string };
 
+export type Pillar = { title: string; objective: string; axes: string };
+
 export type Stat = { value: string; prefix: string; suffix: string; label: string };
 
 export type SiteSettings = {
@@ -145,7 +150,16 @@ export type SiteSettings = {
     mission: string;
     vision: string;
     methodology: TitledText[];
+    pillars: Pillar[];
     gallery: string[];
+  };
+  offer: {
+    enabled: boolean;
+    programa: boolean;
+    seminario: boolean;
+    otro: boolean;
+    showComingSoon: boolean;
+    comingSoonSlogan: string;
   };
   privacy: string;
   seoDescription: string;

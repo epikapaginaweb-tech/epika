@@ -6,7 +6,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   campusUrl: "https://campusvirtual.epika.education/",
   promoLabel: "Promoción",
   countryCode: "593",
-  email: "",
+  email: "epikacademiadecapacitacion@gmail.com",
   phone: "",
   address: "",
   hours: "",
@@ -40,7 +40,27 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     mission: "",
     vision: "",
     methodology: [],
+    pillars: [
+      {
+        title: "Excelencia con enfoque práctico",
+        objective: "Ofrecer programas actualizados y pertinentes, donde cada estudiante aprenda haciendo y salga preparado para las exigencias reales del mercado laboral.",
+        axes: "Metodologías basadas en casos reales, proyectos y práctica guiada.\nActualización permanente de contenidos según la demanda profesional.\nEvaluación del aprendizaje y seguimiento de la satisfacción estudiantil.",
+      },
+      {
+        title: "Docentes del mundo profesional",
+        objective: "Consolidar un cuerpo docente integrado por profesionales en ejercicio, dentro y fuera del país, que traigan a las aulas la experiencia y las tendencias de su campo.",
+        axes: "Selección y formación continua de docentes en ejercicio.\nRed de profesionales que trabajan en otros países.\nCultura de colaboración e intercambio de buenas prácticas entre docentes.",
+      },
+    ],
     gallery: [],
+  },
+  offer: {
+    enabled: true,
+    programa: true,
+    seminario: true,
+    otro: true,
+    showComingSoon: true,
+    comingSoonSlogan: "Muy pronto más formas de aprender contigo.",
   },
   privacy:
     "En Épika Academy usamos los datos que nos compartes (nombre, correo, teléfono y mensaje) únicamente para responder tu consulta, gestionar tu reserva y enviarte información sobre el programa de tu interés.\n\nNo vendemos ni compartimos tu información con terceros. Los comprobantes de pago se almacenan de forma privada y solo el equipo administrativo puede consultarlos.\n\nPuedes solicitar en cualquier momento la actualización o eliminación de tus datos escribiéndonos por los canales de contacto publicados en este sitio.",

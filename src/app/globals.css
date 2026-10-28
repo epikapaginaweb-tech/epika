@@ -87,6 +87,15 @@
     letter-spacing: -0.075em;
   }
 
+  /* Negrita más marcada para títulos (solo tenemos Helvena Regular). */
+  .bolder {
+    -webkit-text-stroke: 0.028em currentColor;
+  }
+  .bolder .font-script,
+  .bolder [data-accent] {
+    -webkit-text-stroke: 0;
+  }
+
   .font-display {
     font-family: var(--font-display);
     font-weight: 400;
@@ -277,18 +286,19 @@
 /* ───────── Modo azul (botón del pie de página) ───────── */
 html[data-theme="night"] {
   color-scheme: dark;
-  --night-bg: #061a3d;
-  --night-card: #0f3068;
+  --night-bg: #0d284f;
+  --night-card: #163b72;
   --night-text: #eaf1ff;
-  --color-paper: #061a3d;
-  --color-surface: #0f3068;
+  --color-paper: #0d284f;
+  --color-surface: #163b72;
   --color-ink: #dbe6fb;
   --color-line: rgba(255, 255, 255, 0.14);
   --color-orange-soft: rgba(255, 145, 0, 0.18);
 }
 
+/* Todo parejo: un solo azul de fondo en todas las secciones. */
 html[data-theme="night"] body {
-  background: radial-gradient(120% 80% at 50% 0%, #0b2a63 0%, var(--night-bg) 60%) fixed;
+  background: var(--night-bg);
   color: var(--night-text);
 }
 
@@ -318,7 +328,7 @@ html[data-theme="night"] section.bg-white {
 }
 html[data-theme="night"] section.bg-navy,
 html[data-theme="night"] .site-footer {
-  background-color: color-mix(in oklab, var(--color-navy) 58%, transparent);
+  background-color: transparent;
 }
 html[data-theme="night"] .bg-navy.rounded-full,
 html[data-theme="night"] a.bg-navy {

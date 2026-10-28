@@ -63,7 +63,7 @@ function FanCard({ item, index, total, progress }: { item: FanItem; index: numbe
           side={x > 0 ? "right" : "left"}
           shift={-x * 0.28}
           cloudClassName="scale-[1.6] sm:scale-125 lg:scale-100"
-          linkClassName="shine group relative block h-56 w-44 overflow-hidden rounded-[1.4rem] bg-white shadow-[0_24px_50px_-20px_rgba(0,41,82,0.45)] ring-4 ring-white md:h-64 md:w-50"
+          linkClassName="shine group relative block h-56 w-44 overflow-hidden rounded-[1.4rem] bg-white shadow-[0_24px_50px_-20px_rgba(0,41,82,0.45)] md:h-64 md:w-50"
         >
           <CourseImage src={item.image} title={item.title} sizes="200px" eager label={item.title} seed={item.seed} />
           {item.badge && (

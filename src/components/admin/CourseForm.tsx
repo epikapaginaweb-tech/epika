@@ -117,6 +117,14 @@ export function CourseForm({ course, teachers }: Props) {
         </div>
       </Card>
 
+      <Card title="Tarjeta del catálogo" description="Cómo se ve el programa en la página Programas.">
+        <div className="grid gap-3 md:grid-cols-3">
+          <TextInput label="Calificación (0 a 5)" name="rating" type="number" defaultValue={course?.rating ?? 5} hint="Estrellas que muestra la tarjeta" />
+          <Toggle name="show_ecuador" label="Mostrar logo de Ecuador" hint="Sello «Hecho en Ecuador» en la tarjeta" defaultChecked={course?.show_ecuador ?? true} />
+          <Toggle name="coming_soon" label="Próximamente" hint="Aparece difuminado abajo y no permite inscribirse" defaultChecked={course?.coming_soon ?? false} />
+        </div>
+      </Card>
+
       <Card title="Publicación">
         <div className="grid gap-3 md:grid-cols-3">
           <Toggle name="visible" label="Visible en el sitio" hint="Si está apagado, el programa queda oculto" defaultChecked={course?.visible ?? false} />

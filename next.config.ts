@@ -20,7 +20,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/cursos", destination: "/programas", permanent: true },
       { source: "/cursos/:slug", destination: "/programas/:slug", permanent: true },
-      { source: "/docentes", destination: "/instructores", permanent: true },
+      { source: "/docentes", destination: "/nosotros", permanent: false },
+      { source: "/instructores", destination: "/nosotros", permanent: false },
     ];
   },
   async headers() {

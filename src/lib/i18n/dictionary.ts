@@ -237,6 +237,37 @@ const ENTRIES: [string, string][] = [
   ["Ir al inicio", "Go to home"],
   ["No encontramos esta página.", "We couldn't find this page."],
   ["Puede que el programa ya no esté disponible.", "The program may no longer be available."],
+  // Fase 1
+  ["Oferta", "Academic"],
+  ["académica", "offering"],
+  ["seminarios", "seminars"],
+  ["talleres", "workshops"],
+  ["Todos", "All"],
+  ["Más información", "More info"],
+  ["¿Cómo", "How"],
+  ["funciona?", "does it work?"],
+  ["Revisa el brochure, el instructor y la fecha de inicio.", "Check the brochure, the instructor and the start date."],
+  ["Te enviamos tus credenciales institucionales por WhatsApp para que puedas acceder al campus virtual.", "We send your institutional credentials via WhatsApp so you can access the virtual campus."],
+  ["Sé parte de la experiencia Épika. Regístrate hoy, asegura tu lugar y lleva tus habilidades al siguiente nivel.", "Be part of the Épika experience. Sign up today, secure your spot and take your skills to the next level."],
+  ["Potencia tus habilidades, conecta y aprende.", "Boost your skills, connect and learn."],
+  ["Experiencias especiales para completar tu perfil.", "Special experiences to round out your profile."],
+  ["Muy pronto más formas de aprender contigo.", "More ways to learn with you, very soon."],
+  ["Ponente", "Speaker"],
+  ["Historia", "History"],
+  ["Pilares Estratégicos", "Strategic Pillars"],
+  ["Los pilares son las grandes apuestas de Épika para los próximos años. Cada uno tiene un objetivo y unos ejes que convierten la visión en acciones concretas, medibles y sostenibles.", "The pillars are Épika's big bets for the coming years. Each one has an objective and strategic axes that turn the vision into concrete, measurable and sustainable actions."],
+  ["Objetivo:", "Objective:"],
+  ["Ejes estratégicos", "Strategic axes"],
+  ["Excelencia con enfoque práctico", "Excellence with a practical focus"],
+  ["Ofrecer programas actualizados y pertinentes, donde cada estudiante aprenda haciendo y salga preparado para las exigencias reales del mercado laboral.", "Offer up-to-date, relevant programs where every student learns by doing and graduates ready for the real demands of the job market."],
+  ["Metodologías basadas en casos reales, proyectos y práctica guiada.", "Methodologies based on real cases, projects and guided practice."],
+  ["Actualización permanente de contenidos según la demanda profesional.", "Ongoing content updates based on professional demand."],
+  ["Evaluación del aprendizaje y seguimiento de la satisfacción estudiantil.", "Learning assessment and student satisfaction follow-up."],
+  ["Docentes del mundo profesional", "Instructors from the professional world"],
+  ["Consolidar un cuerpo docente integrado por profesionales en ejercicio, dentro y fuera del país, que traigan a las aulas la experiencia y las tendencias de su campo.", "Build a faculty of practicing professionals, in Ecuador and abroad, who bring the experience and trends of their field into the classroom."],
+  ["Selección y formación continua de docentes en ejercicio.", "Selection and continuous training of practicing instructors."],
+  ["Red de profesionales que trabajan en otros países.", "A network of professionals working in other countries."],
+  ["Cultura de colaboración e intercambio de buenas prácticas entre docentes.", "A culture of collaboration and sharing best practices among instructors."],
 ];
 
 const MONTHS: Record<string, string> = {
@@ -245,6 +276,8 @@ const MONTHS: Record<string, string> = {
 };
 
 const UNITS: [RegExp, string][] = [
+  [/\bMódulos\b/g, "Modules"],
+  [/\bMódulo\b/g, "Module"],
   [/\bsemanas\b/gi, "weeks"],
   [/\bsemana\b/gi, "week"],
   [/\bmeses\b/gi, "months"],

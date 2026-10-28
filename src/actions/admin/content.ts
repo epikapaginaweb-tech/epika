@@ -8,7 +8,7 @@ import { TAGS } from "@/lib/data";
 import { slugify } from "@/lib/format";
 import { resolveSettings } from "@/lib/settings";
 import { serviceClient } from "@/lib/supabase/service";
-import { CATEGORIES, MODALITIES, type CourseModule, type Stat } from "@/lib/types";
+import { CATEGORIES, MODALITIES, type CourseModule, type Pillar, type Stat } from "@/lib/types";
 import { MEDIA_MAX_BYTES, MEDIA_TYPES, extensionFor } from "@/lib/uploads";
 
 export type FormState = { error?: string; ok?: boolean };
@@ -95,6 +95,9 @@ export async function saveCourse(_prev: FormState, fd: FormData): Promise<FormSt
     brief_public: checked(fd, "brief_public"),
     visible: checked(fd, "visible"),
     featured: checked(fd, "featured"),
+    rating: Math.min(5, Math.max(0, number(fd, "rating") ?? 5)),
+    show_ecuador: checked(fd, "show_ecuador"),
+    coming_soon: checked(fd, "coming_soon"),
     sort: Math.trunc(number(fd, "sort") ?? 0),
   };
 
@@ -264,7 +267,22 @@ export async function saveSettings(_prev: FormState, fd: FormData): Promise<Form
       mission: text(fd, "about.mission"),
       vision: text(fd, "about.vision"),
       methodology: json(fd, "about.methodology", []),
+      pillars: json<Pillar[]>(fd, "about.pillars", [])
+        .map((p) => ({
+          title: String(p.title ?? "").trim().slice(0, 120),
+          objective: String(p.objective ?? "").trim().slice(0, 600),
+          axes: String(p.axes ?? "").trim().slice(0, 900),
+        }))
+        .filter((p) => p.title),
       gallery: json<string[]>(fd, "about.gallery", []).filter((src) => typeof src === "string" && src.startsWith("https://")),
+    },
+    offer: {
+      enabled: checked(fd, "offer.enabled"),
+      programa: checked(fd, "offer.programa"),
+      seminario: checked(fd, "offer.seminario"),
+      otro: checked(fd, "offer.otro"),
+      showComingSoon: checked(fd, "offer.showComingSoon"),
+      comingSoonSlogan: text(fd, "offer.comingSoonSlogan"),
     },
     privacy: text(fd, "privacy"),
     seoDescription: text(fd, "seoDescription"),

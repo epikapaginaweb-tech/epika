@@ -5,7 +5,7 @@ import { NAV } from "@/lib/nav";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { LangSwitch } from "./LangSwitch";
 import { NightToggle } from "./NightToggle";
-import { SocialIcon, WhatsAppIcon } from "./icons";
+import { MailIcon, SocialIcon } from "./icons";
 
 export function Footer({ settings, year }: { settings: SiteSettings; year: number }) {
   const whatsapp = whatsappUrl(settings.whatsapp, "Hola, quiero información sobre Épika Academy.", settings.countryCode);
@@ -13,10 +13,10 @@ export function Footer({ settings, year }: { settings: SiteSettings; year: numbe
   const socials = [
     { name: "facebook", url: facebook },
     { name: "instagram", url: instagram },
-    { name: "whatsapp", url: whatsapp },
     { name: "tiktok", url: tiktok },
     { name: "linkedin", url: linkedin },
     { name: "youtube", url: youtube },
+    { name: "correo", url: settings.email ? `mailto:${settings.email}` : "" },
   ].filter((s) => s.url);
 
   const contact = [
@@ -37,12 +37,11 @@ export function Footer({ settings, year }: { settings: SiteSettings; year: numbe
                   <li key={name}>
                     <a
                       href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      {...(name === "correo" ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                       aria-label={name}
                       className="flex size-9 items-center justify-center rounded-full bg-white text-navy transition-colors hover:bg-orange hover:text-white"
                     >
-                      {name === "whatsapp" ? <WhatsAppIcon className="size-4.5" /> : <SocialIcon name={name} className="size-4.5" />}
+                      {name === "correo" ? <MailIcon className="size-4.5" /> : <SocialIcon name={name} className="size-4.5" />}
                     </a>
                   </li>
                 ))}

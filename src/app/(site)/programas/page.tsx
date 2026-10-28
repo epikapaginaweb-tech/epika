@@ -3,12 +3,11 @@ import { cacheLife, cacheTag } from "next/cache";
 import { Suspense } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 import { WhatsAppLink } from "@/components/site/Buttons";
-import { CourseGrid } from "@/components/site/CourseGrid";
+import type { CatalogCardData } from "@/components/site/CatalogCard";
+import { CatalogView } from "@/components/site/CatalogView";
 import { CoverArt } from "@/components/site/CoverArt";
-import { SectionHeading } from "@/components/site/SectionHeading";
-import { toCardData } from "@/lib/course-view";
 import { TAGS, getCourses, getSettings } from "@/lib/data";
-import { CATEGORIES, CATEGORY_LABEL } from "@/lib/types";
+import { CATEGORIES, CATEGORY_LABEL, type Course } from "@/lib/types";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -17,30 +16,45 @@ export const metadata: Metadata = {
   alternates: { canonical: "/programas" },
 };
 
+function toCatalog(course: Course): CatalogCardData {
+  const category = course.category ?? "programa";
+  return {
+    slug: course.slug,
+    title: course.title,
+    image: course.image_url,
+    categoryKey: category,
+    categoryLabel: CATEGORY_LABEL[category],
+    rating: Number(course.rating ?? 5),
+    modules: course.modules?.length ?? 0,
+    duration: course.duration,
+    showEcuador: course.show_ecuador ?? true,
+    comingSoon: course.coming_soon ?? false,
+  };
+}
+
 export default async function CoursesPage() {
   "use cache";
   cacheTag(TAGS.courses, TAGS.settings);
   cacheLife("hours");
 
-  const [courses, settings] = await Promise.all([getCourses(), getSettings()]);
-  const filters = CATEGORIES.map((c) => ({ key: c, label: CATEGORY_LABEL[c] }));
+  const [allCourses, settings] = await Promise.all([getCourses(), getSettings()]);
+  const { offer } = settings;
+  const enabled = CATEGORIES.filter((c) => offer[c] !== false);
+  const courses = allCourses.filter((c) => enabled.includes(c.category ?? "programa"));
+  const filters = enabled.map((c) => ({ key: c, label: CATEGORY_LABEL[c] }));
 
   return (
-    <section className="container-page pb-10 pt-12 md:pt-20">
-      <SectionHeading
-        as="h1"
-        eyebrow="Catálogo Épika"
-        title="Programas para dar"
-        accent="tu siguiente paso."
-        description="Programas 100% virtuales. Cada uno incluye su temario, instructor, fechas e inversión."
-      />
-      <div className="mt-14">
+    <section className="container-page pb-10 pt-10 md:pt-14">
+      <div>
         {courses.length > 0 ? (
           <Suspense fallback={null}>
-            <CourseGrid courses={courses.map((c) => ({ ...toCardData(c), categoryKey: c.category ?? "programa" }))} filters={filters} />
+            <CatalogView courses={courses.map(toCatalog)} filters={filters} showComingSoon={offer.showComingSoon} slogan={offer.comingSoonSlogan} />
           </Suspense>
         ) : (
           <Reveal>
+            <h1 className="bolder mb-10 text-center text-5xl font-bold text-navy md:text-6xl">
+              Nuestros <span className="font-script block text-[1.75em] leading-[0.8] font-normal text-orange">programas</span>
+            </h1>
             <div className="grid items-center gap-10 rounded-[2rem] bg-white p-8 md:grid-cols-[1fr_auto] md:p-12">
               <div>
                 <h2 className="text-2xl font-bold tracking-tight text-navy">Estamos preparando el catálogo.</h2>

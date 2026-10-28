@@ -4,7 +4,7 @@ import { saveSettings } from "@/actions/admin/content";
 import type { SiteSettings } from "@/lib/types";
 import { GalleryInput } from "./GalleryInput";
 import { Repeater } from "./Repeater";
-import { Card, FormMessage, SubmitButton, TextArea, TextInput, useFormAction } from "./ui";
+import { Card, FormMessage, SubmitButton, TextArea, TextInput, Toggle, useFormAction } from "./ui";
 
 export function SettingsForm({ settings }: { settings: SiteSettings }) {
   const { state, onSubmit, pending } = useFormAction(saveSettings);
@@ -81,6 +81,19 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         </div>
       </Card>
 
+      <Card title="Oferta académica" description="Controla qué categorías se muestran en Inicio y en la página Programas.">
+        <div className="grid gap-3 md:grid-cols-3">
+          <Toggle name="offer.enabled" label="Mostrar «Oferta académica» en Inicio" defaultChecked={settings.offer.enabled} />
+          <Toggle name="offer.programa" label="Programas" defaultChecked={settings.offer.programa} />
+          <Toggle name="offer.seminario" label="Seminarios" defaultChecked={settings.offer.seminario} />
+          <Toggle name="offer.otro" label="Otros" defaultChecked={settings.offer.otro} />
+          <Toggle name="offer.showComingSoon" label="Mostrar sección «Próximamente»" hint="Programas marcados como próximamente, difuminados" defaultChecked={settings.offer.showComingSoon} />
+        </div>
+        <div className="mt-4">
+          <TextInput label="Eslogan de «Próximamente»" name="offer.comingSoonSlogan" defaultValue={settings.offer.comingSoonSlogan} />
+        </div>
+      </Card>
+
       <Card title="Contador" description="Cifras animadas que aparecen en Inicio y Nosotros. Si no agregas ninguna, la sección no se muestra.">
         <Repeater
           name="stats"
@@ -112,6 +125,17 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
             fields={[
               { key: "title", label: "Paso" },
               { key: "text", label: "Descripción", multiline: true },
+            ]}
+          />
+          <Repeater
+            name="about.pillars"
+            label="Pilares estratégicos"
+            addLabel="Agregar pilar"
+            defaultValue={settings.about.pillars}
+            fields={[
+              { key: "title", label: "Pilar" },
+              { key: "objective", label: "Objetivo", multiline: true },
+              { key: "axes", label: "Ejes estratégicos (uno por línea)", multiline: true },
             ]}
           />
           <GalleryInput name="about.gallery" label="Fotografías de la academia" defaultValue={settings.about.gallery} />

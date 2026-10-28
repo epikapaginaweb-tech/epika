@@ -129,12 +129,16 @@ async function CourseView({ slug }: { slug: string }) {
           )}
           <Reveal delay={0.3}>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href={reserveHref}
-                className="rounded-full bg-dark px-9 py-3.5 text-center text-base font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
-              >
-                Comprar
-              </Link>
+              {course.coming_soon ? (
+                <span className="rounded-full bg-orange-soft px-9 py-3.5 text-center text-base font-bold text-[#b35f00]">Próximamente</span>
+              ) : (
+                <Link
+                  href={reserveHref}
+                  className="rounded-full bg-dark px-9 py-3.5 text-center text-base font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+                >
+                  Comprar
+                </Link>
+              )}
               <a
                 href={advisor}
                 target="_blank"
@@ -229,7 +233,7 @@ async function CourseView({ slug }: { slug: string }) {
         )}
 
         {teacher && (
-          <Block eyebrow="Instructor" title="Quién te acompaña">
+          <Block eyebrow="Ponente" title="Quién te acompaña">
             <div className="flex flex-col gap-6 rounded-[var(--radius-card)] bg-white p-6 sm:flex-row sm:items-center">
               <div className="relative size-32 shrink-0 overflow-hidden rounded-3xl">
                 {teacher.photo_url ? (
@@ -241,10 +245,7 @@ async function CourseView({ slug }: { slug: string }) {
               <div>
                 <p className="text-xl font-bold text-navy">{teacher.name}</p>
                 {teacher.headline && <p className="text-sm font-medium text-orange">{teacher.headline}</p>}
-                {teacher.bio && <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-ink/65">{teacher.bio}</p>}
-                <Link href="/instructores" className="mt-3 inline-block text-sm font-semibold text-navy font-script text-[1.3em] hover:text-orange">
-                  Ver perfil completo
-                </Link>
+                {teacher.bio && <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-ink/65">{teacher.bio}</p>}
               </div>
             </div>
           </Block>
@@ -285,12 +286,14 @@ async function CourseView({ slug }: { slug: string }) {
               <p className="mt-2 text-white/65">Solicita tu reserva y te confirmamos disponibilidad.</p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href={reserveHref}
-                className="rounded-full bg-orange px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-white hover:text-navy"
-              >
-                Solicitar reserva
-              </Link>
+              {!course.coming_soon && (
+                <Link
+                  href={reserveHref}
+                  className="rounded-full bg-orange px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-white hover:text-navy"
+                >
+                  Solicitar reserva
+                </Link>
+              )}
               <WhatsAppLink href={whatsapp} tone="dark">
                 Consultar por WhatsApp
               </WhatsAppLink>

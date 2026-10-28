@@ -1,10 +1,37 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { animate, motion, useInView } from "motion/react";
 
 const DIGITS = Array.from({ length: 10 }, (_, i) => i);
 
+/** Cuenta de 0 al valor final (p. ej. 0 → 500) cuando entra en pantalla. */
+function CountUp({ value, prefix, suffix }: { value: number; prefix: string; suffix: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.6 });
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(0, value, { duration: 2.4, ease: [0.16, 1, 0.3, 1], onUpdate: (v) => setCurrent(Math.round(v)) });
+    return () => controls.stop();
+  }, [inView, value]);
+
+  const format = (n: number) => new Intl.NumberFormat("es-EC").format(n);
+  return (
+    <span ref={ref} className="inline-flex items-baseline">
+      <span className="sr-only">{`${prefix}${format(value)}${suffix}`}</span>
+      <span aria-hidden className="tabular-nums">
+        {prefix}
+        {format(current)}
+        {suffix}
+      </span>
+    </span>
+  );
+}
+
 export function Odometer({ value, prefix = "", suffix = "", plain = false }: { value: number; prefix?: string; suffix?: string; plain?: boolean }) {
+  if (plain) return <CountUp value={value} prefix={prefix} suffix={suffix} />;
   const text = new Intl.NumberFormat("es-EC").format(value);
   const chars = text.split("");
   let digitIndex = 0;

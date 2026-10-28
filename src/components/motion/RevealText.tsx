@@ -17,6 +17,13 @@ type Props = {
   as?: "h1" | "h2" | "h3" | "p";
   tone?: Tone;
   delay?: number;
+  /**
+   * Tipografía de la segunda frase:
+   * - "auto": cursiva si son 2 o más palabras, letra normal naranja si es una sola.
+   * - "script": siempre cursiva de la marca.
+   * - "sans": siempre Helvena Regular, en su propia línea y más pequeña.
+   */
+  accentFont?: "auto" | "script" | "sans";
   className?: string;
 };
 
@@ -29,7 +36,10 @@ function wordVariants(from: string, to: string): Variants {
   };
 }
 
-export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", tone = "dark", delay = 0, className }: Props) {
+const SCRIPT = "font-script text-[1.75em] font-normal leading-[0.8]";
+const SANS = "text-[0.42em] font-normal leading-tight tracking-normal";
+
+export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", tone = "dark", delay = 0, accentFont = "auto", className }: Props) {
   const t = useT();
   const text = t(rawText);
   const accent = t(rawAccent);
@@ -38,7 +48,8 @@ export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", t
   const base = split(text);
   const accents = split(accent);
   const total = base.length + accents.length;
-  const phrase = accents.length >= 2 && base.length > 0;
+  const own = accents.length > 0 && base.length > 0 && (accentFont !== "auto" || accents.length >= 2);
+  const font = accentFont === "sans" ? "sans" : "script";
 
   const words = (list: string[], color: string, offset: number, extra = "") =>
     list.map((word, i) => (
@@ -46,7 +57,7 @@ export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", t
         <motion.span data-accent={extra ? "" : undefined} className={`inline-block ${extra}`} variants={wordVariants(colors.from, color)}>
           {word}
         </motion.span>
-        {!(phrase && offset + i === total - 1) && offset + i < total - 1 && " "}
+        {!(own && offset + i === total - 1) && offset + i < total - 1 && " "}
       </span>
     ));
 
@@ -63,9 +74,11 @@ export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", t
     >
       {words(base, colors.base, 0)}
       {accents.length > 0 &&
-        (phrase ? (
-          // Dos frases: la segunda va en cursiva de la marca, en naranja y en su propia línea.
-          <span className="mt-[0.12em] block">{words(accents, colors.accent, base.length, "font-script text-[1.3em] font-normal leading-[0.9]")}</span>
+        (own ? (
+          // Segunda frase: va en su propia línea y en naranja.
+          <span className={`block ${font === "script" ? "-mt-[0.05em]" : "mt-[0.4em]"}`}>
+            {words(accents, colors.accent, base.length, font === "script" ? SCRIPT : SANS)}
+          </span>
         ) : (
           words(accents, colors.accent, base.length)
         ))}

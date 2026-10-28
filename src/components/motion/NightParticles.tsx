@@ -63,18 +63,6 @@ export function NightParticles() {
           if (a.y < -10) a.y = height + 10;
           if (a.y > height + 10) a.y = -10;
         }
-        for (let j = i + 1; j < dots.length; j++) {
-          const b = dots[j];
-          const d = Math.hypot(a.x - b.x, a.y - b.y);
-          if (d < 130) {
-            ctx.strokeStyle = `rgba(140,190,255,${(1 - d / 130) * 0.28})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-          }
-        }
         ctx.fillStyle = a.warm ? "rgba(255,170,60,0.9)" : "rgba(170,210,255,0.85)";
         ctx.shadowColor = a.warm ? "rgba(255,145,0,0.8)" : "rgba(110,170,255,0.9)";
         ctx.shadowBlur = 10;

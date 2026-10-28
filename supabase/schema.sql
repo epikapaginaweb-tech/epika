@@ -50,6 +50,9 @@ create table if not exists public.courses (
   brief_public boolean not null default false,
   visible boolean not null default false,
   featured boolean not null default false,
+  rating numeric(2,1) not null default 5,
+  show_ecuador boolean not null default true,
+  coming_soon boolean not null default false,
   sort int not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
