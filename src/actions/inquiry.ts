@@ -90,6 +90,108 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
   return { status: "success", id: data.id, token: data.upload_token, courseTitle };
 }
 
+const enrollmentSchema = z.object({
+  first_name: z.string().trim().min(2, "Escribe tus nombres.").max(80),
+  last_name: z.string().trim().min(2, "Escribe tus apellidos.").max(80),
+  cedula: z
+    .string()
+    .trim()
+    .min(6, "Revisa tu documento de identidad.")
+    .max(20)
+    .regex(/^[A-Za-z0-9-]+$/, "Revisa tu documento de identidad."),
+  email: z.email("Revisa el correo electrónico.").trim().max(160),
+  phone: z
+    .string()
+    .trim()
+    .min(8, "Revisa el número de celular.")
+    .max(25)
+    .regex(/^[+\d\s()-]+$/, "Revisa el número de celular."),
+  birth_date: z
+    .string()
+    .trim()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Revisa la fecha de nacimiento.")
+    .optional()
+    .or(z.literal("").transform(() => undefined)),
+  education: z.string().trim().max(80).optional(),
+  city: z.string().trim().min(2, "Escribe tu ciudad.").max(80),
+  address: z.string().trim().max(200).optional(),
+  course_id: z.uuid("Elige un programa."),
+  consent: z.literal("on", { error: "Debes aceptar para continuar." }),
+});
+
+/** Formulario de inscripción: registra al estudiante y devuelve el acceso para subir el comprobante. */
+export async function submitEnrollment(_prev: InquiryState, formData: FormData): Promise<InquiryState> {
+  const startedAt = Number(formData.get("started_at"));
+  if (formData.get("website") || !startedAt || Date.now() - startedAt < MIN_FILL_MS) {
+    return { status: "error", message: "No pudimos enviar el formulario. Intenta de nuevo en unos segundos." };
+  }
+
+  const raw = Object.fromEntries(formData);
+  const parsed = enrollmentSchema.safeParse(raw);
+  if (!parsed.success) {
+    const values: Record<string, string> = {};
+    for (const [key, value] of Object.entries(raw)) if (typeof value === "string") values[key] = value;
+    const fields: Record<string, string> = {};
+    for (const issue of parsed.error.issues) {
+      const key = String(issue.path[0]);
+      fields[key] ??= issue.message;
+    }
+    return { status: "error", message: "Revisa los campos marcados.", fields, values };
+  }
+
+  const input = parsed.data;
+  const db = serviceClient();
+  const { data: course } = await db
+    .from("courses")
+    .select("title, coming_soon")
+    .eq("id", input.course_id)
+    .eq("visible", true)
+    .maybeSingle();
+  if (!course || course.coming_soon) {
+    return { status: "error", message: "Este programa aún no tiene inscripciones abiertas." };
+  }
+
+  const fullName = `${input.first_name} ${input.last_name}`.replace(/\s+/g, " ");
+  const { data, error } = await db
+    .from("inquiries")
+    .insert({
+      kind: "reserva",
+      full_name: fullName,
+      email: input.email.toLowerCase(),
+      phone: input.phone,
+      cedula: input.cedula,
+      birth_date: input.birth_date ?? null,
+      education: input.education || null,
+      city: input.city,
+      address: input.address || null,
+      course_id: input.course_id,
+      course_title: course.title,
+      message: "Inscripción desde la página del programa.",
+      privacy_accepted_at: new Date().toISOString(),
+    })
+    .select("id, upload_token")
+    .single();
+
+  if (error || !data) {
+    console.error("submitEnrollment", error?.message);
+    return { status: "error", message: "No pudimos registrar tu solicitud. Intenta de nuevo o escríbenos por WhatsApp." };
+  }
+
+  await notifyAcademy({
+    subject: `Nueva inscripción: ${fullName}`,
+    lines: [
+      ["Nombre", fullName],
+      ["Documento", input.cedula],
+      ["Correo", input.email],
+      ["Celular", input.phone],
+      ["Ciudad", input.city],
+      ["Programa", course.title],
+    ],
+  });
+
+  return { status: "success", id: data.id, token: data.upload_token, courseTitle: course.title };
+}
+
 async function findInquiry(id: string, token: string) {
   if (!z.uuid().safeParse(id).success || !z.uuid().safeParse(token).success) return null;
   const { data } = await serviceClient()

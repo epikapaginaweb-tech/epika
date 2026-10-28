@@ -95,7 +95,11 @@ export function CourseForm({ course, teachers }: Props) {
 
       <Card title="Inversión y certificado">
         <div className="grid gap-4 md:grid-cols-2">
-          <TextInput label="Precio" name="price" inputMode="decimal" defaultValue={course?.price ?? ""} placeholder="ej. 120" />
+          <TextInput label="Plan contado (precio)" name="price" inputMode="decimal" defaultValue={course?.price ?? ""} placeholder="ej. 129" />
+          <TextInput label="Plan crédito (precio)" name="price_credit" inputMode="decimal" defaultValue={course?.price_credit ?? ""} placeholder="ej. 150" hint="Vacío = no se muestra" />
+          <TextArea label="Cómo funciona el plan contado" name="cash_note" defaultValue={course?.cash_note ?? ""} rows={2} hint="Aparece al pasar el cursor sobre el precio" />
+          <TextArea label="Cómo funciona el plan crédito" name="credit_note" defaultValue={course?.credit_note ?? ""} rows={2} hint="Aparece al pasar el cursor sobre el precio" />
+          <TextInput label="Horas académicas" name="academic_hours" type="number" defaultValue={course?.academic_hours ?? ""} placeholder="ej. 40" />
           <div>
             <Label htmlFor="currency">Moneda</Label>
             <select id="currency" name="currency" defaultValue={course?.currency ?? "USD"} className="field">
@@ -104,7 +108,7 @@ export function CourseForm({ course, teachers }: Props) {
           </div>
           <TextArea label="Formas de pago" name="payment_methods" defaultValue={join(course?.payment_methods)} hint="Una por línea" rows={4} />
           <TextArea label="Qué incluye" name="includes" defaultValue={join(course?.includes)} hint="Uno por línea" rows={4} />
-          <TextArea label="Certificado" name="certificate" defaultValue={course?.certificate ?? ""} rows={3} hint="Déjalo vacío si no aplica" className="md:col-span-2" />
+          <TextArea label="Certificado" name="certificate" defaultValue={course?.certificate ?? ""} rows={3} hint="Primera línea = texto del icono (ej. Triple Certificación). Vacío si no aplica" className="md:col-span-2" />
         </div>
       </Card>
 

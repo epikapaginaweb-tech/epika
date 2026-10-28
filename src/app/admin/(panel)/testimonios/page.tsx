@@ -9,16 +9,21 @@ export const metadata: Metadata = { title: "Testimonios" };
 
 export default async function TestimonialsAdminPage() {
   await requireAdmin();
-  const { data } = await serviceClient().from("testimonials").select("*").order("sort").order("created_at");
+  const db = serviceClient();
+  const [{ data }, { data: courseRows }] = await Promise.all([
+    db.from("testimonials").select("*").order("sort").order("created_at"),
+    db.from("courses").select("id, title").order("sort").order("title"),
+  ]);
   const testimonials = (data as Testimonial[] | null) ?? [];
+  const courses = (courseRows as { id: string; title: string }[] | null) ?? [];
 
   return (
     <>
-      <PageHeader title="Testimonios" description="Solo se publican los marcados como autorizados y visibles." />
+      <PageHeader title="Testimonios" description="Solo se publican los marcados como autorizados y visibles. Elige si cada uno va en el inicio o en la página de un programa." />
       <div className="space-y-3">
-        <NewTestimonialEditor />
+        <NewTestimonialEditor courses={courses} />
         {testimonials.map((t) => (
-          <TestimonialEditor key={t.id} testimonial={t} />
+          <TestimonialEditor key={t.id} testimonial={t} courses={courses} />
         ))}
       </div>
     </>

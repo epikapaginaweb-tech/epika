@@ -7,7 +7,7 @@ import { RECEIPT_MAX_BYTES, RECEIPT_TYPES } from "@/lib/uploads";
 
 type Status = { kind: "idle" } | { kind: "uploading" } | { kind: "done"; name: string } | { kind: "error"; message: string };
 
-export function ReceiptUpload({ id, token }: { id: string; token: string }) {
+export function ReceiptUpload({ id, token, onDone }: { id: string; token: string; onDone?: () => void }) {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [dragging, setDragging] = useState(false);
 
@@ -27,6 +27,7 @@ export function ReceiptUpload({ id, token }: { id: string; token: string }) {
     const result = await confirmReceipt({ id, token, path: ticket.path });
     if ("error" in result) return setStatus({ kind: "error", message: result.error ?? "No pudimos registrar el comprobante." });
     setStatus({ kind: "done", name: file.name });
+    onDone?.();
   }
 
   if (status.kind === "done") {

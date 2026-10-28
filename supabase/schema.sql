@@ -53,6 +53,10 @@ create table if not exists public.courses (
   rating numeric(2,1) not null default 5,
   show_ecuador boolean not null default true,
   coming_soon boolean not null default false,
+  price_credit numeric(12, 2),
+  cash_note text,
+  credit_note text,
+  academic_hours int,
   sort int not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
@@ -78,7 +82,11 @@ create table if not exists public.inquiries (
   cedula text,
   username text,
   credentials_sent_at timestamptz,
-  notes text
+  notes text,
+  birth_date date,
+  education text,
+  city text,
+  address text
 );
 
 create table if not exists public.faqs (
@@ -93,6 +101,7 @@ create table if not exists public.faqs (
 
 create table if not exists public.testimonials (
   id uuid primary key default gen_random_uuid(),
+  course_id uuid references public.courses(id) on delete set null,
   name text not null,
   course text,
   quote text not null,

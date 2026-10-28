@@ -53,6 +53,11 @@ export default async function InquiryPage({ params }: PageProps<"/admin/solicitu
                 ["Teléfono", inquiry.phone],
                 ["Programa", inquiry.course_title ?? "Consulta general"],
                 ["Tipo", inquiry.kind === "reserva" ? "Solicitud de reserva" : "Consulta"],
+                ...(inquiry.cedula ? [["Documento", inquiry.cedula]] : []),
+                ...(inquiry.birth_date ? [["Fecha de nacimiento", formatDate(inquiry.birth_date) ?? inquiry.birth_date]] : []),
+                ...(inquiry.education ? [["Formación académica", inquiry.education]] : []),
+                ...(inquiry.city ? [["Ciudad", inquiry.city]] : []),
+                ...(inquiry.address ? [["Dirección", inquiry.address]] : []),
                 ["Recibida", formatDate(inquiry.created_at, { dateStyle: "long", timeStyle: "short" })],
               ].map(([label, value]) => (
                 <div key={label}>

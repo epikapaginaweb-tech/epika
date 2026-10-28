@@ -343,3 +343,8 @@ html[data-theme="night"] [data-tone="dark"] span:not([data-accent]) {
 html[data-theme="night"] .text-navy\/60 {
   color: color-mix(in oklab, var(--night-text) 65%, transparent);
 }
+html[data-theme="night"] .field {
+  background: var(--night-card);
+  color: var(--night-text);
+  border-color: rgba(255, 255, 255, 0.18);
+}

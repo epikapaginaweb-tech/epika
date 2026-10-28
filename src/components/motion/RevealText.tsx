@@ -76,7 +76,7 @@ export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", t
       {accents.length > 0 &&
         (own ? (
           // Segunda frase: va en su propia línea y en naranja.
-          <span className={`block ${font === "script" ? "-mt-[0.05em]" : "mt-[0.4em]"}`}>
+          <span className={`block ${font === "script" ? "-mt-[0.3em]" : "mt-[0.1em]"}`}>
             {words(accents, colors.accent, base.length, font === "script" ? SCRIPT : SANS)}
           </span>
         ) : (

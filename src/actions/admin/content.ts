@@ -98,6 +98,13 @@ export async function saveCourse(_prev: FormState, fd: FormData): Promise<FormSt
     rating: Math.min(5, Math.max(0, number(fd, "rating") ?? 5)),
     show_ecuador: checked(fd, "show_ecuador"),
     coming_soon: checked(fd, "coming_soon"),
+    price_credit: number(fd, "price_credit"),
+    cash_note: nullable(fd, "cash_note"),
+    credit_note: nullable(fd, "credit_note"),
+    academic_hours: (() => {
+      const hours = number(fd, "academic_hours");
+      return hours === null ? null : Math.max(0, Math.trunc(hours));
+    })(),
     sort: Math.trunc(number(fd, "sort") ?? 0),
   };
 
@@ -203,6 +210,7 @@ export async function saveTestimonial(_prev: FormState, fd: FormData): Promise<F
     name,
     quote,
     course: nullable(fd, "course"),
+    course_id: nullable(fd, "course_id"),
     photo_url: nullable(fd, "photo_url"),
     authorized: checked(fd, "authorized"),
     visible: checked(fd, "visible"),

@@ -93,6 +93,8 @@ export default async function HomePage() {
   const advisor = whatsappUrl(settings.salesWhatsapp || settings.whatsapp, "Hola, quiero información sobre los programas de Épika Academy.", settings.countryCode);
   const { hero } = settings;
   const { offer } = settings;
+  // Los testimonios ligados a un programa se muestran en la página de ese programa, no en el inicio.
+  const generalTestimonials = testimonials.filter((t) => !t.course_id);
   const groups = PROGRAM_GROUPS.filter((g) => offer[g.key as keyof typeof offer] !== false);
 
   return (
@@ -169,12 +171,12 @@ export default async function HomePage() {
       </section>
 
       {/* Testimonios: carrusel lento de derecha a izquierda */}
-      {testimonials.length > 0 && (
+      {generalTestimonials.length > 0 && (
         <section className="py-14 md:py-16">
           <Reveal>
             <h2 className="bolder text-center text-5xl font-bold text-navy md:text-6xl">Testimonios</h2>
           </Reveal>
-          <TestimonialMarquee items={testimonials.map((t) => ({ id: t.id, name: t.name, place: t.course, quote: t.quote }))} className="mt-10" />
+          <TestimonialMarquee items={generalTestimonials.map((t) => ({ id: t.id, name: t.name, place: t.course, quote: t.quote }))} className="mt-10" />
         </section>
       )}
 

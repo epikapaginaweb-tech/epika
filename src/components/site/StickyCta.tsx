@@ -24,7 +24,7 @@ export function StickyCta({ href, title, price }: { href: string; title: string;
             {price && <span className="block text-sm font-bold text-orange">{price}</span>}
           </span>
           <Link href={href} className="shrink-0 rounded-full bg-orange px-4 py-2.5 text-xs font-bold">
-            Reservar
+            Inscríbete
           </Link>
         </motion.div>
       )}

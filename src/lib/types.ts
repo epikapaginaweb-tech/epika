@@ -62,6 +62,10 @@ export type Course = {
   rating: number;
   show_ecuador: boolean;
   coming_soon: boolean;
+  price_credit: number | null;
+  cash_note: string | null;
+  credit_note: string | null;
+  academic_hours: number | null;
   sort: number;
   created_at: string;
 };
@@ -85,6 +89,10 @@ export type Inquiry = {
   username: string | null;
   credentials_sent_at: string | null;
   notes: string | null;
+  birth_date: string | null;
+  education: string | null;
+  city: string | null;
+  address: string | null;
 };
 
 export type Faq = {
@@ -98,6 +106,7 @@ export type Faq = {
 
 export type Testimonial = {
   id: string;
+  course_id: string | null;
   name: string;
   course: string | null;
   quote: string;

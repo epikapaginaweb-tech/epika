@@ -4,18 +4,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cacheLife, cacheTag } from "next/cache";
 import { Suspense } from "react";
-import { ImageReveal } from "@/components/motion/ImageReveal";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { RevealText } from "@/components/motion/RevealText";
-import { WhatsAppLink } from "@/components/site/Buttons";
 import { CourseImage } from "@/components/site/CourseImage";
-import { CoverArt } from "@/components/site/CoverArt";
-import { PricingFan, type PriceCard } from "@/components/site/PricingFan";
+import { PlanPrices } from "@/components/site/PlanPrices";
 import { StickyCta } from "@/components/site/StickyCta";
-import { CheckIcon } from "@/components/site/icons";
-import { TAGS, getCourse, getSettings } from "@/lib/data";
+import { Sticker, type StickerName } from "@/components/site/Sticker";
+import { TestimonialMarquee } from "@/components/site/TestimonialMarquee";
+import { CheckIcon, WhatsAppIcon } from "@/components/site/icons";
+import { TAGS, getCourse, getSettings, getTestimonials } from "@/lib/data";
 import { MODALITY_LABEL, formatDate, formatPrice } from "@/lib/format";
-import { CATEGORY_LABEL } from "@/lib/types";
 import { courseMessage, whatsappUrl } from "@/lib/whatsapp";
 
 export async function generateMetadata({ params }: PageProps<"/programas/[slug]">): Promise<Metadata> {
@@ -35,48 +33,48 @@ export async function generateMetadata({ params }: PageProps<"/programas/[slug]"
   };
 }
 
-function Fact({ label, value }: { label: string; value: string | null }) {
-  if (!value) return null;
-  return (
-    <div className="rounded-2xl bg-white px-5 py-4">
-      <dt className="text-xs font-semibold uppercase tracking-wider text-ink/45">{label}</dt>
-      <dd className="mt-1 font-semibold text-navy">{value}</dd>
-    </div>
-  );
-}
+const KIND_LABEL: Record<string, string> = { programa: "Programa", seminario: "Seminario", otro: "Taller" };
+// Los PNG traen distinto margen transparente: estos tamaños los igualan visualmente.
+const ICON_SIZE: Partial<Record<StickerName, number>> = { envivo: 84, certificado: 150, compu: 96 };
+const DEFAULT_CASH = "Pagas el valor total del programa en un solo pago por transferencia bancaria.";
+const DEFAULT_CREDIT = "Divides el valor del programa en cuotas. Escríbenos y te explicamos el plan de pagos.";
 
-function Block({ eyebrow, title, children }: { eyebrow: string; title: string; children: React.ReactNode }) {
-  return (
-    <section className="grid gap-8 border-t border-line py-14 md:grid-cols-[0.75fr_1.25fr] md:py-20">
-      <div>
-        <p className="eyebrow">{eyebrow}</p>
-        <RevealText text={title} className="mt-3 text-3xl font-bold leading-tight tracking-tight md:text-4xl" />
-      </div>
-      <Reveal>{children}</Reveal>
-    </section>
-  );
+function Heading({ text, accent }: { text: string; accent: string }) {
+  return <RevealText text={text} accent={accent} accentFont="script" className="bolder text-4xl font-bold leading-none md:text-5xl" />;
 }
 
 async function CourseView({ slug }: { slug: string }) {
   "use cache";
-  cacheTag(TAGS.courses, TAGS.teachers, TAGS.settings);
+  cacheTag(TAGS.courses, TAGS.teachers, TAGS.settings, TAGS.testimonials);
   cacheLife("hours");
 
-  const [course, settings] = await Promise.all([getCourse(slug), getSettings()]);
+  const [course, settings, testimonials] = await Promise.all([getCourse(slug), getSettings(), getTestimonials()]);
   if (!course) notFound();
 
   const price = formatPrice(course.price, course.currency);
-  const start = formatDate(course.start_date);
-  const modality = MODALITY_LABEL[course.modality];
+  const credit = formatPrice(course.price_credit, course.currency);
+  const start = formatDate(course.start_date, { day: "2-digit", month: "short", year: "numeric" });
+  const kind = course.category ?? "programa";
+  const label = `${KIND_LABEL[kind] ?? "Programa"} ${course.modality === "virtual" ? "100% Virtual" : MODALITY_LABEL[course.modality]}`;
   const whatsapp = whatsappUrl(settings.whatsapp, courseMessage(course.title), settings.countryCode);
   const advisor = whatsappUrl(settings.salesWhatsapp || settings.whatsapp, courseMessage(course.title), settings.countryCode);
-  const reserveHref = `/reservar?curso=${encodeURIComponent(course.slug)}`;
+  const enrollHref = `/inscripcion?curso=${encodeURIComponent(course.slug)}`;
+  const soon = course.coming_soon;
   const teacher = course.teacher;
+  const brochure = course.brief_public && course.brief_url;
+  const certificateLabel = course.certificate?.split("\n")[0]?.trim() || null;
+  const courseTestimonials = testimonials.filter((t) => t.course_id === course.id);
 
-  const pricing: PriceCard[] = [
-    { label: "Formas de pago", title: course.payment_methods.length ? "Opciones" : "Consúltanos", items: course.payment_methods },
-    { label: "Inversión", title: price ?? "Por confirmar", items: [modality, start && `Inicia ${start}`, course.duration].filter(Boolean) as string[], highlight: true },
-    { label: "Incluye", title: course.includes.length ? "Lo que recibes" : "Consúltanos", items: course.includes },
+  const plans = [
+    price && { label: "Plan Contado", price, note: course.cash_note || DEFAULT_CASH },
+    credit && { label: "Plan Crédito", price: credit, note: course.credit_note || DEFAULT_CREDIT },
+  ].filter(Boolean) as { label: string; price: string; note: string }[];
+
+  const highlights: { icon?: StickerName; big?: string; label: string }[] = [
+    { icon: "envivo", label: "Clases en vivo" },
+    ...(course.academic_hours ? [{ big: String(course.academic_hours), label: "Horas Académicas" }] : []),
+    ...(certificateLabel ? [{ icon: "certificado" as StickerName, label: certificateLabel }] : []),
+    { icon: "compu", label: "Campus Virtual" },
   ];
 
   const jsonLd = {
@@ -93,214 +91,197 @@ async function CourseView({ slug }: { slug: string }) {
 
   return (
     <>
-      <StickyCta href={reserveHref} title={course.title} price={price} />
+      {!soon && <StickyCta href={enrollHref} title={course.title} price={price} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
 
-      <section className="container-page grid items-center gap-12 pb-16 pt-10 md:grid-cols-[1fr_1fr] md:pt-16">
-        <div>
-          <Reveal y={12}>
-            <Link href="/programas" className="text-sm font-medium text-ink/50 transition-colors hover:text-orange">
+      {/* Portada del curso */}
+      <section className="container-page pt-6 md:pt-8">
+        <div className="relative isolate flex min-h-[22rem] flex-col justify-between overflow-hidden rounded-[2.25rem] bg-[#1b0f3a] p-7 text-white md:min-h-[27rem] md:p-12">
+          <div className="absolute inset-0 -z-10">
+            <CourseImage src={course.image_url} title={course.title} sizes="100vw" eager label="" seed={course.title} className="opacity-80" />
+          </div>
+          <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/45 to-black/10" />
+          <div className="max-w-xl">
+            <Link href="/programas" className="text-xs font-semibold text-white/60 hover:text-white">
               ← Todos los programas
             </Link>
-          </Reveal>
-          <Reveal y={12} delay={0.05} className="mt-6 flex flex-wrap gap-2">
-            <span className="bubble bg-orange text-white">{CATEGORY_LABEL[course.category ?? "programa"]}</span>
-            <span className="bubble bg-navy text-white">{modality}</span>
-          </Reveal>
-          <RevealText as="h1" text={course.title.toUpperCase()} className="mt-5 text-4xl font-bold leading-[0.98] md:text-6xl" />
-          {course.brief_url && course.brief_public && (
-            <Reveal delay={0.15} className="mt-7">
-              <a
-                href={course.brief_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex rounded-full bg-brochure px-6 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
-              >
-                Descargar Brochure
-              </a>
+            <p className="mt-6 text-sm text-white/85">{label}</p>
+            <h1 className="bolder mt-1 text-4xl font-bold leading-[0.98] md:text-6xl">{course.title}</h1>
+            {brochure && (
+              <div className="mt-6">
+                <p className="text-xs text-white/70">Descargar</p>
+                <a href={brochure} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block rounded-full bg-orange px-5 py-1.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5">
+                  Brochure
+                </a>
+              </div>
+            )}
+          </div>
+          {start && (
+            <div className="mt-8 self-end text-right">
+              <p className="text-sm text-white/80">Inicio de clases</p>
+              <p className="bolder text-3xl font-bold capitalize md:text-4xl">{start.replace(/\./g, "")}</p>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          {soon ? (
+            <span className="rounded-full bg-orange-soft px-7 py-3 text-sm font-bold text-[#b35f00]">Próximamente</span>
+          ) : (
+            <Link href={enrollHref} className="rounded-full bg-navy px-8 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]">
+              Inscríbete
+            </Link>
+          )}
+          <a href={advisor} target="_blank" rel="noopener noreferrer" className="rounded-full bg-go px-8 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]">
+            Habla con un asesor
+          </a>
+        </div>
+      </section>
+
+      {/* Acerca del programa + planes */}
+      <section className="container-page grid gap-10 py-12 md:grid-cols-[1.35fr_0.65fr] md:py-16">
+        <div>
+          <Heading text="Acerca del" accent={kind === "seminario" ? "seminario" : "programa"} />
+          {(course.summary || course.short_description) && (
+            <Reveal>
+              <p className="mt-6 whitespace-pre-line text-justify text-base leading-relaxed text-ink/75">{course.summary ?? course.short_description}</p>
             </Reveal>
           )}
-          {(course.summary || course.short_description) && (
-            <Reveal delay={0.2}>
-              <p className="mt-7 max-w-xl whitespace-pre-line text-base font-semibold leading-relaxed text-ink md:text-lg">
-                {course.summary ?? course.short_description}
+          {course.audience && (
+            <Reveal>
+              <p className="mt-4 whitespace-pre-line text-base leading-relaxed text-ink/75">
+                <span className="font-bold text-ink">Dirigido a: </span>
+                {course.audience}
               </p>
             </Reveal>
           )}
-          <Reveal delay={0.3}>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              {course.coming_soon ? (
-                <span className="rounded-full bg-orange-soft px-9 py-3.5 text-center text-base font-bold text-[#b35f00]">Próximamente</span>
+          {course.schedule && (
+            <p className="mt-4 text-sm text-ink/60">
+              <span className="font-bold text-ink">Horario: </span>
+              {course.schedule}
+              {course.duration && ` · ${course.duration}`}
+            </p>
+          )}
+        </div>
+        <div className="md:pt-3">
+          <PlanPrices plans={plans} />
+        </div>
+      </section>
+
+      {/* Lo que incluye */}
+      <section className="container-page">
+        <RevealGroup className="grid grid-cols-2 gap-6 rounded-[2rem] bg-white px-6 py-8 md:grid-cols-4">
+          {highlights.map((item) => (
+            <RevealItem key={item.label}>
+              <div className="flex flex-col items-center text-center">
+                <span className="flex h-20 items-center justify-center">
+                  {item.icon ? (
+                    <Sticker name={item.icon} size={ICON_SIZE[item.icon] ?? 96} float={false} />
+                  ) : (
+                    <span className="font-display text-6xl leading-none text-navy">{item.big}</span>
+                  )}
+                </span>
+                <p className="bolder mt-2 max-w-[9rem] text-balance text-base font-bold leading-tight text-navy">{item.label}</p>
+              </div>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+      </section>
+
+      {/* Lo que aprenderás */}
+      {course.objectives.length > 0 && (
+        <section className="container-page py-12 md:py-16">
+          <Heading text="Lo que" accent="aprenderás" />
+          <RevealGroup className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {course.objectives.map((objective) => (
+              <RevealItem key={objective}>
+                <div className="flex h-full items-center gap-3 rounded-2xl bg-white p-5">
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-orange-soft text-orange">
+                    <CheckIcon />
+                  </span>
+                  <p className="text-sm font-semibold leading-snug text-navy">{objective}</p>
+                </div>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </section>
+      )}
+
+      {/* Módulos */}
+      {course.modules.length > 0 && (
+        <section className="container-page py-6 md:py-8">
+          <Heading text="Módulos del" accent={kind === "seminario" ? "seminario" : "programa"} />
+          <ol className="mt-8 divide-y divide-line overflow-hidden rounded-[2rem] bg-white">
+            {course.modules.map((mod, i) => (
+              <li key={`${mod.title}-${i}`}>
+                <details className="group px-6 py-5 [&_summary::-webkit-details-marker]:hidden">
+                  <summary className="flex cursor-pointer list-none items-center gap-5">
+                    <span className="text-sm font-bold tabular-nums text-orange">Módulo {i + 1}</span>
+                    <span className="flex-1 font-semibold text-navy">{mod.title}</span>
+                    {mod.description && (
+                      <span aria-hidden className="text-xl text-ink/40 transition-transform duration-300 group-open:rotate-45">
+                        +
+                      </span>
+                    )}
+                  </summary>
+                  {mod.description && <p className="mt-3 whitespace-pre-line pl-[5.5rem] text-sm leading-relaxed text-ink/65">{mod.description}</p>}
+                </details>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      {/* Ponente */}
+      {teacher && (
+        <section className="container-page py-12 md:py-16">
+          <h2 className="bolder text-4xl font-bold text-navy md:text-5xl">Ponente</h2>
+          <div className="mt-8 grid items-start gap-8 md:grid-cols-[0.35fr_1fr]">
+            <div className="relative aspect-[4/5] w-full max-w-xs overflow-hidden rounded-[2rem] bg-navy">
+              {teacher.photo_url ? (
+                <Image src={teacher.photo_url} alt={teacher.name} fill sizes="(min-width: 768px) 25vw, 80vw" className="object-cover" />
               ) : (
-                <Link
-                  href={reserveHref}
-                  className="rounded-full bg-dark px-9 py-3.5 text-center text-base font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
-                >
-                  Comprar
+                <span className="flex h-full items-center justify-center text-6xl font-bold text-white/30">{teacher.name.charAt(0)}</span>
+              )}
+            </div>
+            <div>
+              <p className="bolder text-2xl font-bold text-navy">{teacher.name}</p>
+              {teacher.headline && <p className="mt-1 text-sm font-semibold text-orange">{teacher.headline}</p>}
+              {teacher.bio && <p className="mt-4 whitespace-pre-line text-justify text-sm leading-relaxed text-ink/75">{teacher.bio}</p>}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Testimonios de este programa */}
+      {courseTestimonials.length > 0 && (
+        <section className="py-12 md:py-16">
+          <h2 className="bolder text-center text-4xl font-bold text-navy md:text-5xl">Testimonios</h2>
+          <TestimonialMarquee className="mt-8" items={courseTestimonials.map((t) => ({ id: t.id, name: t.name, place: t.course, quote: t.quote }))} />
+        </section>
+      )}
+
+      {/* Cierre */}
+      <section className="container-page pb-4 pt-8">
+        <Reveal>
+          <div className="flex flex-col items-start justify-between gap-6 rounded-[2rem] bg-navy p-8 text-white md:flex-row md:items-center md:p-12">
+            <div>
+              <p className="text-2xl font-bold tracking-tight md:text-3xl">¿Te interesa {course.title}?</p>
+              <p className="mt-2 text-white/65">{soon ? "Escríbenos y te avisamos cuando abran las inscripciones." : "Inscríbete y asegura tu lugar."}</p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              {!soon && (
+                <Link href={enrollHref} className="rounded-full bg-orange px-6 py-3.5 text-center text-sm font-bold text-white transition-colors hover:bg-white hover:text-navy">
+                  Inscríbete
                 </Link>
               )}
-              <a
-                href={advisor}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full bg-go px-9 py-3.5 text-center text-base font-bold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
-              >
-                Contactar con un asesor
+              <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full bg-go px-6 py-3.5 text-sm font-bold text-white">
+                <WhatsAppIcon className="size-4" /> Consultar por WhatsApp
               </a>
             </div>
-            <dl className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              <Fact label="Inicio" value={start} />
-              <Fact label="Duración" value={course.duration} />
-              <Fact label="Horario" value={course.schedule} />
-              <Fact label="Inversión" value={price} />
-            </dl>
-          </Reveal>
-        </div>
-        <Reveal delay={0.15} y={60}>
-          <div className="shine relative mx-auto aspect-[4/3] w-full max-w-xl overflow-hidden rounded-[2rem] bg-white shadow-[0_50px_90px_-50px_rgba(13,40,79,0.55)] ring-1 ring-ink/80">
-            <ImageReveal className="absolute inset-0">
-              <CourseImage src={course.image_url} title={course.title} sizes="(min-width: 768px) 45vw, 100vw" eager label={course.title} />
-            </ImageReveal>
           </div>
         </Reveal>
       </section>
-
-      <div className="container-page">
-        {course.objectives.length > 0 && (
-          <Block eyebrow="Objetivos" title="Lo que vas a lograr">
-            <RevealGroup className="grid gap-3 sm:grid-cols-2">
-              {course.objectives.map((objective) => (
-                <RevealItem key={objective}>
-                  <div className="flex h-full gap-3 rounded-2xl bg-white p-5">
-                    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-orange-soft text-orange">
-                      <CheckIcon />
-                    </span>
-                    <p className="text-sm leading-relaxed text-ink/75">{objective}</p>
-                  </div>
-                </RevealItem>
-              ))}
-            </RevealGroup>
-          </Block>
-        )}
-
-        {(course.audience || course.requirements.length > 0) && (
-          <Block eyebrow="Perfil" title="¿A quién va dirigido?">
-            <div className="grid gap-4 sm:grid-cols-2">
-              {course.audience && (
-                <div className="rounded-[var(--radius-card)] bg-navy p-7 text-white">
-                  <p className="eyebrow !text-orange">Dirigido a</p>
-                  <p className="mt-3 whitespace-pre-line leading-relaxed text-white/85">{course.audience}</p>
-                </div>
-              )}
-              {course.requirements.length > 0 && (
-                <div className="rounded-[var(--radius-card)] bg-white p-7">
-                  <p className="eyebrow">Requisitos</p>
-                  <ul className="mt-3 space-y-2 text-ink/75">
-                    {course.requirements.map((req) => (
-                      <li key={req} className="flex gap-2">
-                        <span aria-hidden className="text-orange">●</span>
-                        {req}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </Block>
-        )}
-
-        {course.modules.length > 0 && (
-          <Block eyebrow="Temario" title="Módulos del programa">
-            <ol className="divide-y divide-line overflow-hidden rounded-[var(--radius-card)] bg-white">
-              {course.modules.map((mod, i) => (
-                <li key={`${mod.title}-${i}`}>
-                  <details className="group px-6 py-5 [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer list-none items-center gap-5">
-                      <span className="text-sm font-bold tabular-nums text-orange">{String(i + 1).padStart(2, "0")}</span>
-                      <span className="flex-1 font-semibold text-navy">{mod.title}</span>
-                      {mod.description && (
-                        <span aria-hidden className="text-xl text-ink/40 transition-transform duration-300 group-open:rotate-45">
-                          +
-                        </span>
-                      )}
-                    </summary>
-                    {mod.description && <p className="mt-3 whitespace-pre-line pl-10 text-sm leading-relaxed text-ink/65">{mod.description}</p>}
-                  </details>
-                </li>
-              ))}
-            </ol>
-          </Block>
-        )}
-
-        {teacher && (
-          <Block eyebrow="Ponente" title="Quién te acompaña">
-            <div className="flex flex-col gap-6 rounded-[var(--radius-card)] bg-white p-6 sm:flex-row sm:items-center">
-              <div className="relative size-32 shrink-0 overflow-hidden rounded-3xl">
-                {teacher.photo_url ? (
-                  <Image src={teacher.photo_url} alt={teacher.name} fill sizes="128px" className="object-cover" />
-                ) : (
-                  <CoverArt seed={teacher.name} />
-                )}
-              </div>
-              <div>
-                <p className="text-xl font-bold text-navy">{teacher.name}</p>
-                {teacher.headline && <p className="text-sm font-medium text-orange">{teacher.headline}</p>}
-                {teacher.bio && <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-ink/65">{teacher.bio}</p>}
-              </div>
-            </div>
-          </Block>
-        )}
-
-        <section className="border-t border-line py-14 md:py-24">
-          <div className="text-center">
-            <p className="eyebrow">Inversión</p>
-            <RevealText text="Precio, pagos" accent="y lo que incluye." className="mt-3 text-3xl font-bold tracking-tight md:text-5xl" />
-          </div>
-          <div className="mx-auto mt-14 max-w-5xl">
-            <PricingFan cards={pricing} />
-          </div>
-        </section>
-
-        {(course.certificate || (course.brief_public && course.brief_url)) && (
-          <Block eyebrow="Certificación" title="Al finalizar">
-            <div className="rounded-[var(--radius-card)] bg-white p-7">
-              {course.certificate && <p className="whitespace-pre-line leading-relaxed text-ink/75">{course.certificate}</p>}
-              {course.brief_public && course.brief_url && (
-                <a
-                  href={course.brief_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-paper px-5 py-2.5 text-sm font-semibold text-navy transition-colors hover:bg-orange hover:text-white"
-                >
-                  Descargar brief del programa ↓
-                </a>
-              )}
-            </div>
-          </Block>
-        )}
-
-        <Reveal>
-          <div className="mt-6 flex flex-col items-start justify-between gap-6 rounded-[2rem] bg-navy p-8 text-white md:flex-row md:items-center md:p-12">
-            <div>
-              <p className="text-2xl font-bold tracking-tight md:text-3xl">¿Te interesa {course.title}?</p>
-              <p className="mt-2 text-white/65">Solicita tu reserva y te confirmamos disponibilidad.</p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              {!course.coming_soon && (
-                <Link
-                  href={reserveHref}
-                  className="rounded-full bg-orange px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-white hover:text-navy"
-                >
-                  Solicitar reserva
-                </Link>
-              )}
-              <WhatsAppLink href={whatsapp} tone="dark">
-                Consultar por WhatsApp
-              </WhatsAppLink>
-            </div>
-          </div>
-        </Reveal>
-      </div>
     </>
   );
 }

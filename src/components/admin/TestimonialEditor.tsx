@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { deleteTestimonial, saveTestimonial } from "@/actions/admin/content";
 import type { Testimonial } from "@/lib/types";
 import { MediaInput } from "./MediaInput";
-import { ConfirmForm, FormMessage, SubmitButton, TextArea, TextInput, Toggle, useFormAction } from "./ui";
+import { ConfirmForm, FormMessage, Label, SubmitButton, TextArea, TextInput, Toggle, useFormAction } from "./ui";
 
-export function TestimonialEditor({ testimonial, onSaved }: { testimonial?: Testimonial; onSaved?: () => void }) {
+type CourseOption = { id: string; title: string };
+
+export function TestimonialEditor({ testimonial, courses, onSaved }: { testimonial?: Testimonial; courses: CourseOption[]; onSaved?: () => void }) {
   const { state, onSubmit, pending } = useFormAction(saveTestimonial);
 
   useEffect(() => {
@@ -19,7 +21,18 @@ export function TestimonialEditor({ testimonial, onSaved }: { testimonial?: Test
       <form onSubmit={onSubmit} className="grid gap-4 md:grid-cols-2">
         {t && <input type="hidden" name="id" value={t.id} />}
         <TextInput label="Nombre" name="name" defaultValue={t?.name} required />
-        <TextInput label="Programa" name="course" defaultValue={t?.course ?? ""} />
+        <TextInput label="Ciudad o programa" name="course" defaultValue={t?.course ?? ""} hint="Se muestra bajo el nombre (ej. Quito)" />
+        <div className="md:col-span-2">
+          <Label htmlFor={`course_id-${t?.id ?? "nuevo"}`}>¿Dónde se muestra?</Label>
+          <select id={`course_id-${t?.id ?? "nuevo"}`} name="course_id" defaultValue={t?.course_id ?? ""} className="field">
+            <option value="">Página de inicio</option>
+            {courses.map((c) => (
+              <option key={c.id} value={c.id}>
+                Página del programa: {c.title}
+              </option>
+            ))}
+          </select>
+        </div>
         <TextArea label="Testimonio" name="quote" defaultValue={t?.quote} rows={3} className="md:col-span-2" required />
         <div className="md:col-span-2">
           <MediaInput name="photo_url" label="Foto (opcional)" folder="testimonios" defaultValue={t?.photo_url} />
@@ -43,7 +56,7 @@ export function TestimonialEditor({ testimonial, onSaved }: { testimonial?: Test
   );
 }
 
-export function NewTestimonialEditor() {
+export function NewTestimonialEditor({ courses }: { courses: CourseOption[] }) {
   const [version, setVersion] = useState(0);
-  return <TestimonialEditor key={version} onSaved={() => setVersion((v) => v + 1)} />;
+  return <TestimonialEditor key={version} courses={courses} onSaved={() => setVersion((v) => v + 1)} />;
 }
