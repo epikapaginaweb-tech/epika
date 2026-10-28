@@ -6,6 +6,7 @@ import { WhatsAppLink } from "@/components/site/Buttons";
 import type { CatalogCardData } from "@/components/site/CatalogCard";
 import { CatalogView } from "@/components/site/CatalogView";
 import { CoverArt } from "@/components/site/CoverArt";
+import { courseCover } from "@/lib/covers";
 import { TAGS, getCourses, getSettings } from "@/lib/data";
 import { CATEGORIES, CATEGORY_LABEL, type Course } from "@/lib/types";
 import { whatsappUrl } from "@/lib/whatsapp";
@@ -21,7 +22,7 @@ function toCatalog(course: Course): CatalogCardData {
   return {
     slug: course.slug,
     title: course.title,
-    image: course.image_url,
+    image: courseCover(course),
     categoryKey: category,
     categoryLabel: CATEGORY_LABEL[category],
     rating: Number(course.rating ?? 5),

@@ -13,6 +13,7 @@ import { Sticker, type StickerName } from "@/components/site/Sticker";
 import { TestimonialMarquee } from "@/components/site/TestimonialMarquee";
 import { CheckIcon, WhatsAppIcon } from "@/components/site/icons";
 import { TAGS, getCourse, getSettings, getTestimonials } from "@/lib/data";
+import { courseCover } from "@/lib/covers";
 import { MODALITY_LABEL, formatDate, formatPrice } from "@/lib/format";
 import { courseMessage, whatsappUrl } from "@/lib/whatsapp";
 
@@ -62,6 +63,7 @@ async function CourseView({ slug }: { slug: string }) {
   const soon = course.coming_soon;
   const teacher = course.teacher;
   const brochure = course.brief_public && course.brief_url;
+  const cover = courseCover(course);
   const certificateLabel = course.certificate?.split("\n")[0]?.trim() || null;
   const courseTestimonials = testimonials.filter((t) => t.course_id === course.id);
 
@@ -96,30 +98,45 @@ async function CourseView({ slug }: { slug: string }) {
 
       {/* Portada del curso */}
       <section className="container-page pt-6 md:pt-8">
-        <div className="relative isolate flex min-h-[22rem] flex-col justify-between overflow-hidden rounded-[2.25rem] bg-[#1b0f3a] p-7 text-white md:min-h-[27rem] md:p-12">
-          <div className="absolute inset-0 -z-10">
-            <CourseImage src={course.image_url} title={course.title} sizes="100vw" eager label="" seed={course.title} className="opacity-80" />
-          </div>
-          <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/45 to-black/10" />
-          <div className="max-w-xl">
-            <Link href="/programas" className="text-xs font-semibold text-white/60 hover:text-white">
-              ← Todos los programas
-            </Link>
-            <p className="mt-6 text-sm text-white/85">{label}</p>
-            <h1 className="bolder mt-1 text-4xl font-bold leading-[0.98] md:text-6xl">{course.title}</h1>
-            {brochure && (
-              <div className="mt-6">
-                <p className="text-xs text-white/70">Descargar</p>
-                <a href={brochure} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block rounded-full bg-orange px-5 py-1.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5">
-                  Brochure
-                </a>
+        <div className="relative isolate grid min-h-[22rem] items-center gap-8 overflow-hidden rounded-[2.25rem] bg-[#140a2e] p-7 text-white md:min-h-[27rem] md:grid-cols-[1fr_auto] md:p-12">
+          {course.image_url ? (
+            // Foto propia del programa (desde el panel): va de fondo.
+            <>
+              <div className="absolute inset-0 -z-10">
+                <CourseImage src={course.image_url} title={course.title} sizes="100vw" eager label="" seed={course.title} className="opacity-80" />
+              </div>
+              <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/45 to-black/10" />
+            </>
+          ) : (
+            <span aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(80%_120%_at_85%_50%,#5b2ca0_0%,#2a1460_38%,#140a2e_75%)]" />
+          )}
+          <div className="flex h-full max-w-xl flex-col justify-between gap-8">
+            <div>
+              <Link href="/programas" className="text-xs font-semibold text-white/60 hover:text-white">
+                ← Todos los programas
+              </Link>
+              <p className="mt-6 text-sm text-white/85">{label}</p>
+              <h1 className="bolder mt-1 text-4xl font-bold leading-[0.98] md:text-6xl">{course.title}</h1>
+              {brochure && (
+                <div className="mt-6">
+                  <p className="text-xs text-white/70">Descargar</p>
+                  <a href={brochure} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block rounded-full bg-orange px-5 py-1.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5">
+                    Brochure
+                  </a>
+                </div>
+              )}
+            </div>
+            {start && (
+              <div>
+                <p className="text-sm text-white/80">Inicio de clases</p>
+                <p className="bolder text-3xl font-bold capitalize md:text-4xl">{start.replace(/\./g, "")}</p>
               </div>
             )}
           </div>
-          {start && (
-            <div className="mt-8 self-end text-right">
-              <p className="text-sm text-white/80">Inicio de clases</p>
-              <p className="bolder text-3xl font-bold capitalize md:text-4xl">{start.replace(/\./g, "")}</p>
+          {!course.image_url && cover && (
+            // Portada del brochure como tarjeta a la derecha.
+            <div className="relative mx-auto aspect-[910/1287] w-48 rotate-3 overflow-hidden rounded-[1.5rem] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)] md:w-60">
+              <Image src={cover} alt={`Portada del brochure de ${course.title}`} fill sizes="240px" priority className="object-cover" />
             </div>
           )}
         </div>

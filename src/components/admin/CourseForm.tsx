@@ -132,7 +132,7 @@ export function CourseForm({ course, teachers }: Props) {
       <Card title="Publicación">
         <div className="grid gap-3 md:grid-cols-3">
           <Toggle name="visible" label="Visible en el sitio" hint="Si está apagado, el programa queda oculto" defaultChecked={course?.visible ?? false} />
-          <Toggle name="featured" label="Destacado" hint="Aparece primero en el inicio" defaultChecked={course?.featured} />
+          <Toggle name="featured" label="Promoción" hint="Va al centro del abanico del inicio con el aviso «Promoción». Actívalo en un solo programa" defaultChecked={course?.featured} />
           <TextInput label="Orden" name="sort" type="number" defaultValue={course?.sort ?? 0} hint="Menor = primero" />
         </div>
       </Card>

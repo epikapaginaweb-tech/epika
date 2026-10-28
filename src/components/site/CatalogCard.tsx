@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CourseImage } from "./CourseImage";
 
@@ -30,16 +31,12 @@ function Stars({ value }: { value: number }) {
   );
 }
 
-/** Sello pequeño «Hecho en Ecuador» (se activa/desactiva por programa en el panel). */
+/** Logo del aval (El Nuevo Ecuador · Ministerio del Trabajo); se activa/desactiva por programa en el panel. */
 function EcuadorBadge() {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-paper py-1 pl-1 pr-2.5 text-[0.62rem] font-bold uppercase leading-none tracking-wide text-navy">
-      <span aria-hidden className="relative size-4 overflow-hidden rounded-full ring-1 ring-black/5">
-        <span className="absolute inset-x-0 top-0 h-1/2 bg-[#ffdd00]" />
-        <span className="absolute inset-x-0 top-1/2 h-1/4 bg-[#034ea2]" />
-        <span className="absolute inset-x-0 bottom-0 h-1/4 bg-[#ed1c24]" />
-      </span>
-      Ecuador
+    <span className="inline-flex items-center" title="Con el aval del Ministerio del Trabajo">
+      <Image src="/brand/aval-ecuador.png" alt="Aval: El Nuevo Ecuador, Ministerio del Trabajo" width={475} height={74} className="logo-day h-[0.95rem] w-auto" />
+      <Image src="/brand/aval-ecuador-light.png" alt="" width={475} height={74} className="logo-night h-[0.95rem] w-auto" />
     </span>
   );
 }
@@ -53,7 +50,7 @@ export function CatalogCard({ course }: { course: CatalogCardData }) {
     <>
       <div className="relative aspect-[16/10] overflow-hidden rounded-[1.15rem] bg-navy">
         <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105">
-          <CourseImage src={course.image} title={course.title} sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw" seed={course.title} label={course.title} />
+          <CourseImage src={course.image} title={course.title} sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw" seed={course.title} label={course.title} className="object-[center_28%]" />
         </div>
       </div>
       <div className="flex flex-1 flex-col px-2 pb-2 pt-4">
@@ -69,14 +66,14 @@ export function CatalogCard({ course }: { course: CatalogCardData }) {
             ))}
           </div>
         )}
-        <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+        <div className="mt-auto flex items-center justify-between gap-2 pt-5">
           {course.showEcuador ? <EcuadorBadge /> : <span />}
           {!course.comingSoon && (
             <Link
               href={href}
               target="_blank"
               rel="noopener"
-              className="rounded-full bg-navy px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-orange"
+              className="shrink-0 whitespace-nowrap rounded-full bg-navy px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-orange"
             >
               Más información
             </Link>

@@ -14,6 +14,7 @@ import { Sticker, type StickerName } from "@/components/site/Sticker";
 import { StickySteps } from "@/components/site/StickySteps";
 import { TestimonialMarquee } from "@/components/site/TestimonialMarquee";
 import { toCardData } from "@/lib/course-view";
+import { courseCover } from "@/lib/covers";
 import { TAGS, getCourses, getFaqs, getSettings, getTestimonials } from "@/lib/data";
 import type { CourseWithTeacher } from "@/lib/types";
 import { whatsappUrl } from "@/lib/whatsapp";
@@ -37,17 +38,32 @@ const STEPS = [
   { title: "Recibe tus accesos", text: "Te enviamos tus credenciales institucionales por WhatsApp para que puedas acceder al campus virtual." },
 ];
 
-// El centro del abanico muestra el programa destacado (promoción / programa estrella).
-function fanItems(courses: CourseWithTeacher[], promoLabel: string): FanItem[] {
-  const center = Math.floor(FAN_SIZE / 2);
-  const featured = courses.find((c) => c.featured);
-  const rest = courses.filter((c) => c !== featured && !c.coming_soon);
-  let next = 0;
 
-  return Array.from({ length: FAN_SIZE }, (_, i): FanItem => {
-    const course = i === center ? featured : rest[next++];
+/**
+ * Abanico de la portada: solo programas habilitados (visibles y no «Próximamente»).
+ * Al centro va el programa que marques como «Promoción» en el panel, con su aviso;
+ * si no hay ninguno, va el primero sin aviso. Los demás se reparten a los lados.
+ */
+function fanItems(courses: CourseWithTeacher[], promoLabel: string): FanItem[] {
+  const open = courses.filter((c) => !c.coming_soon);
+  const promo = open.find((c) => c.featured);
+  const ordered = promo ? [promo, ...open.filter((c) => c !== promo)] : open;
+  const size = Math.min(FAN_SIZE, Math.max(3, ordered.length));
+  const center = Math.floor(size / 2);
+
+  const slots: (CourseWithTeacher | undefined)[] = Array.from({ length: size }, () => undefined);
+  slots[center] = ordered[0];
+  let left = center - 1;
+  let right = center + 1;
+  for (let k = 1; k < ordered.length; k++) {
+    if (right < size && (k % 2 === 1 || left < 0)) slots[right++] = ordered[k];
+    else if (left >= 0) slots[left--] = ordered[k];
+  }
+
+  return slots.map((course, i): FanItem => {
     if (course) {
       const card = toCardData(course);
+      const isPromo = course === promo;
       return {
         info: {
           title: course.title,
@@ -57,15 +73,15 @@ function fanItems(courses: CourseWithTeacher[], promoLabel: string): FanItem[] {
         tag: i === center ? "" : card.category,
         key: course.id,
         title: course.title,
-        image: course.image_url ?? FAN_PHOTOS[i],
+        image: courseCover(course) ?? FAN_PHOTOS[i % FAN_PHOTOS.length],
         href: `/programas/${course.slug}`,
-        badge: i === center ? promoLabel : undefined,
+        badge: isPromo ? promoLabel : undefined,
       };
     }
     return {
       key: `foto-${i}`,
       title: "Épika Academy",
-      image: FAN_PHOTOS[i],
+      image: FAN_PHOTOS[i % FAN_PHOTOS.length],
       tag: "",
       href: "/programas",
       info: { title: "Épika Academy", chips: ["100% virtual"], cta: "Ver programas" },
