@@ -6,7 +6,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   campusUrl: "https://campusvirtual.epika.education/",
   promoLabel: "Promoción",
   countryCode: "593",
-  email: "epikacademiadecapacitacion@gmail.com",
+  email: "epikaacademiadecapacitacion@gmail.com",
   phone: "",
   address: "",
   hours: "",
@@ -18,7 +18,9 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     linkedin: "",
     youtube: "",
   },
-  bankAccounts: [],
+  bankAccounts: [
+    { bank: "Produbanco", holder: "EPIKACADEMY S.A.S", idNumber: "0691786832001", accountType: "", account: "12006889986" },
+  ],
   paymentNote:
     "Realiza la transferencia bancaria indicando tu nombre completo y el programa. Luego sube el comprobante aquí mismo.",
   hero: {

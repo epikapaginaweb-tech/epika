@@ -338,6 +338,12 @@ const ENTRIES: [string, string][] = [
   ["Elige un programa para inscribirte.", "Choose a program to enroll."],
   ["Desde cada programa encontrarás el botón «Inscríbete».", "You'll find the «Enroll» button on each program page."],
   ["Ver el programa", "View the program"],
+  // Datos y seminario
+  ["Cuenta para transferir", "Account for transfers"],
+  ["Número de cuenta", "Account number"],
+  ["Sesiones del", "Sessions of the"],
+  ["Es un solo pago: cancelas el valor total por transferencia y tu cupo queda asegurado. ¡Así de simple!", "It's a single payment: you pay the full price by bank transfer and your spot is secured. That simple!"],
+  ["Épika te da un plan acumulativo: vas abonando a tu programa en cuotas, a tu ritmo, hasta completar el valor. Escríbenos y lo armamos contigo.", "Épika gives you a cumulative plan: you pay toward your program in installments, at your pace, until it's complete. Message us and we'll set it up with you."],
 ];
 
 const MONTHS: Record<string, string> = {
@@ -347,6 +353,8 @@ const MONTHS: Record<string, string> = {
 
 const UNITS: [RegExp, string][] = [
   [/\bMódulos\b/g, "Modules"],
+  [/\bsesión\b/gi, "session"],
+  [/\bSesión\b/g, "Session"],
   [/\bMódulo\b/g, "Module"],
   [/\bsemanas\b/gi, "weeks"],
   [/\bsemana\b/gi, "week"],

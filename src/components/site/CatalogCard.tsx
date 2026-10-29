@@ -44,7 +44,8 @@ function EcuadorBadge() {
 /** Tarjeta modular del catálogo. «Más información» abre la página del programa en otra pestaña. */
 export function CatalogCard({ course }: { course: CatalogCardData }) {
   const href = `/programas/${course.slug}`;
-  const facts = [course.modules > 0 && `${course.modules} ${course.modules === 1 ? "Módulo" : "Módulos"}`, course.duration].filter(Boolean) as string[];
+  const unit = course.categoryKey === "seminario" ? ["sesión", "sesiones"] : ["Módulo", "Módulos"];
+  const facts = [course.modules > 0 && `${course.modules} ${course.modules === 1 ? unit[0] : unit[1]}`, course.duration].filter(Boolean) as string[];
 
   const body = (
     <>

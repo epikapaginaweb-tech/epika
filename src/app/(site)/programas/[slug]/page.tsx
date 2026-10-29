@@ -37,8 +37,8 @@ export async function generateMetadata({ params }: PageProps<"/programas/[slug]"
 const KIND_LABEL: Record<string, string> = { programa: "Programa", seminario: "Seminario", otro: "Taller" };
 // Los PNG traen distinto margen transparente: estos tamaños los igualan visualmente.
 const ICON_SIZE: Partial<Record<StickerName, number>> = { envivo: 84, certificado: 150, compu: 96 };
-const DEFAULT_CASH = "Pagas el valor total del programa en un solo pago por transferencia bancaria.";
-const DEFAULT_CREDIT = "Divides el valor del programa en cuotas. Escríbenos y te explicamos el plan de pagos.";
+const DEFAULT_CASH = "Es un solo pago: cancelas el valor total por transferencia y tu cupo queda asegurado. ¡Así de simple!";
+const DEFAULT_CREDIT = "Épika te da un plan acumulativo: vas abonando a tu programa en cuotas, a tu ritmo, hasta completar el valor. Escríbenos y lo armamos contigo.";
 
 function Heading({ text, accent }: { text: string; accent: string }) {
   return <RevealText text={text} accent={accent} accentFont="script" className="bolder text-4xl font-bold leading-none md:text-5xl" />;
@@ -227,13 +227,13 @@ async function CourseView({ slug }: { slug: string }) {
       {/* Módulos */}
       {course.modules.length > 0 && (
         <section className="container-page py-6 md:py-8">
-          <Heading text="Módulos del" accent={kind === "seminario" ? "seminario" : "programa"} />
+          <Heading text={kind === "seminario" ? "Sesiones del" : "Módulos del"} accent={kind === "seminario" ? "seminario" : "programa"} />
           <ol className="mt-8 divide-y divide-line overflow-hidden rounded-[2rem] bg-white">
             {course.modules.map((mod, i) => (
               <li key={`${mod.title}-${i}`}>
                 <details className="group px-6 py-5 [&_summary::-webkit-details-marker]:hidden">
                   <summary className="flex cursor-pointer list-none items-center gap-5">
-                    <span className="text-sm font-bold tabular-nums text-orange">Módulo {i + 1}</span>
+                    <span className="text-sm font-bold tabular-nums text-orange">{kind === "seminario" ? "Sesión" : "Módulo"} {i + 1}</span>
                     <span className="flex-1 font-semibold text-navy">{mod.title}</span>
                     {mod.description && (
                       <span aria-hidden className="text-xl text-ink/40 transition-transform duration-300 group-open:rotate-45">

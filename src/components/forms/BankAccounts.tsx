@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import type { BankAccount } from "@/lib/types";
 
@@ -27,20 +28,32 @@ function CopyValue({ label, value }: { label: string; value: string }) {
   );
 }
 
+// Logos de bancos conocidos (se muestran junto a la cuenta).
+const BANK_LOGOS: { match: RegExp; src: string }[] = [{ match: /produbanco/i, src: "/brand/bancos/produbanco.png" }];
+
 export function BankAccounts({ accounts }: { accounts: BankAccount[] }) {
   return (
     <div className="grid gap-3">
-      {accounts.map((account, i) => (
-        <div key={`${account.bank}-${i}`} className="rounded-2xl border border-line bg-white px-5 py-3">
-          <p className="py-2 text-sm font-bold text-orange">{account.bank || "Cuenta bancaria"}</p>
-          <div className="divide-y divide-line">
-            <CopyValue label="Titular" value={account.holder} />
-            <CopyValue label="Cédula / RUC" value={account.idNumber} />
-            <CopyValue label="Tipo de cuenta" value={account.accountType} />
-            <CopyValue label="Número de cuenta" value={account.account} />
+      {accounts.map((account, i) => {
+        const logo = BANK_LOGOS.find((b) => b.match.test(account.bank))?.src;
+        return (
+          <div key={`${account.bank}-${i}`} className="rounded-2xl border border-line bg-white px-5 py-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-navy">Cuenta para transferir</p>
+                <p className="text-xs font-semibold text-orange">{account.bank || "Cuenta bancaria"}</p>
+              </div>
+              {logo && <Image src={logo} alt={account.bank} width={334} height={334} className="size-14 shrink-0 rounded-xl" />}
+            </div>
+            <div className="mt-2 divide-y divide-line">
+              <CopyValue label="Número de cuenta" value={account.account} />
+              <CopyValue label="Titular" value={account.holder} />
+              <CopyValue label="Cédula / RUC" value={account.idNumber} />
+              <CopyValue label="Tipo de cuenta" value={account.accountType} />
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

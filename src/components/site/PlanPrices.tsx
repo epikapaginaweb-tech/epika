@@ -32,16 +32,26 @@ export function PlanPrices({ plans }: { plans: Plan[] }) {
           </button>
           <AnimatePresence>
             {open === i && plan.note && (
+              // Burbuja tipo mensaje de WhatsApp
               <motion.div
                 role="tooltip"
-                className="absolute bottom-full right-0 z-30 mb-3 w-60 rounded-[1.1rem] rounded-br-[0.35rem] bg-navy px-4 py-3 text-left text-xs leading-relaxed text-white shadow-xl"
-                initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                className="absolute bottom-full right-0 z-30 mb-3 w-64 origin-bottom-right"
+                initial={{ opacity: 0, y: 10, scale: 0.85 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 6, scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 380, damping: 24 }}
+                exit={{ opacity: 0, y: 6, scale: 0.92 }}
+                transition={{ type: "spring", stiffness: 420, damping: 24 }}
               >
-                <span className="mb-1 block font-bold text-orange">¿Cómo funciona?</span>
-                {plan.note}
+                <div className="relative rounded-2xl rounded-br-sm bg-[#dcf8c6] px-3.5 pb-1.5 pt-2.5 text-left shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)]">
+                  <span className="block text-[0.72rem] font-bold text-[#128c4a]">Épika Academy</span>
+                  <span className="mt-0.5 block text-[0.82rem] leading-snug text-[#111b21]">{plan.note}</span>
+                  <span className="mt-1 flex items-center justify-end gap-1 text-[0.62rem] text-[#667781]">
+                    {plan.label}
+                    <svg aria-hidden viewBox="0 0 16 11" className="h-2.5 w-3.5 text-[#53bdeb]" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 6l3 3 6-7M6 9l1 1 7-8" />
+                    </svg>
+                  </span>
+                  <span aria-hidden className="absolute -bottom-[6px] right-0 size-3 bg-[#dcf8c6]" style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%)" }} />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
