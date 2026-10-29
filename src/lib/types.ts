@@ -50,6 +50,7 @@ export type Course = {
   duration: string | null;
   schedule: string | null;
   start_date: string | null;
+  end_date: string | null;
   price: number | null;
   currency: string;
   payment_methods: string[];

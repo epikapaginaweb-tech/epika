@@ -88,6 +88,7 @@ export function CourseForm({ course, teachers }: Props) {
             </select>
           </div>
           <TextInput label="Fecha de inicio" name="start_date" type="date" defaultValue={course?.start_date ?? ""} />
+          <TextInput label="Fecha de culminación" name="end_date" type="date" defaultValue={course?.end_date ?? ""} />
           <TextInput label="Duración" name="duration" defaultValue={course?.duration ?? ""} placeholder="ej. 8 semanas · 24 horas" />
           <TextInput label="Horario" name="schedule" defaultValue={course?.schedule ?? ""} placeholder="ej. Sábados 9:00 a.m. – 12:00 m.d." />
         </div>

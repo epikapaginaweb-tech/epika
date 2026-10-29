@@ -13,6 +13,7 @@ export type CatalogCardData = {
   duration: string | null;
   showEcuador: boolean;
   comingSoon: boolean;
+  dates: string | null;
 };
 
 function Stars({ value }: { value: number }) {
@@ -60,6 +61,7 @@ export function CatalogCard({ course }: { course: CatalogCardData }) {
         <div className="mt-1.5">
           <Stars value={course.rating} />
         </div>
+        {course.dates && <p className="mt-2 text-xs font-semibold capitalize text-navy/70">{course.dates}</p>}
         {facts.length > 0 && (
           <div className="mt-3 flex items-center justify-between gap-3 text-sm text-ink/55">
             {facts.map((fact) => (

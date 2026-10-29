@@ -37,10 +37,10 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   ],
   stats: [{ value: "500", prefix: "+", suffix: "", label: "Profesionales certificados" }],
   about: {
-    intro: "",
+    intro: "Épika es una academia de capacitación que impulsa el crecimiento personal y profesional. Brindamos formación de calidad para que cada persona descubra su potencial, se supere y lidere su futuro con confianza y propósito.",
     history: "",
-    mission: "",
-    vision: "",
+    mission: "Impulsar el crecimiento personal y profesional de cada estudiante a través de programas 100% virtuales, prácticos y actualizados, guiados por profesionales en ejercicio, para que aprenda haciendo, aplique lo aprendido desde el primer día y lidere su futuro con confianza y propósito.",
+    vision: "Ser la academia virtual de referencia en Ecuador y Latinoamérica en formación práctica en marketing digital, inteligencia artificial y gestión empresarial, reconocida por una comunidad de egresados que genera resultados reales en sus trabajos, emprendimientos y empresas.",
     methodology: [],
     pillars: [
       {

@@ -41,6 +41,7 @@ create table if not exists public.courses (
   duration text,
   schedule text,
   start_date date,
+  end_date date,
   price numeric(12, 2),
   currency text not null default 'USD',
   payment_methods text[] not null default '{}',

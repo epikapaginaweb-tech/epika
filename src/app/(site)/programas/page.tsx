@@ -7,6 +7,7 @@ import type { CatalogCardData } from "@/components/site/CatalogCard";
 import { CatalogView } from "@/components/site/CatalogView";
 import { CoverArt } from "@/components/site/CoverArt";
 import { courseCover } from "@/lib/covers";
+import { formatDate } from "@/lib/format";
 import { TAGS, getCourses, getSettings } from "@/lib/data";
 import { CATEGORIES, CATEGORY_LABEL, type Course } from "@/lib/types";
 import { whatsappUrl } from "@/lib/whatsapp";
@@ -16,6 +17,18 @@ export const metadata: Metadata = {
   description: "Explora el catálogo de programas de Épika Academy: modalidad, temario, instructores, fechas e inversión.",
   alternates: { canonical: "/programas" },
 };
+
+// «05 nov – 03 dic 2026» (o solo el inicio si no hay fecha de culminación).
+function dateRange(start: string | null, end: string | null) {
+  const full = (value: string | null) => formatDate(value, { day: "2-digit", month: "short", year: "numeric" })?.replace(/\./g, "") ?? null;
+  const from = full(start);
+  const to = full(end);
+  if (from && to) {
+    const sameYear = start?.slice(0, 4) === end?.slice(0, 4);
+    return `${sameYear ? from.replace(/\s*(de\s*)?\d{4}$/, "") : from} – ${to}`;
+  }
+  return from ? `Inicia ${from}` : null;
+}
 
 function toCatalog(course: Course): CatalogCardData {
   const category = course.category ?? "programa";
@@ -30,6 +43,7 @@ function toCatalog(course: Course): CatalogCardData {
     duration: course.duration,
     showEcuador: course.show_ecuador ?? true,
     comingSoon: course.coming_soon ?? false,
+    dates: dateRange(course.start_date, course.end_date),
   };
 }
 

@@ -344,6 +344,12 @@ const ENTRIES: [string, string][] = [
   ["Sesiones del", "Sessions of the"],
   ["Es un solo pago: cancelas el valor total por transferencia y tu cupo queda asegurado. ¡Así de simple!", "It's a single payment: you pay the full price by bank transfer and your spot is secured. That simple!"],
   ["Épika te da un plan acumulativo: vas abonando a tu programa en cuotas, a tu ritmo, hasta completar el valor. Escríbenos y lo armamos contigo.", "Épika gives you a cumulative plan: you pay toward your program in installments, at your pace, until it's complete. Message us and we'll set it up with you."],
+  // Nosotros y fechas
+  ["Culminación", "Ends"],
+  ["Fecha de culminación", "End date"],
+  ["Épika es una academia de capacitación que impulsa el crecimiento personal y profesional. Brindamos formación de calidad para que cada persona descubra su potencial, se supere y lidere su futuro con confianza y propósito.", "Épika is a training academy that drives personal and professional growth. We provide quality education so that every person discovers their potential, outdoes themselves and leads their future with confidence and purpose."],
+  ["Impulsar el crecimiento personal y profesional de cada estudiante a través de programas 100% virtuales, prácticos y actualizados, guiados por profesionales en ejercicio, para que aprenda haciendo, aplique lo aprendido desde el primer día y lidere su futuro con confianza y propósito.", "To drive the personal and professional growth of every student through 100% online, practical and up-to-date programs led by practicing professionals, so they learn by doing, apply what they learn from day one and lead their future with confidence and purpose."],
+  ["Ser la academia virtual de referencia en Ecuador y Latinoamérica en formación práctica en marketing digital, inteligencia artificial y gestión empresarial, reconocida por una comunidad de egresados que genera resultados reales en sus trabajos, emprendimientos y empresas.", "To be the leading online academy in Ecuador and Latin America for practical training in digital marketing, artificial intelligence and business management, recognized for a community of graduates who achieve real results in their jobs, ventures and companies."],
 ];
 
 const MONTHS: Record<string, string> = {

@@ -54,7 +54,9 @@ async function CourseView({ slug }: { slug: string }) {
 
   const price = formatPrice(course.price, course.currency);
   const credit = formatPrice(course.price_credit, course.currency);
-  const start = formatDate(course.start_date, { day: "2-digit", month: "short", year: "numeric" });
+  const dateFormat: Intl.DateTimeFormatOptions = { day: "2-digit", month: "short", year: "numeric" };
+  const start = formatDate(course.start_date, dateFormat);
+  const end = formatDate(course.end_date, dateFormat);
   const kind = course.category ?? "programa";
   const label = `${KIND_LABEL[kind] ?? "Programa"} ${course.modality === "virtual" ? "100% Virtual" : MODALITY_LABEL[course.modality]}`;
   const whatsapp = whatsappUrl(settings.whatsapp, courseMessage(course.title), settings.countryCode);
@@ -126,10 +128,20 @@ async function CourseView({ slug }: { slug: string }) {
                 </div>
               )}
             </div>
-            {start && (
-              <div>
-                <p className="text-sm text-white/80">Inicio de clases</p>
-                <p className="bolder text-3xl font-bold capitalize md:text-4xl">{start.replace(/\./g, "")}</p>
+            {(start || end) && (
+              <div className="flex flex-wrap gap-x-10 gap-y-4">
+                {start && (
+                  <div>
+                    <p className="text-sm text-white/80">Inicio de clases</p>
+                    <p className="bolder text-3xl font-bold capitalize md:text-4xl">{start.replace(/\./g, "")}</p>
+                  </div>
+                )}
+                {end && (
+                  <div>
+                    <p className="text-sm text-white/80">Culminación</p>
+                    <p className="bolder text-3xl font-bold capitalize text-white/85 md:text-4xl">{end.replace(/\./g, "")}</p>
+                  </div>
+                )}
               </div>
             )}
           </div>

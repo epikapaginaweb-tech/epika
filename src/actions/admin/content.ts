@@ -86,6 +86,7 @@ export async function saveCourse(_prev: FormState, fd: FormData): Promise<FormSt
     duration: nullable(fd, "duration"),
     schedule: nullable(fd, "schedule"),
     start_date: nullable(fd, "start_date"),
+    end_date: nullable(fd, "end_date"),
     price: number(fd, "price"),
     currency: text(fd, "currency") || "USD",
     payment_methods: lines(fd, "payment_methods"),

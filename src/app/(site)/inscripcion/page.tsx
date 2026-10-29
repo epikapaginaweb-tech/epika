@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { EnrollmentForm } from "@/components/forms/EnrollmentForm";
 import { RevealText } from "@/components/motion/RevealText";
 import { TAGS, getCourses, getSettings } from "@/lib/data";
-import { formatPrice } from "@/lib/format";
+import { formatDate, formatPrice } from "@/lib/format";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -36,6 +36,8 @@ async function Enrollment({ slug }: { slug: string | undefined }) {
   }
 
   const price = formatPrice(course.price, course.currency);
+  const start = formatDate(course.start_date);
+  const end = formatDate(course.end_date);
   return (
     <>
       <p className="mb-6 text-sm text-ink/60">
@@ -44,6 +46,18 @@ async function Enrollment({ slug }: { slug: string | undefined }) {
           <>
             {" "}
             · Plan contado <span className="font-bold text-orange">{price}</span>
+          </>
+        )}
+        {start && (
+          <>
+            {" "}
+            · Inicio <span className="font-semibold text-navy">{start}</span>
+          </>
+        )}
+        {end && (
+          <>
+            {" "}
+            · Culminación <span className="font-semibold text-navy">{end}</span>
           </>
         )}
       </p>
