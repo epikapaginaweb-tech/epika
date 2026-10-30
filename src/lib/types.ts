@@ -174,6 +174,7 @@ export type SiteSettings = {
     comingSoonSlogan: string;
   };
   motto: string;
+  mottoText: string;
   thanks: { title: string; text: string };
   privacy: string;
   seoDescription: string;

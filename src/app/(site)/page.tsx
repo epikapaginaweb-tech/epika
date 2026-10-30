@@ -249,7 +249,10 @@ export default async function HomePage() {
       {settings.motto && (
         <section className="container-page py-6 text-center md:py-8">
           <Reveal>
-            <p className="bolder mx-auto max-w-4xl text-balance text-3xl font-bold leading-tight text-navy md:text-5xl">{settings.motto}</p>
+            <h2 className="bolder mx-auto max-w-3xl text-balance text-2xl font-bold leading-tight text-navy md:text-4xl">{settings.motto}</h2>
+            {settings.mottoText && (
+              <p className="mx-auto mt-4 max-w-2xl text-balance text-base leading-relaxed text-ink/75 md:text-lg">{settings.mottoText}</p>
+            )}
           </Reveal>
         </section>
       )}

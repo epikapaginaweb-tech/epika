@@ -65,7 +65,8 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     showComingSoon: true,
     comingSoonSlogan: "Lo que se viene impulsará tu carrera al siguiente nivel. ¡Mantente atento!",
   },
-  motto: "Tu futuro no se espera, se construye. Empieza hoy.",
+  motto: "Épika, aprende en vivo. Crece de verdad.",
+  mottoText: "Épika es la academia virtual donde aprendes con expertos en clases en vivo por Zoom, practicas desde la primera sesión y llevas lo aprendido a tu trabajo o emprendimiento desde el primer día.",
   thanks: {
     title: "¡Gracias por tu compra!",
     text: "Recibimos tu comprobante. En un máximo de 24 horas validaremos el pago y te enviaremos tus credenciales del campus virtual y el enlace al grupo oficial de WhatsApp, donde compartiremos accesos a clases en vivo y comunicados.\n\n*Nota:* Si no recibes la información, contacta a nuestro equipo de soporte.",

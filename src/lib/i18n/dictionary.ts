@@ -370,7 +370,8 @@ const ENTRIES: [string, string][] = [
   // Frase, gracias y testimonios
   ["Testimonio anterior", "Previous testimonial"],
   ["Testimonio siguiente", "Next testimonial"],
-  ["Tu futuro no se espera, se construye. Empieza hoy.", "Your future isn't waited for, it's built. Start today."],
+  ["Épika, aprende en vivo. Crece de verdad.", "Épika: learn live. Grow for real."],
+  ["Épika es la academia virtual donde aprendes con expertos en clases en vivo por Zoom, practicas desde la primera sesión y llevas lo aprendido a tu trabajo o emprendimiento desde el primer día.", "Épika is the online academy where you learn from experts in live Zoom classes, practice from the very first session and take what you learn to your job or business from day one."],
   ["¡Gracias por tu compra!", "Thank you for your purchase!"],
 ];
 

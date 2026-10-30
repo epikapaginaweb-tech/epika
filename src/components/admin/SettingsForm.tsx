@@ -144,7 +144,10 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
       </Card>
 
       <Card title="Frase motivacional (Inicio)" description="Aparece centrada en el Inicio, antes de «¿Cómo funciona?». Si la dejas vacía, no se muestra.">
-        <TextArea label="Frase" name="motto" defaultValue={settings.motto} rows={2} />
+        <div className="grid gap-4">
+          <TextInput label="Frase (título)" name="motto" defaultValue={settings.motto} />
+          <TextArea label="Texto debajo" name="mottoText" defaultValue={settings.mottoText} rows={3} />
+        </div>
       </Card>
 
       <Card title="Mensaje al enviar el comprobante" description="Ventana que ve el estudiante cuando sube su comprobante de pago. Usa *texto* para negrita.">
