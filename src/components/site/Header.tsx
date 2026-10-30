@@ -20,7 +20,7 @@ function DesktopLinks({ pathname }: NavProps) {
         key={item.href}
         href={item.href}
         aria-current={active ? "page" : undefined}
-        className={`relative flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+        className={`nav-link relative flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
           active ? "text-navy" : "text-ink/60 hover:text-navy"
         }`}
       >
@@ -85,6 +85,7 @@ export function Header({ campusHref }: { campusHref: string }) {
   return (
     <>
       <motion.header
+        data-scrolled={scrolled || open ? "true" : "false"}
         animate={{ y: hidden && !open ? "-100%" : "0%" }}
         transition={{ duration: 0.35, ease: EASE_OUT }}
         className={`sticky top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-300 ${

@@ -8,11 +8,11 @@ function Card({ item, index }: { item: Item; index: number }) {
       <figcaption className="flex items-center gap-3">
         <span aria-hidden className="size-9 shrink-0 rounded-full" style={{ background: DOT_COLORS[index % DOT_COLORS.length] }} />
         <span>
-          <span className="bolder block text-lg font-bold leading-tight text-ink">{item.name}</span>
+          <span className="bolder block text-xl font-bold leading-tight text-black">{item.name}</span>
           {item.place && <span className="block text-sm text-ink/50">{item.place}</span>}
         </span>
       </figcaption>
-      <blockquote className="mt-4 text-sm leading-relaxed text-ink/80">{item.quote}</blockquote>
+      <blockquote className="mt-4 text-[0.95rem] leading-snug text-black/85">{item.quote}</blockquote>
     </figure>
   );
 }

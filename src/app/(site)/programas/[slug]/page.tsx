@@ -35,8 +35,6 @@ export async function generateMetadata({ params }: PageProps<"/programas/[slug]"
 }
 
 const KIND_LABEL: Record<string, string> = { programa: "Programa", seminario: "Seminario", otro: "Taller" };
-// Los PNG traen distinto margen transparente: estos tamaños los igualan visualmente.
-const ICON_SIZE: Partial<Record<StickerName, number>> = { envivo: 84, certificado: 150, compu: 96 };
 const DEFAULT_CASH = "Es un solo pago: cancelas el valor total por transferencia y tu cupo queda asegurado. ¡Así de simple!";
 const DEFAULT_CREDIT = "Épika te da un plan acumulativo: vas abonando a tu programa en cuotas, a tu ritmo, hasta completar el valor. Escríbenos y lo armamos contigo.";
 
@@ -67,7 +65,9 @@ async function CourseView({ slug }: { slug: string }) {
   const brochure = course.brief_public && course.brief_url;
   const cover = courseCover(course);
   const certificateLabel = course.certificate?.split("\n")[0]?.trim() || null;
-  const courseTestimonials = testimonials.filter((t) => t.course_id === course.id);
+  const own = testimonials.filter((t) => t.course_id === course.id);
+  // Si el programa aún no tiene testimonios propios, mostramos los generales para que la sección no quede vacía.
+  const courseTestimonials = own.length > 0 ? own : testimonials.filter((t) => !t.course_id);
 
   const plans = [
     price && { label: "Plan Contado", price, note: course.cash_note || DEFAULT_CASH },
@@ -99,61 +99,61 @@ async function CourseView({ slug }: { slug: string }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
 
       {/* Portada del curso */}
-      <section className="container-page pt-6 md:pt-8">
-        <div className="relative isolate grid min-h-[22rem] items-center gap-8 overflow-hidden rounded-[2.25rem] bg-[#140a2e] p-7 text-white md:min-h-[27rem] md:grid-cols-[1fr_auto] md:p-12">
+      <section data-dark-hero>
+        {/* Igual que el moodboard: imagen completa de borde a borde (pasa por detrás del menú), título y brochure arriba a la izquierda, fechas abajo a la derecha. */}
+        <div className="relative isolate -mt-18 overflow-hidden rounded-b-[2.5rem] bg-[#140a2e] text-white">
           {course.image_url ? (
-            // Foto propia del programa (desde el panel): va de fondo.
-            <>
-              <div className="absolute inset-0 -z-10">
-                <CourseImage src={course.image_url} title={course.title} sizes="100vw" eager label="" seed={course.title} className="opacity-80" />
-              </div>
-              <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-black/80 via-black/45 to-black/10" />
-            </>
-          ) : (
-            <span aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(80%_120%_at_85%_50%,#5b2ca0_0%,#2a1460_38%,#140a2e_75%)]" />
-          )}
-          <div className="flex h-full max-w-xl flex-col justify-between gap-8">
-            <div>
-              <Link href="/programas" className="text-xs font-semibold text-white/60 hover:text-white">
-                ← Todos los programas
-              </Link>
-              <p className="mt-6 text-sm text-white/85">{label}</p>
-              <h1 className="bolder mt-1 text-4xl font-bold leading-[0.98] md:text-6xl">{course.title}</h1>
-              {brochure && (
-                <div className="mt-6">
-                  <p className="text-xs text-white/70">Descargar</p>
-                  <a href={brochure} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block rounded-full bg-orange px-5 py-1.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5">
-                    Brochure
-                  </a>
-                </div>
-              )}
+            <div className="absolute inset-0 -z-10">
+              <CourseImage src={course.image_url} title={course.title} sizes="100vw" eager label="" seed={course.title} />
             </div>
-            {(start || end) && (
-              <div className="flex flex-wrap gap-x-10 gap-y-4">
-                {start && (
-                  <div>
-                    <p className="text-sm text-white/80">Inicio de clases</p>
-                    <p className="bolder text-3xl font-bold capitalize md:text-4xl">{start.replace(/\./g, "")}</p>
-                  </div>
-                )}
-                {end && (
-                  <div>
-                    <p className="text-sm text-white/80">Culminación</p>
-                    <p className="bolder text-3xl font-bold capitalize text-white/85 md:text-4xl">{end.replace(/\./g, "")}</p>
-                  </div>
-                )}
+          ) : (
+            cover && (
+              <div className="absolute inset-y-0 right-0 -z-10 w-full md:w-[70%] [mask-image:linear-gradient(to_right,transparent,black_28%)]">
+                <Image src={cover} alt={`Portada del brochure de ${course.title}`} fill sizes="(min-width: 768px) 70vw, 100vw" priority className="object-cover object-[center_62%]" />
+              </div>
+            )
+          )}
+          <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-[#140a2e] via-[#140a2e]/55 to-transparent" />
+          <span aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-t from-black/55 to-transparent" />
+          <span aria-hidden className="absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-black/50 to-transparent" />
+
+          <div className="container-page flex min-h-[30rem] flex-col justify-between pb-10 pt-28 md:min-h-[36rem] md:pb-12 md:pt-32">
+          <div className="max-w-xl">
+            <Link href="/programas" className="text-xs font-semibold text-white/60 hover:text-white">
+              ← Todos los programas
+            </Link>
+            <p className="mt-6 text-sm text-white/85">{label}</p>
+            <h1 className="bolder mt-1 text-4xl font-bold leading-[0.98] [text-shadow:0_2px_24px_rgba(0,0,0,0.45)] md:text-6xl">{course.title}</h1>
+            {brochure && (
+              <div className="mt-6">
+                <p className="text-xs text-white/70">Descargar</p>
+                <a href={brochure} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block rounded-full bg-orange px-5 py-1.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5">
+                  Brochure
+                </a>
               </div>
             )}
           </div>
-          {!course.image_url && cover && (
-            // Portada del brochure como tarjeta a la derecha.
-            <div className="relative mx-auto aspect-[910/1287] w-48 rotate-3 overflow-hidden rounded-[1.5rem] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)] md:w-60">
-              <Image src={cover} alt={`Portada del brochure de ${course.title}`} fill sizes="240px" priority className="object-cover" />
+
+          {(start || end) && (
+            <div className="mt-10 flex flex-wrap justify-end gap-x-10 gap-y-3 self-end text-right [text-shadow:0_2px_18px_rgba(0,0,0,0.55)]">
+              {start && (
+                <div>
+                  <p className="text-sm text-white/85">Inicio de clases</p>
+                  <p className="bolder text-3xl font-bold capitalize md:text-4xl">{start.replace(/\./g, "")}</p>
+                </div>
+              )}
+              {end && (
+                <div>
+                  <p className="text-sm text-white/85">Culminación</p>
+                  <p className="bolder text-3xl font-bold capitalize text-white/90 md:text-4xl">{end.replace(/\./g, "")}</p>
+                </div>
+              )}
             </div>
           )}
+          </div>
         </div>
 
-        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="container-page mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           {soon ? (
             <span className="rounded-full bg-orange-soft px-7 py-3 text-sm font-bold text-[#b35f00]">Próximamente</span>
           ) : (
@@ -168,8 +168,8 @@ async function CourseView({ slug }: { slug: string }) {
       </section>
 
       {/* Acerca del programa + planes */}
-      <section className="container-page grid gap-10 py-12 md:grid-cols-[1.35fr_0.65fr] md:py-16">
-        <div>
+      <section className="container-page py-12 md:py-16">
+        <div className="mx-auto max-w-4xl">
           <Heading text="Acerca del" accent={kind === "seminario" ? "seminario" : "programa"} />
           {(course.summary || course.short_description) && (
             <Reveal>
@@ -192,20 +192,18 @@ async function CourseView({ slug }: { slug: string }) {
             </p>
           )}
         </div>
-        <div className="md:pt-3">
-          <PlanPrices plans={plans} />
-        </div>
       </section>
 
       {/* Lo que incluye */}
       <section className="container-page">
+        <div className="mx-auto max-w-4xl">
         <RevealGroup className="grid grid-cols-2 gap-6 rounded-[2rem] bg-white px-6 py-8 md:grid-cols-4">
           {highlights.map((item) => (
             <RevealItem key={item.label}>
               <div className="flex flex-col items-center text-center">
                 <span className="flex h-20 items-center justify-center">
                   {item.icon ? (
-                    <Sticker name={item.icon} size={ICON_SIZE[item.icon] ?? 96} float={false} />
+                    <Sticker name={item.icon} size={96} float={false} />
                   ) : (
                     <span className="font-display text-6xl leading-none text-navy">{item.big}</span>
                   )}
@@ -215,7 +213,15 @@ async function CourseView({ slug }: { slug: string }) {
             </RevealItem>
           ))}
         </RevealGroup>
+        </div>
       </section>
+
+      {/* Planes de pago (debajo de los iconos, centrados). Al pasar el cursor explica cada uno. */}
+      {plans.length > 0 && (
+        <section className="container-page pt-12 md:pt-14">
+          <PlanPrices plans={plans} className="justify-center" />
+        </section>
+      )}
 
       {/* Lo que aprenderás */}
       {course.objectives.length > 0 && (

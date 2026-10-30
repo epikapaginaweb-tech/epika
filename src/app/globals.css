@@ -53,8 +53,10 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  /* Solo tenemos Helvena Regular: el trazo simula la Helvena Bold del moodboard. */
   h1, h2, h3 {
     letter-spacing: -0.025em;
+    -webkit-text-stroke: 0.035em currentColor;
   }
 
   body {
@@ -89,10 +91,19 @@
 
   /* Negrita más marcada para títulos (solo tenemos Helvena Regular). */
   .bolder {
-    -webkit-text-stroke: 0.028em currentColor;
+    -webkit-text-stroke: 0.045em currentColor;
     letter-spacing: -0.015em;
     word-spacing: 0.08em;
   }
+  .font-bold:not(h1, h2, h3) {
+    -webkit-text-stroke: 0.022em currentColor;
+  }
+  .font-semibold:not(h1, h2, h3) {
+    -webkit-text-stroke: 0.012em currentColor;
+  }
+  .font-script,
+  .font-display,
+  [data-accent],
   .bolder .font-script,
   .bolder [data-accent] {
     -webkit-text-stroke: 0;
@@ -361,4 +372,23 @@ html[data-theme="night"] .field {
   background: var(--night-card);
   color: var(--night-text);
   border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Página del curso: el menú va sobre la imagen oscura (texto y logo en blanco) hasta que se hace scroll. */
+body:has([data-dark-hero]) header[data-scrolled="false"] .nav-link {
+  color: rgba(255, 255, 255, 0.78);
+}
+body:has([data-dark-hero]) header[data-scrolled="false"] .nav-link[aria-current="page"],
+body:has([data-dark-hero]) header[data-scrolled="false"] .nav-link:hover {
+  color: #ffffff;
+}
+body:has([data-dark-hero]) header[data-scrolled="false"] .logo-day {
+  display: none;
+}
+body:has([data-dark-hero]) header[data-scrolled="false"] .logo-night {
+  display: block;
+}
+html[data-theme="night"] .text-black,
+html[data-theme="night"] .text-black\/85 {
+  color: var(--night-text);
 }

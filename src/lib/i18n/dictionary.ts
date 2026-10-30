@@ -79,6 +79,7 @@ const ENTRIES: [string, string][] = [
   ["Completa el formulario en menos de un minuto.", "Fill in the form in under a minute."],
   ["Confirma tu pago", "Confirm your payment"],
   ["Transfiere y sube tu comprobante desde el sitio.", "Transfer the payment and upload your receipt right here."],
+  ["Transfiere y sube tu comprobante desde el sitio, o paga con PayPhone.", "Transfer and upload your receipt on the site, or pay with PayPhone."],
   ["Recibe tus accesos", "Get your access"],
   ["Te enviamos tu usuario y contraseña por WhatsApp para empezar.", "We send your username and password via WhatsApp so you can start."],
   ["Nuestros instructores", "Our instructors"],
@@ -248,6 +249,7 @@ const ENTRIES: [string, string][] = [
   ["funciona?", "does it work?"],
   ["Revisa el brochure, el instructor y la fecha de inicio.", "Check the brochure, the instructor and the start date."],
   ["Te enviamos tus credenciales institucionales por WhatsApp para que puedas acceder al campus virtual.", "We send your institutional credentials via WhatsApp so you can access the virtual campus."],
+  ["Sé parte de la experiencia Épika Regístrate hoy, asegura tu lugar y lleva tus habilidades al siguiente nivel.", "Be part of the Épika experience\nSign up today, secure your spot and take your skills to the next level."],
   ["Sé parte de la experiencia Épika. Regístrate hoy, asegura tu lugar y lleva tus habilidades al siguiente nivel.", "Be part of the Épika experience. Sign up today, secure your spot and take your skills to the next level."],
   ["Potencia tus habilidades, conecta y aprende.", "Boost your skills, connect and learn."],
   ["Experiencias especiales para completar tu perfil.", "Special experiences to round out your profile."],
@@ -350,6 +352,13 @@ const ENTRIES: [string, string][] = [
   ["Épika es una academia de capacitación que impulsa el crecimiento personal y profesional. Brindamos formación de calidad para que cada persona descubra su potencial, se supere y lidere su futuro con confianza y propósito.", "Épika is a training academy that drives personal and professional growth. We provide quality education so that every person discovers their potential, outdoes themselves and leads their future with confidence and purpose."],
   ["Impulsar el crecimiento personal y profesional de cada estudiante a través de programas 100% virtuales, prácticos y actualizados, guiados por profesionales en ejercicio, para que aprenda haciendo, aplique lo aprendido desde el primer día y lidere su futuro con confianza y propósito.", "To drive the personal and professional growth of every student through 100% online, practical and up-to-date programs led by practicing professionals, so they learn by doing, apply what they learn from day one and lead their future with confidence and purpose."],
   ["Ser la academia virtual de referencia en Ecuador y Latinoamérica en formación práctica en marketing digital, inteligencia artificial y gestión empresarial, reconocida por una comunidad de egresados que genera resultados reales en sus trabajos, emprendimientos y empresas.", "To be the leading online academy in Ecuador and Latin America for practical training in digital marketing, artificial intelligence and business management, recognized for a community of graduates who achieve real results in their jobs, ventures and companies."],
+  // Ajustes PDF
+  ["Potencia tus habilidades", "Boost your skills"],
+  ["conecta y aprende", "connect and learn"],
+  ["Experiencias especiales", "Special experiences"],
+  ["para completar tu perfil", "to round out your profile"],
+  ["Lo que se viene impulsará tu carrera al siguiente nivel. ¡Mantente atento!", "What's coming will take your career to the next level. Stay tuned!"],
+  ["Me gustó mucho que durante todo el programa me acompañaran tanto en administración como en docencia y me puedan aclarar cualquier duda que tenía, agradezco mucho la buena atención que tuvieron y espero sigan así en un futuro", "I really liked that throughout the program both the staff and the instructors supported me and cleared up any questions I had. I'm very grateful for the great service and hope it continues this way."],
 ];
 
 const MONTHS: Record<string, string> = {
