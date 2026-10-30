@@ -169,8 +169,9 @@ export default async function HomePage() {
         <div className="container-page text-center">
           <Reveal>
             <p className="text-2xl font-light md:text-3xl">Porque</p>
-            <h2 className="bolder mt-1 text-3xl font-bold leading-tight md:text-5xl">
-              Aprender con nosotros <span className="font-script inline-block whitespace-nowrap text-[2em] font-normal leading-none text-orange [-webkit-text-stroke:0]">se nota</span>
+            {/* Todo en una sola línea y sobre la misma base: el tamaño se adapta al ancho de la pantalla. */}
+            <h2 className="bolder mt-1 whitespace-nowrap text-[clamp(1.25rem,5.6vw,3rem)] font-bold leading-[1.3]">
+              Aprender con nosotros <span className="font-script align-baseline text-[2em] font-normal leading-[0] text-orange [-webkit-text-stroke:0]">se nota</span>
             </h2>
           </Reveal>
 

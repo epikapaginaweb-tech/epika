@@ -42,7 +42,7 @@ function EcuadorBadge() {
   );
 }
 
-/** Tarjeta modular del catálogo. «Más información» abre la página del programa en otra pestaña. */
+/** Tarjeta modular del catálogo. «Más información» abre la página del programa en la misma pestaña. */
 export function CatalogCard({ course }: { course: CatalogCardData }) {
   const href = `/programas/${course.slug}`;
   const unit = course.categoryKey === "seminario" ? ["sesión", "sesiones"] : ["Módulo", "Módulos"];
@@ -74,8 +74,6 @@ export function CatalogCard({ course }: { course: CatalogCardData }) {
           {!course.comingSoon && (
             <Link
               href={href}
-              target="_blank"
-              rel="noopener"
               className="shrink-0 whitespace-nowrap rounded-full bg-navy px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-orange"
             >
               Más información
@@ -94,8 +92,6 @@ export function CatalogCard({ course }: { course: CatalogCardData }) {
         </div>
         <Link
           href={href}
-          target="_blank"
-          rel="noopener"
           className="absolute left-1/2 top-[38%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange px-4 py-1.5 text-xs font-bold text-white shadow-lg transition-transform hover:scale-105"
           aria-label={`${course.title}: próximamente`}
         >
