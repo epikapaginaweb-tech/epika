@@ -329,7 +329,7 @@ const ENTRIES: [string, string][] = [
   ["Escribir por WhatsApp", "Message on WhatsApp"],
   ["Escribe tus nombres.", "Enter your first names."],
   ["Escribe tus apellidos.", "Enter your last names."],
-  ["Revisa tu documento de identidad.", "Check your ID document."],
+  ["Revisa tu cédula de identidad.", "Check your ID card."],
   ["Revisa el número de celular.", "Check the mobile number."],
   ["Revisa la fecha de nacimiento.", "Check the date of birth."],
   ["Escribe tu ciudad.", "Enter your city."],
@@ -359,6 +359,14 @@ const ENTRIES: [string, string][] = [
   ["para completar tu perfil", "to round out your profile"],
   ["Lo que se viene impulsará tu carrera al siguiente nivel. ¡Mantente atento!", "What's coming will take your career to the next level. Stay tuned!"],
   ["Me gustó mucho que durante todo el programa me acompañaran tanto en administración como en docencia y me puedan aclarar cualquier duda que tenía, agradezco mucho la buena atención que tuvieron y espero sigan así en un futuro", "I really liked that throughout the program both the staff and the instructors supported me and cleared up any questions I had. I'm very grateful for the great service and hope it continues this way."],
+  // Carrito e inscripción
+  ["Tu pedido", "Your order"],
+  ["Plan contado", "One-time payment"],
+  ["Plan crédito", "Installment plan"],
+  ["Total a pagar", "Total due"],
+  ["Método de pago: transferencia bancaria", "Payment method: bank transfer"],
+  ["Cédula de identidad", "ID card"],
+  ["Por confirmar", "To be confirmed"],
 ];
 
 const MONTHS: Record<string, string> = {
@@ -403,8 +411,8 @@ export function translate(value: string): string {
   if (m) return `${lead}Step ${m[1]}${trail}`;
   m = key.match(/^(\d+) (disponibles?)$/);
   if (m) return `${lead}${m[1]} available${trail}`;
-  m = key.match(/^» quedó en revisión\. Te avisaremos cuando confirmemos el pago\.$/);
-  if (m) return `${lead}» is under review. We'll let you know once we confirm the payment.${trail}`;
+  m = key.match(/^» quedó en revisión\. Tus datos de acceso se enviarán dentro de las próximas 24 horas\.$/);
+  if (m) return `${lead}» is under review. Your access details will be sent within the next 24 hours.${trail}`;
   m = key.match(/^© (\d{4}) (.+)$/);
   if (m) {
     const rest = DICT.get(norm(m[2]));

@@ -241,6 +241,7 @@ export async function saveSettings(_prev: FormState, fd: FormData): Promise<Form
     salesWhatsapp: text(fd, "salesWhatsapp"),
     campusUrl: text(fd, "campusUrl"),
     promoLabel: text(fd, "promoLabel") || "Promoción",
+    promoText: text(fd, "promoText").slice(0, 120),
     countryCode: text(fd, "countryCode").replace(/\D/g, "") || "593",
     email: text(fd, "email"),
     phone: text(fd, "phone"),

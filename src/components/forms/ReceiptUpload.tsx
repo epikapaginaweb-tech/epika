@@ -35,7 +35,7 @@ export function ReceiptUpload({ id, token, onDone }: { id: string; token: string
       <div className="rounded-2xl bg-whatsapp/10 p-5 text-sm text-ink/80">
         <p className="font-semibold text-navy">Comprobante recibido ✓</p>
         <p className="mt-1">
-          «{status.name}» quedó en revisión. Te avisaremos cuando confirmemos el pago.
+          «{status.name}» quedó en revisión. Tus datos de acceso se enviarán dentro de las próximas 24 horas.
         </p>
       </div>
     );

@@ -16,7 +16,8 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
           <TextInput label="WhatsApp general" name="whatsapp" defaultValue={settings.whatsapp} placeholder="098 038 1003" hint="Botón flotante, pie de página y Contacto" />
           <TextInput label="WhatsApp de ventas (asesor)" name="salesWhatsapp" defaultValue={settings.salesWhatsapp} placeholder="098 328 9076" hint="Botón «Habla con tu asesor»" />
           <TextInput label="Campus virtual (enlace)" name="campusUrl" defaultValue={settings.campusUrl} placeholder="https://" hint="Botón «Campus virtual» del menú" />
-          <TextInput label="Etiqueta de la tarjeta central" name="promoLabel" defaultValue={settings.promoLabel} hint="Ej. Promoción, Programa estrella. Se aplica al programa marcado como destacado" />
+          <TextInput label="Etiqueta de la tarjeta central" name="promoLabel" defaultValue={settings.promoLabel} hint="Ej. Promoción, Programa estrella. Se aplica al programa marcado como Promoción" />
+          <TextInput label="Mensaje al pasar el cursor (tarjeta central)" name="promoText" defaultValue={settings.promoText} placeholder="Ej. ¡Promoción de 50%!" hint="Aparece en la tarjeta del centro del abanico al pasar el cursor" />
           <TextInput label="Código de país" name="countryCode" defaultValue={settings.countryCode} hint="593 = Ecuador" />
           <TextInput label="Correo" name="email" type="email" defaultValue={settings.email} />
           <TextInput label="Teléfono" name="phone" defaultValue={settings.phone} />

@@ -5,6 +5,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   salesWhatsapp: "098 328 9076",
   campusUrl: "https://campusvirtual.epika.education/",
   promoLabel: "Promoción",
+  promoText: "",
   countryCode: "593",
   email: "epikaacademiadecapacitacion@gmail.com",
   phone: "",

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -11,9 +12,21 @@ import { ReceiptUpload } from "./ReceiptUpload";
 
 const EDUCATION = ["Bachillerato", "Tecnología", "Tercer nivel", "Cuarto nivel", "Otro"];
 
+export type OrderSummary = {
+  title: string;
+  image: string | null;
+  kind: string;
+  modality: string | null;
+  start: string | null;
+  duration: string | null;
+  price: string | null;
+  credit: string | null;
+};
+
 type Props = {
   courseId: string;
   courseTitle: string;
+  summary: OrderSummary;
   bankAccounts: BankAccount[];
   paymentNote: string;
   whatsappHref: string;
@@ -62,7 +75,7 @@ function ThanksModal({ kind, courseTitle, whatsappHref, onClose }: { kind: "rece
         </p>
         <p className="mt-4 text-sm leading-relaxed text-ink/75">
           {kind === "receipt"
-            ? `Recibimos tu comprobante para «${courseTitle}». Nuestro equipo validará el pago y te enviará tus credenciales institucionales por WhatsApp para que puedas acceder al campus virtual.`
+            ? `Recibimos tu comprobante para «${courseTitle}». Validaremos tu pago y te enviaremos tus datos de acceso por WhatsApp dentro de las próximas 24 horas.`
             : `Registramos tus datos para «${courseTitle}». Cuando realices la transferencia, envíanos el comprobante por WhatsApp y te enviaremos tus credenciales institucionales para acceder al campus virtual.`}
         </p>
         <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -79,7 +92,46 @@ function ThanksModal({ kind, courseTitle, whatsappHref, onClose }: { kind: "rece
 }
 
 /** Formulario de inscripción → pago por transferencia → comprobante → ventana de confirmación. */
-export function EnrollmentForm({ courseId, courseTitle, bankAccounts, paymentNote, whatsappHref }: Props) {
+/** Resumen tipo carrito: lo que estás pagando, justo arriba del método de pago. */
+function Cart({ summary }: { summary: OrderSummary }) {
+  const details = [summary.kind, summary.modality, summary.start && `Inicia ${summary.start}`, summary.duration].filter(Boolean) as string[];
+  return (
+    <div className="rounded-2xl border border-line bg-paper p-4">
+      <p className="text-xs font-bold uppercase tracking-wider text-ink/50">Tu pedido</p>
+      <div className="mt-3 flex gap-3">
+        {summary.image && (
+          <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-xl bg-navy">
+            <Image src={summary.image} alt="" fill sizes="64px" className="object-cover" />
+          </div>
+        )}
+        <div className="min-w-0 flex-1">
+          <p className="font-bold leading-snug text-navy">{summary.title}</p>
+          {details.length > 0 && <p className="mt-1 text-xs leading-relaxed text-ink/60">{details.join(" · ")}</p>}
+        </div>
+      </div>
+      <div className="mt-4 space-y-1.5 border-t border-line pt-3 text-sm">
+        {summary.price && (
+          <div className="flex items-center justify-between">
+            <span className="text-ink/60">Plan contado</span>
+            <span className="font-semibold text-navy">{summary.price}</span>
+          </div>
+        )}
+        {summary.credit && (
+          <div className="flex items-center justify-between">
+            <span className="text-ink/60">Plan crédito</span>
+            <span className="font-semibold text-navy">{summary.credit}</span>
+          </div>
+        )}
+        <div className="flex items-center justify-between pt-1">
+          <span className="font-bold text-navy">Total a pagar</span>
+          <span className="text-xl font-bold text-orange">{summary.price ?? "Por confirmar"}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function EnrollmentForm({ courseId, courseTitle, summary, bankAccounts, paymentNote, whatsappHref }: Props) {
   const [state, action, pending] = useActionState<InquiryState, FormData>(submitEnrollment, { status: "idle" });
   const [startedAt, setStartedAt] = useState(0);
   const [modal, setModal] = useState<"receipt" | "later" | null>(null);
@@ -134,7 +186,7 @@ export function EnrollmentForm({ courseId, courseTitle, bankAccounts, paymentNot
             <Field label="Apellidos" name="last_name" error={errors.last_name} required>
               {input("last_name", { autoComplete: "family-name", required: true })}
             </Field>
-            <Field label="Documento de identidad" name="cedula" error={errors.cedula} required>
+            <Field label="Cédula de identidad" name="cedula" error={errors.cedula} required>
               {input("cedula", { inputMode: "numeric", required: true })}
             </Field>
             <Field label="Email" name="email" error={errors.email} required>
@@ -205,8 +257,11 @@ export function EnrollmentForm({ courseId, courseTitle, bankAccounts, paymentNot
       <div ref={paymentRef} className="scroll-mt-24">
         <div className={`rounded-[2rem] bg-white p-6 transition-opacity md:p-9 ${done ? "" : "opacity-60"}`}>
           <p className="text-lg font-bold text-navy">2. Realiza el pago</p>
-          <p className="mt-1 text-sm text-ink/55">Transferencia bancaria</p>
-          <div className="mt-5">
+          <div className="mt-4">
+            <Cart summary={summary} />
+          </div>
+          <p className="mt-6 text-sm font-semibold text-navy">Método de pago: transferencia bancaria</p>
+          <div className="mt-3">
             {bankAccounts.length > 0 ? (
               <BankAccounts accounts={bankAccounts} />
             ) : (

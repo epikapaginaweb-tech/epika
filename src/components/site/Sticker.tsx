@@ -65,7 +65,7 @@ export function Sticker({ name, size = 80, rotate = 0, delay = 0, float = true, 
         animate={float ? { y: [0, -9, 0], rotate: [0, 3, 0] } : undefined}
         transition={float ? { duration: 5 + (delay % 2), repeat: Infinity, ease: "easeInOut", delay } : undefined}
       >
-        <Image src={`/brand/stickers/${name}.png`} alt="" width={width} height={height} sizes={`${width}px`} draggable={false} className="max-w-none" />
+        <Image src={`/brand/stickers-v6/${name}.png`} alt="" width={width} height={height} sizes={`${width}px`} draggable={false} className="max-w-none" />
       </motion.span>
     </motion.span>
   );

@@ -96,9 +96,9 @@ const enrollmentSchema = z.object({
   cedula: z
     .string()
     .trim()
-    .min(6, "Revisa tu documento de identidad.")
+    .min(6, "Revisa tu cédula de identidad.")
     .max(20)
-    .regex(/^[A-Za-z0-9-]+$/, "Revisa tu documento de identidad."),
+    .regex(/^[A-Za-z0-9-]+$/, "Revisa tu cédula de identidad."),
   email: z.email("Revisa el correo electrónico.").trim().max(160),
   phone: z
     .string()

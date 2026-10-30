@@ -101,7 +101,7 @@ export function HoverCloud({ href, info, ariaLabel, className = "", linkClassNam
                 }`}
               >
                 <p className="text-[0.86rem] font-bold leading-tight tracking-tight">{info.title}</p>
-                {info.text && <p className="mt-1 line-clamp-2 text-[0.72rem] font-normal leading-snug tracking-normal text-white/80">{info.text}</p>}
+                {info.text && <p className="mt-1 line-clamp-2 text-[0.82rem] font-bold leading-snug tracking-normal text-orange">{info.text}</p>}
                 {info.chips && info.chips.length > 0 && (
                   <p className="mt-1.5 text-[0.68rem] font-semibold leading-snug tracking-normal text-white/60">{info.chips.join(" · ")}</p>
                 )}

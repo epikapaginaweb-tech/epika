@@ -3,7 +3,6 @@ import Image from "next/image";
 import { cacheLife, cacheTag } from "next/cache";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { RevealText } from "@/components/motion/RevealText";
-import { PrimaryLink } from "@/components/site/Buttons";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { TAGS, getSettings } from "@/lib/data";
 
@@ -153,11 +152,6 @@ export default async function AboutPage() {
         </section>
       )}
 
-      <section className="container-page pb-4 pt-8 text-center">
-        <Reveal>
-          <PrimaryLink href="/programas">Ver programas disponibles</PrimaryLink>
-        </Reveal>
-      </section>
     </>
   );
 }

@@ -22,6 +22,8 @@ import { whatsappUrl } from "@/lib/whatsapp";
 const FAN_SIZE = 5;
 const FAN_PHOTOS = ["/brand/fotos/hero-1.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-3.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-1.jpg"];
 const BENEFIT_ICONS: StickerName[] = ["carita", "manos", "compu", "paz"];
+// Mismo tamaño de icono en todo el sitio (inicio y página de cada programa).
+const ICON_PX = 168;
 
 const PROGRAM_GROUPS = [
   { label: "Programas", key: "programa", image: "/brand/fotos/programas.jpg", alt: "Persona estudiando con su laptop", text: "Formación completa con instructor, módulos, certificación y acompañamiento." },
@@ -42,7 +44,7 @@ const STEPS = [
  * Al centro va el programa que marques como «Promoción» en el panel, con su aviso;
  * si no hay ninguno, va el primero sin aviso. Los demás se reparten a los lados.
  */
-function fanItems(courses: CourseWithTeacher[], promoLabel: string): FanItem[] {
+function fanItems(courses: CourseWithTeacher[], promoLabel: string, promoText: string): FanItem[] {
   const open = courses.filter((c) => !c.coming_soon);
   const promo = open.find((c) => c.featured);
   const ordered = promo ? [promo, ...open.filter((c) => c !== promo)] : open;
@@ -65,6 +67,8 @@ function fanItems(courses: CourseWithTeacher[], promoLabel: string): FanItem[] {
       return {
         info: {
           title: course.title,
+          // En la tarjeta de promoción, el mensaje personalizado del panel (p. ej. «¡Promoción de 50%!»).
+          text: isPromo && promoText ? promoText : null,
           chips: [course.modality === "virtual" ? "100% virtual" : card.modality],
           cta: "Ver programa",
         },
@@ -144,7 +148,7 @@ export default async function HomePage() {
         </ParallaxOut>
 
         <div className="mt-8 md:mt-10">
-          <CourseFan items={fanItems(courses, settings.promoLabel)} />
+          <CourseFan items={fanItems(courses, settings.promoLabel, settings.promoText)} />
         </div>
 
         <div className="container-page text-center">
@@ -174,7 +178,7 @@ export default async function HomePage() {
               <RevealItem key={benefit.title}>
                 <div className="flex flex-col items-center">
                   <span className="flex h-28 w-full items-center justify-center md:h-36">
-                    <Sticker name={BENEFIT_ICONS[i % BENEFIT_ICONS.length]} size={184} rotate={i % 2 ? 6 : -6} delay={i * 0.15} className="scale-[0.8] md:scale-100" />
+                    <Sticker name={BENEFIT_ICONS[i % BENEFIT_ICONS.length]} size={ICON_PX} rotate={i % 2 ? 6 : -6} delay={i * 0.15} className="scale-[0.8] md:scale-100" />
                   </span>
                   <h3 className="mx-auto mt-3 text-center text-lg font-bold leading-tight md:text-xl">{twoLines(benefit.title)}</h3>
                 </div>

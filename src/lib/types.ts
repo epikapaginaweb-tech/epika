@@ -137,6 +137,7 @@ export type SiteSettings = {
   salesWhatsapp: string;
   campusUrl: string;
   promoLabel: string;
+  promoText: string;
   countryCode: string;
   email: string;
   phone: string;

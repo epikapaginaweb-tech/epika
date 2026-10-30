@@ -81,8 +81,6 @@ export function CourseFan({ items }: { items: FanItem[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 60%", "end start"] });
   const total = items.length;
-  const first = items[1] ?? items[0];
-  const last = items[total - 2] ?? items[total - 1];
 
   return (
     <div ref={ref} className="relative mx-auto h-[12.5rem] w-full max-w-5xl sm:h-[17rem] lg:h-[22rem]">
@@ -91,26 +89,6 @@ export function CourseFan({ items }: { items: FanItem[] }) {
           <FanCard key={item.key} item={item} index={i} total={total} progress={scrollYProgress} />
         ))}
       </div>
-      {first && first.tag && (
-        <motion.span
-          className="bubble absolute left-[8%] top-[-0.5rem] z-30 bg-navy text-white md:left-[16%]"
-          initial={{ opacity: 0, scale: 0.4, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 18, delay: FAN_AT + 0.9 }}
-        >
-          {first.tag}
-        </motion.span>
-      )}
-      {last && last !== first && last.tag && (
-        <motion.span
-          className="bubble absolute right-[8%] top-6 z-30 bg-orange text-white md:right-[16%]"
-          initial={{ opacity: 0, scale: 0.4, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 18, delay: FAN_AT + 1.05 }}
-        >
-          {last.tag}
-        </motion.span>
-      )}
     </div>
   );
 }

@@ -190,9 +190,9 @@ async function CourseView({ slug }: { slug: string }) {
           {highlights.map((item) => (
             <RevealItem key={item.label}>
               <div className="flex flex-col items-center text-center">
-                <span className="flex h-20 items-center justify-center">
+                <span className="flex h-24 items-center justify-center">
                   {item.icon ? (
-                    <Sticker name={item.icon} size={96} float={false} />
+                    <Sticker name={item.icon} size={168} float={false} />
                   ) : (
                     <span className="font-display text-6xl leading-none text-navy">{item.big}</span>
                   )}

@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { EnrollmentForm } from "@/components/forms/EnrollmentForm";
 import { RevealText } from "@/components/motion/RevealText";
 import { TAGS, getCourses, getSettings } from "@/lib/data";
+import { courseCover } from "@/lib/covers";
 import { formatDate, formatPrice } from "@/lib/format";
 import { whatsappUrl } from "@/lib/whatsapp";
 
@@ -37,33 +38,21 @@ async function Enrollment({ slug }: { slug: string | undefined }) {
 
   const price = formatPrice(course.price, course.currency);
   const start = formatDate(course.start_date);
-  const end = formatDate(course.end_date);
   return (
     <>
-      <p className="mb-6 text-sm text-ink/60">
-        Programa: <span className="font-bold text-navy">{course.title}</span>
-        {price && (
-          <>
-            {" "}
-            · Plan contado <span className="font-bold text-orange">{price}</span>
-          </>
-        )}
-        {start && (
-          <>
-            {" "}
-            · Inicio <span className="font-semibold text-navy">{start}</span>
-          </>
-        )}
-        {end && (
-          <>
-            {" "}
-            · Culminación <span className="font-semibold text-navy">{end}</span>
-          </>
-        )}
-      </p>
       <EnrollmentForm
         courseId={course.id}
         courseTitle={course.title}
+        summary={{
+          title: course.title,
+          image: courseCover(course),
+          kind: course.category === "seminario" ? "Seminario" : "Programa",
+          modality: course.modality === "virtual" ? "100% virtual" : null,
+          start,
+          duration: course.duration,
+          price,
+          credit: formatPrice(course.price_credit, course.currency),
+        }}
         bankAccounts={settings.bankAccounts}
         paymentNote={settings.paymentNote}
         whatsappHref={whatsappUrl(settings.salesWhatsapp || settings.whatsapp, `Hola, me inscribí en «${course.title}» y envío mi comprobante de pago.`, settings.countryCode)}
