@@ -54,7 +54,7 @@ async function Enrollment({ slug }: { slug: string | undefined }) {
           credit: formatPrice(course.price_credit, course.currency),
         }}
         bankAccounts={settings.bankAccounts}
-        paymentNote={settings.paymentNote}
+        thanks={settings.thanks}
         whatsappHref={whatsappUrl(settings.salesWhatsapp || settings.whatsapp, `Hola, me inscribí en «${course.title}» y envío mi comprobante de pago.`, settings.countryCode)}
       />
     </>

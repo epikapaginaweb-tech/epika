@@ -1,10 +1,14 @@
+"use client";
+
+import { useRef } from "react";
+
 type Item = { id: string; name: string; place: string | null; quote: string };
 
 const DOT_COLORS = ["#f07c00", "#e0003c", "#c08a4a", "#0d284f", "#34b44a", "#ff9100"];
 
 function Card({ item, index }: { item: Item; index: number }) {
   return (
-    <figure className="flex w-[19rem] shrink-0 flex-col rounded-[2rem] bg-[#fbf9f6] p-7 md:w-[21rem]">
+    <figure data-card className="flex w-[19rem] shrink-0 snap-start flex-col rounded-[2rem] bg-[#fbf9f6] p-7 md:w-[21rem]">
       <figcaption className="flex items-center gap-3">
         <span aria-hidden className="size-9 shrink-0 rounded-full" style={{ background: DOT_COLORS[index % DOT_COLORS.length] }} />
         <span>
@@ -17,31 +21,50 @@ function Card({ item, index }: { item: Item; index: number }) {
   );
 }
 
-/** Carrusel lento e infinito que avanza de derecha a izquierda sin detenerse. */
+function Arrow({ dir, onClick }: { dir: "prev" | "next"; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={dir === "prev" ? "Testimonio anterior" : "Testimonio siguiente"}
+      className="flex size-11 items-center justify-center rounded-full bg-navy text-white transition-colors hover:bg-orange"
+    >
+      <svg aria-hidden viewBox="0 0 24 24" className={`size-5 ${dir === "prev" ? "rotate-180" : ""}`} fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </svg>
+    </button>
+  );
+}
+
+/** Carrusel manual: se mueve con las flechas (o deslizando con el dedo / la rueda del mouse). */
 export function TestimonialMarquee({ items, className = "" }: { items: Item[]; className?: string }) {
+  const track = useRef<HTMLDivElement>(null);
   if (items.length === 0) return null;
-  // Repetimos la lista para que la banda siempre cubra la pantalla aunque haya pocos testimonios.
-  const base: Item[] = [];
-  while (base.length < 8) base.push(...items);
-  // Más lento y sin pausas: sigue moviéndose aunque pases el cursor o bajes por la página.
-  const duration = `${base.length * 16}s`;
+
+  const move = (dir: 1 | -1) => {
+    const el = track.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-card]");
+    const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
+    el.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
 
   return (
-    <div className={`relative overflow-hidden ${className}`}>
+    <div className={className}>
       <div
-        className="flex w-max animate-marquee gap-5 pr-5 motion-reduce:animate-none"
-        style={{ "--marquee-duration": duration } as React.CSSProperties}
+        ref={track}
+        className="container-page flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {[0, 1].map((copy) => (
-          <div key={copy} className="flex gap-5" aria-hidden={copy === 1 || undefined}>
-            {base.map((item, i) => (
-              <Card key={`${copy}-${item.id}-${i}`} item={item} index={i % items.length} />
-            ))}
-          </div>
+        {items.map((item, i) => (
+          <Card key={item.id} item={item} index={i} />
         ))}
       </div>
-      <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent" />
-      <span aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent" />
+      {items.length > 1 && (
+        <div className="container-page mt-6 flex justify-center gap-3">
+          <Arrow dir="prev" onClick={() => move(-1)} />
+          <Arrow dir="next" onClick={() => move(1)} />
+        </div>
+      )}
     </div>
   );
 }

@@ -367,6 +367,11 @@ const ENTRIES: [string, string][] = [
   ["Método de pago: transferencia bancaria", "Payment method: bank transfer"],
   ["Cédula de identidad", "ID card"],
   ["Por confirmar", "To be confirmed"],
+  // Frase, gracias y testimonios
+  ["Testimonio anterior", "Previous testimonial"],
+  ["Testimonio siguiente", "Next testimonial"],
+  ["Tu futuro no se espera, se construye. Empieza hoy.", "Your future isn't waited for, it's built. Start today."],
+  ["¡Gracias por tu compra!", "Thank you for your purchase!"],
 ];
 
 const MONTHS: Record<string, string> = {

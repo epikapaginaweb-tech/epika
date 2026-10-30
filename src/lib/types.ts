@@ -173,6 +173,8 @@ export type SiteSettings = {
     showComingSoon: boolean;
     comingSoonSlogan: string;
   };
+  motto: string;
+  thanks: { title: string; text: string };
   privacy: string;
   seoDescription: string;
 };

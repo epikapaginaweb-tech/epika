@@ -16,8 +16,8 @@ export function StickySteps({ eyebrow, title, accent, steps }: { eyebrow: string
   });
 
   return (
-    <div ref={ref} className="relative" style={{ height: `${steps.length * 60 + 40}vh` }}>
-      <div className="sticky top-0 flex min-h-dvh items-center py-24">
+    <div ref={ref} className="relative" style={{ height: `${steps.length * 45 + 30}vh` }}>
+      <div className="sticky top-0 flex min-h-dvh items-center py-14">
         <div className="container-page grid w-full items-center gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-16">
           <div>
             <p className="eyebrow">

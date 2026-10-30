@@ -143,6 +143,17 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         </div>
       </Card>
 
+      <Card title="Frase motivacional (Inicio)" description="Aparece centrada en el Inicio, antes de «¿Cómo funciona?». Si la dejas vacía, no se muestra.">
+        <TextArea label="Frase" name="motto" defaultValue={settings.motto} rows={2} />
+      </Card>
+
+      <Card title="Mensaje al enviar el comprobante" description="Ventana que ve el estudiante cuando sube su comprobante de pago. Usa *texto* para negrita.">
+        <div className="grid gap-4">
+          <TextInput label="Título" name="thanks.title" defaultValue={settings.thanks.title} />
+          <TextArea label="Mensaje" name="thanks.text" defaultValue={settings.thanks.text} rows={6} />
+        </div>
+      </Card>
+
       <Card title="Legal y buscadores">
         <div className="grid gap-4">
           <TextArea label="Aviso de privacidad" name="privacy" defaultValue={settings.privacy} rows={8} />

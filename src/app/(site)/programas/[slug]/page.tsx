@@ -157,7 +157,7 @@ async function CourseView({ slug }: { slug: string }) {
       </section>
 
       {/* Acerca del programa + planes */}
-      <section className="container-page py-12 md:py-16">
+      <section className="container-page py-8 md:py-10">
         <div className="mx-auto max-w-4xl">
           <Heading text="Acerca del" accent={kind === "seminario" ? "seminario" : "programa"} />
           {(course.summary || course.short_description) && (
@@ -207,14 +207,14 @@ async function CourseView({ slug }: { slug: string }) {
 
       {/* Planes de pago (debajo de los iconos, centrados). Al pasar el cursor explica cada uno. */}
       {plans.length > 0 && (
-        <section className="container-page pt-12 md:pt-14">
+        <section className="container-page pt-8 md:pt-10">
           <PlanPrices plans={plans} className="justify-center" />
         </section>
       )}
 
       {/* Lo que aprenderás */}
       {course.objectives.length > 0 && (
-        <section className="container-page py-12 md:py-16">
+        <section className="container-page py-8 md:py-10">
           <Heading text="Lo que" accent="aprenderás" />
           <RevealGroup className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {course.objectives.map((objective) => (
@@ -233,7 +233,7 @@ async function CourseView({ slug }: { slug: string }) {
 
       {/* Módulos */}
       {course.modules.length > 0 && (
-        <section className="container-page py-6 md:py-8">
+        <section className="container-page py-4 md:py-6">
           <Heading text={kind === "seminario" ? "Sesiones del" : "Módulos del"} accent={kind === "seminario" ? "seminario" : "programa"} />
           <ol className="mt-8 divide-y divide-line overflow-hidden rounded-[2rem] bg-white">
             {course.modules.map((mod, i) => (
@@ -257,8 +257,8 @@ async function CourseView({ slug }: { slug: string }) {
       )}
 
       {/* Ponente */}
-      {teacher && (
-        <section className="container-page py-12 md:py-16">
+      {teacher && kind === "seminario" && (
+        <section className="container-page py-8 md:py-10">
           <h2 className="bolder text-4xl font-bold text-navy md:text-5xl">Ponente</h2>
           <div className="mt-8 grid items-start gap-8 md:grid-cols-[0.35fr_1fr]">
             <div className="relative aspect-[4/5] w-full max-w-xs overflow-hidden rounded-[2rem] bg-navy">
@@ -279,7 +279,7 @@ async function CourseView({ slug }: { slug: string }) {
 
       {/* Testimonios de este programa */}
       {courseTestimonials.length > 0 && (
-        <section className="py-12 md:py-16">
+        <section className="py-8 md:py-10">
           <h2 className="bolder text-center text-4xl font-bold text-navy md:text-5xl">Testimonios</h2>
           <TestimonialMarquee className="mt-8" items={courseTestimonials.map((t) => ({ id: t.id, name: t.name, place: t.course, quote: t.quote }))} />
         </section>

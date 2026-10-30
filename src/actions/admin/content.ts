@@ -295,6 +295,11 @@ export async function saveSettings(_prev: FormState, fd: FormData): Promise<Form
       showComingSoon: checked(fd, "offer.showComingSoon"),
       comingSoonSlogan: text(fd, "offer.comingSoonSlogan"),
     },
+    motto: text(fd, "motto").slice(0, 200),
+    thanks: {
+      title: text(fd, "thanks.title").slice(0, 80),
+      text: text(fd, "thanks.text").slice(0, 1200),
+    },
     privacy: text(fd, "privacy"),
     seoDescription: text(fd, "seoDescription"),
   });

@@ -28,7 +28,7 @@ type Props = {
   courseTitle: string;
   summary: OrderSummary;
   bankAccounts: BankAccount[];
-  paymentNote: string;
+  thanks: { title: string; text: string };
   whatsappHref: string;
 };
 
@@ -50,7 +50,24 @@ function Field({ label, name, error, required, children }: { label: string; name
 }
 
 /** Ventana emergente al terminar la inscripción. */
-function ThanksModal({ kind, courseTitle, whatsappHref, onClose }: { kind: "receipt" | "later"; courseTitle: string; whatsappHref: string; onClose: () => void }) {
+// Convierte *texto* en negrita y respeta los saltos de línea.
+function RichText({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\*[^*]+\*)/g).map((part, i) =>
+        part.startsWith("*") && part.endsWith("*") && part.length > 2 ? (
+          <strong key={i} className="font-bold text-navy">
+            {part.slice(1, -1)}
+          </strong>
+        ) : (
+          <span key={i}>{part}</span>
+        ),
+      )}
+    </>
+  );
+}
+
+function ThanksModal({ kind, courseTitle, thanks, whatsappHref, onClose }: { kind: "receipt" | "later"; courseTitle: string; thanks: { title: string; text: string }; whatsappHref: string; onClose: () => void }) {
   return (
     <motion.div
       className="fixed inset-0 z-[90] flex items-center justify-center bg-navy/60 p-5 backdrop-blur-sm"
@@ -71,12 +88,14 @@ function ThanksModal({ kind, courseTitle, whatsappHref, onClose }: { kind: "rece
         onClick={(e) => e.stopPropagation()}
       >
         <p id="thanks-title" className="bolder text-3xl font-bold text-navy">
-          ¡Gracias por tu inscripción!
+          {kind === "receipt" ? thanks.title || "¡Gracias por tu compra!" : "¡Gracias por tu inscripción!"}
         </p>
-        <p className="mt-4 text-sm leading-relaxed text-ink/75">
-          {kind === "receipt"
-            ? `Recibimos tu comprobante para «${courseTitle}». Validaremos tu pago y te enviaremos tus datos de acceso por WhatsApp dentro de las próximas 24 horas.`
-            : `Registramos tus datos para «${courseTitle}». Cuando realices la transferencia, envíanos el comprobante por WhatsApp y te enviaremos tus credenciales institucionales para acceder al campus virtual.`}
+        <p className="mt-4 whitespace-pre-line text-left text-sm leading-relaxed text-ink/75">
+          {kind === "receipt" ? (
+            <RichText text={thanks.text} />
+          ) : (
+            `Registramos tus datos para «${courseTitle}». Cuando realices la transferencia, envíanos el comprobante por WhatsApp y te enviaremos tus credenciales institucionales para acceder al campus virtual.`
+          )}
         </p>
         <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full bg-go px-5 py-3 text-sm font-bold text-white">
@@ -131,7 +150,7 @@ function Cart({ summary }: { summary: OrderSummary }) {
   );
 }
 
-export function EnrollmentForm({ courseId, courseTitle, summary, bankAccounts, paymentNote, whatsappHref }: Props) {
+export function EnrollmentForm({ courseId, courseTitle, summary, bankAccounts, thanks, whatsappHref }: Props) {
   const [state, action, pending] = useActionState<InquiryState, FormData>(submitEnrollment, { status: "idle" });
   const [startedAt, setStartedAt] = useState(0);
   const [modal, setModal] = useState<"receipt" | "later" | null>(null);
@@ -268,7 +287,6 @@ export function EnrollmentForm({ courseId, courseTitle, summary, bankAccounts, p
               <p className="rounded-2xl bg-paper p-4 text-sm text-ink/65">Te compartiremos los datos de pago por WhatsApp.</p>
             )}
           </div>
-          {paymentNote && <p className="mt-4 text-xs leading-relaxed text-ink/55">{paymentNote}</p>}
 
           <div className="mt-6">
             <p className="mb-2 text-sm font-semibold text-navy">Sube la foto del comprobante</p>
@@ -287,7 +305,7 @@ export function EnrollmentForm({ courseId, courseTitle, summary, bankAccounts, p
       </div>
 
       <AnimatePresence>
-        {modal && <ThanksModal kind={modal} courseTitle={courseTitle} whatsappHref={whatsappHref} onClose={() => setModal(null)} />}
+        {modal && <ThanksModal kind={modal} courseTitle={courseTitle} thanks={thanks} whatsappHref={whatsappHref} onClose={() => setModal(null)} />}
       </AnimatePresence>
     </div>
   );

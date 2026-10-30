@@ -6,7 +6,6 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { RevealText } from "@/components/motion/RevealText";
 import { Odometer } from "@/components/motion/Odometer";
 import { ParallaxOut } from "@/components/motion/ParallaxOut";
-import { ScrollText } from "@/components/motion/ScrollText";
 import { CourseFan, type FanItem } from "@/components/site/CourseFan";
 import { Faq } from "@/components/site/Faq";
 import { SectionHeading } from "@/components/site/SectionHeading";
@@ -130,7 +129,7 @@ export default async function HomePage() {
   return (
     <>
       {/* Portada */}
-      <section className="relative isolate overflow-hidden bg-white pb-12 pt-8 md:pb-14 md:pt-12">
+      <section className="relative isolate overflow-hidden bg-white pb-8 pt-8 md:pb-10 md:pt-12">
         <ParallaxOut className="container-page relative text-center">
           {/* El icono va pegado al bloque del título (no al ancho de la página). */}
           <div className="relative mx-auto inline-block max-w-2xl">
@@ -164,7 +163,7 @@ export default async function HomePage() {
       </section>
 
       {/* Por qué Épika + cifra */}
-      <section className="relative isolate overflow-hidden bg-navy py-14 text-white md:py-16">
+      <section className="relative isolate overflow-hidden bg-navy py-10 text-white md:py-12">
         <div className="container-page text-center">
           <Reveal>
             <p className="text-2xl font-light md:text-3xl">Porque</p>
@@ -187,7 +186,7 @@ export default async function HomePage() {
           </RevealGroup>
 
           {settings.stats.length > 0 && (
-            <div className="mt-12 flex flex-wrap items-end justify-center gap-x-16 gap-y-12 md:mt-14">
+            <div className="mt-8 flex flex-wrap items-end justify-center gap-x-16 gap-y-12 md:mt-10">
               {settings.stats.map((stat, i) => (
                 <div key={`${stat.label}-${i}`}>
                   <p className="font-display text-[8rem] leading-[0.95] sm:text-[11rem] md:text-[15rem]">
@@ -203,7 +202,7 @@ export default async function HomePage() {
 
       {/* Testimonios: carrusel lento de derecha a izquierda */}
       {generalTestimonials.length > 0 && (
-        <section className="py-14 md:py-16">
+        <section className="py-8 md:py-10">
           <Reveal>
             <h2 className="bolder text-center text-5xl font-bold text-navy md:text-6xl">Testimonios</h2>
           </Reveal>
@@ -213,10 +212,13 @@ export default async function HomePage() {
 
       {/* Oferta académica (se activa/desactiva desde el panel, igual que cada categoría) */}
       {offer.enabled && groups.length > 0 && (
-        <section className="container-page py-12 md:py-16">
-          <div className="relative text-center">
-            <RevealText text="Oferta" accent="académica" accentFont="script" className="bolder text-5xl font-bold leading-none md:text-6xl" />
-            <Sticker name="compu" size={76} rotate={8} className="absolute right-[6%] top-0 hidden sm:block md:right-[12%]" />
+        <section className="container-page py-8 md:py-10">
+          {/* La compu va pegada al título (no al borde de la página). */}
+          <div className="text-center">
+            <div className="relative inline-block">
+              <RevealText text="Oferta" accent="académica" accentFont="script" className="bolder text-5xl font-bold leading-none md:text-6xl" />
+              <Sticker name="compu" size={210} rotate={8} className="absolute left-full top-1/2 -ml-8 hidden -translate-y-1/2 sm:block" />
+            </div>
           </div>
           <RevealGroup className={`mx-auto mt-10 grid max-w-5xl gap-5 ${groups.length === 3 ? "sm:grid-cols-3" : groups.length === 2 ? "sm:grid-cols-2" : "max-w-sm"}`}>
             {groups.map((group) => (
@@ -243,22 +245,19 @@ export default async function HomePage() {
         </section>
       )}
 
-      {settings.about.mission && (
-        <section className="container-page py-14 md:py-20">
-          <p className="eyebrow">
-            Nuestra <span className="text-orange">misión</span>
-          </p>
-          <ScrollText
-            text={settings.about.mission}
-            className="mt-6 max-w-5xl text-3xl font-bold leading-[1.2] text-navy md:text-5xl"
-          />
+      {/* Frase motivacional (editable en el panel) */}
+      {settings.motto && (
+        <section className="container-page py-6 text-center md:py-8">
+          <Reveal>
+            <p className="bolder mx-auto max-w-4xl text-balance text-3xl font-bold leading-tight text-navy md:text-5xl">{settings.motto}</p>
+          </Reveal>
         </section>
       )}
 
       <StickySteps eyebrow="¿Cómo funciona?" title="Del clic a tu primera clase" accent="en 4 pasos." steps={STEPS} />
 
       {faqs.length > 0 && (
-        <section className="container-page grid gap-12 py-14 md:grid-cols-[0.8fr_1.2fr] md:py-20">
+        <section className="container-page grid gap-12 py-10 md:grid-cols-[0.8fr_1.2fr] md:py-12">
           <div>
             <SectionHeading eyebrow="Preguntas frecuentes" title="Pagos, modalidades" accent="y certificados." />
             <Reveal delay={0.2}>
@@ -277,7 +276,7 @@ export default async function HomePage() {
       )}
 
       {/* Llamado final (continúa en el pie de página azul) */}
-      <section data-flush-footer className="bg-navy px-5 pb-14 pt-16 text-center text-white md:pb-16 md:pt-20">
+      <section data-flush-footer className="bg-navy px-5 pb-12 pt-12 text-center text-white md:pb-14 md:pt-14">
         <Reveal>
           <h2 className="mx-auto max-w-3xl text-4xl font-bold leading-[1.05] md:text-6xl">¿Listo para transformar tu futuro?</h2>
           <p className="mx-auto mt-6 max-w-md text-lg font-light text-white/90">Cuéntanos qué decidiste para aprender y te ayudamos con tu inscripción.</p>

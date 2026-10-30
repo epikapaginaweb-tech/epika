@@ -392,3 +392,9 @@ html[data-theme="night"] .text-black,
 html[data-theme="night"] .text-black\/85 {
   color: var(--night-text);
 }
+
+/* Sitio público sin sombras (solo se eliminan las sombras; bordes y anillos se mantienen). */
+body:has(main#contenido) * {
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-drop-shadow: none !important;
+}
