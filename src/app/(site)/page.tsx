@@ -22,8 +22,6 @@ import { whatsappUrl } from "@/lib/whatsapp";
 const FAN_SIZE = 5;
 const FAN_PHOTOS = ["/brand/fotos/hero-1.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-3.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-1.jpg"];
 const BENEFIT_ICONS: StickerName[] = ["carita", "manos", "compu", "paz"];
-// Ajuste fino, icono por icono, para que los cuatro se vean del mismo tamaño en pantalla.
-const ICON_SIZE: Partial<Record<StickerName, number>> = { carita: 184, manos: 168, compu: 176, paz: 182 };
 
 const PROGRAM_GROUPS = [
   { label: "Programas", key: "programa", image: "/brand/fotos/programas.jpg", alt: "Persona estudiando con su laptop", text: "Formación completa con instructor, módulos, certificación y acompañamiento." },
@@ -176,7 +174,7 @@ export default async function HomePage() {
               <RevealItem key={benefit.title}>
                 <div className="flex flex-col items-center">
                   <span className="flex h-28 w-full items-center justify-center md:h-36">
-                    <Sticker name={BENEFIT_ICONS[i % BENEFIT_ICONS.length]} size={ICON_SIZE[BENEFIT_ICONS[i % BENEFIT_ICONS.length]] ?? 168} rotate={i % 2 ? 6 : -6} delay={i * 0.15} className="scale-[0.8] md:scale-100" />
+                    <Sticker name={BENEFIT_ICONS[i % BENEFIT_ICONS.length]} size={184} rotate={i % 2 ? 6 : -6} delay={i * 0.15} className="scale-[0.8] md:scale-100" />
                   </span>
                   <h3 className="mx-auto mt-3 text-center text-lg font-bold leading-tight md:text-xl">{twoLines(benefit.title)}</h3>
                 </div>
