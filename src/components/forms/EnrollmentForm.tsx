@@ -112,7 +112,7 @@ function ThanksModal({ kind, courseTitle, thanks, whatsappHref, onClose }: { kin
 
 /** Formulario de inscripción → pago por transferencia → comprobante → ventana de confirmación. */
 /** Resumen tipo carrito: lo que estás pagando, justo arriba del método de pago. */
-function Cart({ summary }: { summary: OrderSummary }) {
+function Cart({ summary, helpHref }: { summary: OrderSummary; helpHref: string }) {
   const details = [summary.kind, summary.modality, summary.start && `Inicia ${summary.start}`, summary.duration].filter(Boolean) as string[];
   return (
     <div className="rounded-2xl border border-line bg-paper p-4">
@@ -138,7 +138,9 @@ function Cart({ summary }: { summary: OrderSummary }) {
         {summary.credit && (
           <div className="flex items-center justify-between">
             <span className="text-ink/60">Plan crédito</span>
-            <span className="font-semibold text-navy">{summary.credit}</span>
+            <a href={helpHref} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#128c4a] hover:underline">
+              Escríbenos para ayudarte
+            </a>
           </div>
         )}
         <div className="flex items-center justify-between pt-1">
@@ -277,7 +279,7 @@ export function EnrollmentForm({ courseId, courseTitle, summary, bankAccounts, t
         <div className={`rounded-[2rem] bg-white p-6 transition-opacity md:p-9 ${done ? "" : "opacity-60"}`}>
           <p className="text-lg font-bold text-navy">2. Realiza el pago</p>
           <div className="mt-4">
-            <Cart summary={summary} />
+            <Cart summary={summary} helpHref={whatsappHref} />
           </div>
           <p className="mt-6 text-sm font-semibold text-navy">Método de pago: transferencia bancaria</p>
           <div className="mt-3">

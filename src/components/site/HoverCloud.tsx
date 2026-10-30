@@ -100,8 +100,12 @@ export function HoverCloud({ href, info, ariaLabel, className = "", linkClassNam
                   right ? "rounded-[1.1rem] rounded-br-[0.35rem]" : "rounded-[1.1rem] rounded-bl-[0.35rem]"
                 }`}
               >
-                <p className="text-[0.86rem] font-bold leading-tight tracking-tight">{info.title}</p>
-                {info.text && <p className="mt-1 line-clamp-2 text-[0.82rem] font-bold leading-snug tracking-normal text-orange">{info.text}</p>}
+                {info.text ? (
+                  // Tarjeta de promoción: el mensaje del panel reemplaza al nombre del curso.
+                  <p className="text-[0.95rem] font-bold leading-tight tracking-tight text-orange">{info.text}</p>
+                ) : (
+                  <p className="text-[0.86rem] font-bold leading-tight tracking-tight">{info.title}</p>
+                )}
                 {info.chips && info.chips.length > 0 && (
                   <p className="mt-1.5 text-[0.68rem] font-semibold leading-snug tracking-normal text-white/60">{info.chips.join(" · ")}</p>
                 )}

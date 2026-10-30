@@ -8,7 +8,7 @@ type Step = { title: string; text: string };
 export function StickySteps({ eyebrow, title, accent, steps }: { eyebrow: string; title: string; accent: string; steps: Step[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.6", "end end"] });
   const fill = useSpring(scrollYProgress, { stiffness: 120, damping: 25 });
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
@@ -16,8 +16,9 @@ export function StickySteps({ eyebrow, title, accent, steps }: { eyebrow: string
   });
 
   return (
-    <div ref={ref} className="relative" style={{ height: `${steps.length * 45 + 30}vh` }}>
-      <div className="sticky top-0 flex min-h-dvh items-center py-14">
+    // En celular la sección fluye normal (sin el efecto fijo), así no deja un espacio gigante arriba.
+    <div ref={ref} className="relative md:h-[var(--steps-h)]" style={{ "--steps-h": `${steps.length * 45 + 30}vh` } as React.CSSProperties}>
+      <div className="flex items-center py-8 md:sticky md:top-0 md:min-h-dvh md:py-14">
         <div className="container-page grid w-full items-center gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-16">
           <div>
             <p className="eyebrow">

@@ -157,8 +157,8 @@ async function CourseView({ slug }: { slug: string }) {
       </section>
 
       {/* Acerca del programa + planes */}
-      <section className="container-page py-8 md:py-10">
-        <div className="mx-auto max-w-4xl">
+      <section className="container-page grid gap-8 py-8 md:grid-cols-[1.4fr_0.6fr] md:py-10">
+        <div>
           <Heading text="Acerca del" accent={kind === "seminario" ? "seminario" : "programa"} />
           {(course.summary || course.short_description) && (
             <Reveal>
@@ -181,6 +181,12 @@ async function CourseView({ slug }: { slug: string }) {
             </p>
           )}
         </div>
+        {/* Precios arriba a la derecha, como antes. Al pasar el cursor explica cada plan. */}
+        {plans.length > 0 && (
+          <div className="md:pt-3">
+            <PlanPrices plans={plans} className="justify-start md:justify-end" />
+          </div>
+        )}
       </section>
 
       {/* Lo que incluye */}
@@ -204,13 +210,6 @@ async function CourseView({ slug }: { slug: string }) {
         </RevealGroup>
         </div>
       </section>
-
-      {/* Planes de pago (debajo de los iconos, centrados). Al pasar el cursor explica cada uno. */}
-      {plans.length > 0 && (
-        <section className="container-page pt-8 md:pt-10">
-          <PlanPrices plans={plans} className="justify-center" />
-        </section>
-      )}
 
       {/* Lo que aprenderás */}
       {course.objectives.length > 0 && (

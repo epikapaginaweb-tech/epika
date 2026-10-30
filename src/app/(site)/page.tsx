@@ -133,7 +133,9 @@ export default async function HomePage() {
         <ParallaxOut className="container-page relative text-center">
           {/* El icono va pegado al bloque del título (no al ancho de la página). */}
           <div className="relative mx-auto inline-block max-w-2xl">
-            <Sticker name="reloj" size={84} rotate={-10} className="absolute -left-8 bottom-[12%] hidden sm:block md:-left-16" />
+            <span className="absolute -left-8 bottom-[12%] hidden sm:block md:-left-16">
+              <Sticker name="reloj" size={84} rotate={-10} />
+            </span>
             <RevealText
               as="h1"
               text={hero.title}
@@ -217,7 +219,9 @@ export default async function HomePage() {
           <div className="text-center">
             <div className="relative inline-block">
               <RevealText text="Oferta" accent="académica" accentFont="script" className="bolder text-5xl font-bold leading-none md:text-6xl" />
-              <Sticker name="compu" size={210} rotate={8} className="absolute left-full top-1/2 -ml-8 hidden -translate-y-1/2 sm:block" />
+              <span className="absolute left-full top-1/2 -ml-8 hidden -translate-y-1/2 sm:block">
+                <Sticker name="compu" size={210} rotate={8} />
+              </span>
             </div>
           </div>
           <RevealGroup className={`mx-auto mt-10 grid max-w-5xl gap-5 ${groups.length === 3 ? "sm:grid-cols-3" : groups.length === 2 ? "sm:grid-cols-2" : "max-w-sm"}`}>
@@ -251,7 +255,7 @@ export default async function HomePage() {
           <Reveal>
             <h2 className="bolder mx-auto max-w-3xl text-balance text-2xl font-bold leading-tight text-navy md:text-4xl">{settings.motto}</h2>
             {settings.mottoText && (
-              <p className="mx-auto mt-4 max-w-2xl text-balance text-base leading-relaxed text-ink/75 md:text-lg">{settings.mottoText}</p>
+              <p className="mx-auto mt-4 max-w-2xl text-justify text-base leading-relaxed text-ink/75 [text-align-last:center] md:text-lg">{settings.mottoText}</p>
             )}
           </Reveal>
         </section>

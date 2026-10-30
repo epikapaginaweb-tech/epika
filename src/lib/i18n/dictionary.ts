@@ -373,6 +373,7 @@ const ENTRIES: [string, string][] = [
   ["Épika, aprende en vivo. Crece de verdad.", "Épika: learn live. Grow for real."],
   ["Épika es la academia virtual donde aprendes con expertos en clases en vivo por Zoom, practicas desde la primera sesión y llevas lo aprendido a tu trabajo o emprendimiento desde el primer día.", "Épika is the online academy where you learn from experts in live Zoom classes, practice from the very first session and take what you learn to your job or business from day one."],
   ["¡Gracias por tu compra!", "Thank you for your purchase!"],
+  ["Escríbenos para ayudarte", "Message us and we'll help"],
 ];
 
 const MONTHS: Record<string, string> = {
