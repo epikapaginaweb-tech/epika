@@ -18,6 +18,11 @@ export function TestimonialEditor({ testimonial, courses, onSaved }: { testimoni
 
   return (
     <div className="rounded-3xl bg-white p-5 md:p-6">
+      {t && (!t.authorized || !t.visible) && (
+        <p className="mb-4 rounded-2xl bg-orange-soft px-4 py-2.5 text-sm font-semibold text-[#b35f00]">
+          No se publica: {!t.authorized ? "falta marcar «Autorizado por el estudiante»" : "está marcado como no visible"}.
+        </p>
+      )}
       <form onSubmit={onSubmit} className="grid gap-4 md:grid-cols-2">
         {t && <input type="hidden" name="id" value={t.id} />}
         <TextInput label="Nombre" name="name" defaultValue={t?.name} required />
@@ -37,7 +42,7 @@ export function TestimonialEditor({ testimonial, courses, onSaved }: { testimoni
         <div className="md:col-span-2">
           <MediaInput name="photo_url" label="Foto (opcional)" folder="testimonios" defaultValue={t?.photo_url} />
         </div>
-        <Toggle name="authorized" label="Autorizado por el estudiante" hint="Sin autorización no se publica" defaultChecked={t?.authorized} />
+        <Toggle name="authorized" label="Autorizado por el estudiante" hint="Sin autorización no se publica" defaultChecked={t?.authorized ?? true} />
         <Toggle name="visible" label="Visible" defaultChecked={t?.visible ?? true} />
         <div className="flex flex-wrap items-center gap-3 md:col-span-2">
           <input type="number" name="sort" defaultValue={t?.sort ?? 0} aria-label="Orden" className="field w-24" />

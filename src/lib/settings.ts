@@ -62,7 +62,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     seminario: true,
     otro: true,
     showComingSoon: true,
-    comingSoonSlogan: "Muy pronto más formas de aprender contigo.",
+    comingSoonSlogan: "Lo que se viene impulsará tu carrera al siguiente nivel. ¡Mantente atento!",
   },
   privacy:
     "En Épika Academy usamos los datos que nos compartes (nombre, correo, teléfono y mensaje) únicamente para responder tu consulta, gestionar tu reserva y enviarte información sobre el programa de tu interés.\n\nNo vendemos ni compartimos tu información con terceros. Los comprobantes de pago se almacenan de forma privada y solo el equipo administrativo puede consultarlos.\n\nPuedes solicitar en cualquier momento la actualización o eliminación de tus datos escribiéndonos por los canales de contacto publicados en este sitio.",

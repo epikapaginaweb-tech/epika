@@ -26,7 +26,7 @@ export function StickySteps({ eyebrow, title, accent, steps }: { eyebrow: string
             <h2 className="bolder mt-3 text-3xl font-bold leading-[1.1] tracking-tight text-navy md:text-5xl">
               {title}
               {accent.trim().split(/\s+/).length >= 2 ? (
-                <span className="font-script -mt-[0.3em] block text-[2em] font-normal leading-[0.8] text-orange">{accent}</span>
+                <span className="font-script mt-2 block text-[1.6em] font-normal leading-[1.1] text-orange">{accent}</span>
               ) : (
                 <span className="text-orange"> {accent}</span>
               )}

@@ -88,7 +88,7 @@ export function CatalogCard({ course }: { course: CatalogCardData }) {
 
   if (course.comingSoon) {
     return (
-      <article className="relative flex h-full flex-col rounded-[1.6rem] bg-white p-2.5 shadow-[0_24px_50px_-35px_rgba(13,40,79,0.45)]">
+      <article className="relative flex h-full flex-col rounded-[1.6rem] bg-white p-2.5 shadow-[0_24px_50px_-35px_rgba(13,40,79,0.45)] transition-transform duration-300 ease-out hover:scale-[1.03]">
         <div aria-hidden className="pointer-events-none flex flex-1 select-none flex-col opacity-60 blur-[2px]">
           {body}
         </div>
@@ -105,5 +105,5 @@ export function CatalogCard({ course }: { course: CatalogCardData }) {
     );
   }
 
-  return <article className="group flex h-full flex-col rounded-[1.6rem] bg-white p-2.5 shadow-[0_24px_50px_-35px_rgba(13,40,79,0.45)] transition-shadow duration-500 hover:shadow-[0_34px_70px_-35px_rgba(13,40,79,0.6)]">{body}</article>;
+  return <article className="group flex h-full flex-col rounded-[1.6rem] bg-white p-2.5 shadow-[0_24px_50px_-35px_rgba(13,40,79,0.45)] transition-[transform,box-shadow] duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_34px_70px_-35px_rgba(13,40,79,0.6)]">{body}</article>;
 }

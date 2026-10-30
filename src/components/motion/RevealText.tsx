@@ -24,6 +24,8 @@ type Props = {
    * - "sans": siempre Helvena Regular, en su propia línea y más pequeña.
    */
   accentFont?: "auto" | "script" | "sans";
+  /** Clases extra para la línea de la segunda frase (p. ej. acercarla más al título). */
+  accentClassName?: string;
   className?: string;
 };
 
@@ -39,7 +41,7 @@ function wordVariants(from: string, to: string): Variants {
 const SCRIPT = "font-script text-[2em] font-normal leading-[0.8]";
 const SANS = "text-[0.42em] font-normal leading-tight tracking-normal";
 
-export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", tone = "dark", delay = 0, accentFont = "auto", className }: Props) {
+export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", tone = "dark", delay = 0, accentFont = "auto", accentClassName = "", className }: Props) {
   const t = useT();
   const text = t(rawText);
   const accent = t(rawAccent);
@@ -77,7 +79,7 @@ export function RevealText({ text: rawText, accent: rawAccent = "", as = "h2", t
         (own ? (
           // Segunda frase: va en su propia línea y en naranja.
           // El tamaño va en el contenedor para que los espacios entre palabras también se ajusten.
-          <span className={`block [word-spacing:normal] ${font === "script" ? `${SCRIPT} -mt-[0.15em]` : `${SANS} mt-[0.25em]`}`}>
+          <span className={`block [word-spacing:normal] ${font === "script" ? `${SCRIPT} -mt-[0.15em]` : `${SANS} mt-[0.25em]`} ${accentClassName}`}>
             {words(accents, colors.accent, base.length, "accent")}
           </span>
         ) : (
