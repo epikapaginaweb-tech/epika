@@ -11,7 +11,7 @@ import { PlanPrices } from "@/components/site/PlanPrices";
 import { StickyCta } from "@/components/site/StickyCta";
 import { Sticker, type StickerName } from "@/components/site/Sticker";
 import { TestimonialMarquee } from "@/components/site/TestimonialMarquee";
-import { CheckIcon, WhatsAppIcon } from "@/components/site/icons";
+import { CheckIcon } from "@/components/site/icons";
 import { TAGS, getCourse, getSettings, getTestimonials } from "@/lib/data";
 import { courseCover } from "@/lib/covers";
 import { MODALITY_LABEL, formatDate, formatPrice } from "@/lib/format";
@@ -54,10 +54,8 @@ async function CourseView({ slug }: { slug: string }) {
   const credit = formatPrice(course.price_credit, course.currency);
   const dateFormat: Intl.DateTimeFormatOptions = { day: "2-digit", month: "short", year: "numeric" };
   const start = formatDate(course.start_date, dateFormat);
-  const end = formatDate(course.end_date, dateFormat);
   const kind = course.category ?? "programa";
   const label = `${KIND_LABEL[kind] ?? "Programa"} ${course.modality === "virtual" ? "100% Virtual" : MODALITY_LABEL[course.modality]}`;
-  const whatsapp = whatsappUrl(settings.whatsapp, courseMessage(course.title), settings.countryCode);
   const advisor = whatsappUrl(settings.salesWhatsapp || settings.whatsapp, courseMessage(course.title), settings.countryCode);
   const enrollHref = `/inscripcion?curso=${encodeURIComponent(course.slug)}`;
   const soon = course.coming_soon;
@@ -118,7 +116,7 @@ async function CourseView({ slug }: { slug: string }) {
           <span aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-t from-black/55 to-transparent" />
           <span aria-hidden className="absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-black/50 to-transparent" />
 
-          <div className="container-page flex min-h-[30rem] flex-col justify-between pb-10 pt-28 md:min-h-[36rem] md:pb-12 md:pt-32">
+          <div className="container-page relative flex min-h-[30rem] flex-col justify-center pb-24 pt-28 text-left md:min-h-[36rem] md:pb-24 md:pt-32">
           <div className="max-w-xl">
             <Link href="/programas" className="text-xs font-semibold text-white/60 hover:text-white">
               ← Todos los programas
@@ -135,20 +133,10 @@ async function CourseView({ slug }: { slug: string }) {
             )}
           </div>
 
-          {(start || end) && (
-            <div className="mt-10 flex flex-wrap justify-end gap-x-10 gap-y-3 self-end text-right [text-shadow:0_2px_18px_rgba(0,0,0,0.55)]">
-              {start && (
-                <div>
-                  <p className="text-sm text-white/85">Inicio de clases</p>
-                  <p className="bolder text-3xl font-bold capitalize md:text-4xl">{start.replace(/\./g, "")}</p>
-                </div>
-              )}
-              {end && (
-                <div>
-                  <p className="text-sm text-white/85">Culminación</p>
-                  <p className="bolder text-3xl font-bold capitalize text-white/90 md:text-4xl">{end.replace(/\./g, "")}</p>
-                </div>
-              )}
+          {start && (
+            <div className="absolute bottom-10 right-4 text-right [text-shadow:0_2px_18px_rgba(0,0,0,0.55)] sm:right-6 md:bottom-12 md:right-8">
+              <p className="text-sm text-white/85">Inicio de clases</p>
+              <p className="bolder text-3xl font-bold capitalize md:text-4xl">{start.replace(/\./g, "")}</p>
             </div>
           )}
           </div>
@@ -297,27 +285,6 @@ async function CourseView({ slug }: { slug: string }) {
         </section>
       )}
 
-      {/* Cierre */}
-      <section className="container-page pb-4 pt-8">
-        <Reveal>
-          <div className="flex flex-col items-start justify-between gap-6 rounded-[2rem] bg-navy p-8 text-white md:flex-row md:items-center md:p-12">
-            <div>
-              <p className="text-2xl font-bold tracking-tight md:text-3xl">¿Te interesa {course.title}?</p>
-              <p className="mt-2 text-white/65">{soon ? "Escríbenos y te avisamos cuando abran las inscripciones." : "Inscríbete y asegura tu lugar."}</p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              {!soon && (
-                <Link href={enrollHref} className="rounded-full bg-orange px-6 py-3.5 text-center text-sm font-bold text-white transition-colors hover:bg-white hover:text-navy">
-                  Inscríbete
-                </Link>
-              )}
-              <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full bg-go px-6 py-3.5 text-sm font-bold text-white">
-                <WhatsAppIcon className="size-4" /> Consultar por WhatsApp
-              </a>
-            </div>
-          </div>
-        </Reveal>
-      </section>
     </>
   );
 }
