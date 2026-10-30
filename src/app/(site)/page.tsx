@@ -23,7 +23,7 @@ const FAN_SIZE = 5;
 const FAN_PHOTOS = ["/brand/fotos/hero-1.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-3.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-1.jpg"];
 const BENEFIT_ICONS: StickerName[] = ["carita", "manos", "compu", "paz"];
 // Ajuste fino, icono por icono, para que los cuatro se vean del mismo tamaño en pantalla.
-const ICON_SIZE: Partial<Record<StickerName, number>> = { carita: 184, manos: 184, compu: 194, paz: 200 };
+const ICON_SIZE: Partial<Record<StickerName, number>> = { carita: 184, manos: 168, compu: 176, paz: 182 };
 
 const PROGRAM_GROUPS = [
   { label: "Programas", key: "programa", image: "/brand/fotos/programas.jpg", alt: "Persona estudiando con su laptop", text: "Formación completa con instructor, módulos, certificación y acompañamiento." },
