@@ -42,8 +42,13 @@ type Props = {
 };
 
 export function CatalogView({ courses, filters, showComingSoon, slogan }: Props) {
-  const initial = useSearchParams().get("categoria");
-  const [active, setActive] = useState(initial && filters.some((f) => f.key === initial) ? initial : "todos");
+  const param = useSearchParams().get("categoria");
+  const fromUrl = param && filters.some((f) => f.key === param) ? param : "todos";
+  const [picked, setPicked] = useState<{ key: string; url: string } | null>(null);
+  // La categoría sale de la dirección (?categoria=seminario). Así, al entrar desde «Oferta académica»
+  // siempre se ve la categoría correcta, aunque la página Programas ya estuviera abierta antes.
+  const active = picked && picked.url === fromUrl ? picked.key : fromUrl;
+  const setActive = (key: string) => setPicked({ key, url: fromUrl });
   const inCategory = active === "todos" ? courses : courses.filter((c) => c.categoryKey === active);
   const open = inCategory.filter((c) => !c.comingSoon);
   const soon = showComingSoon ? inCategory.filter((c) => c.comingSoon) : [];
@@ -52,7 +57,7 @@ export function CatalogView({ courses, filters, showComingSoon, slogan }: Props)
   const heading = HEADINGS[active] ?? HEADINGS.todos;
   const options = [{ key: "todos", label: "Todos" }, ...filters];
   // Si llegas desde una categoría (Oferta académica), la página muestra solo esa categoría, como en el diseño.
-  const fromCategory = Boolean(initial && filters.some((f) => f.key === initial));
+  const fromCategory = fromUrl !== "todos";
 
   return (
     <>
