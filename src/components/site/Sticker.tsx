@@ -18,19 +18,20 @@ export type StickerName =
   | "envivo";
 
 // Dimensiones reales de cada PNG (ancho × alto) para conservar la proporción.
+// Todos los stickers están normalizados a 520 × 520 (mismo tamaño de dibujo y mismo borde blanco).
 const DIMENSIONS: Record<StickerName, [number, number]> = {
-  carita: [462, 473],
-  reloj: [430, 503],
-  "tecla-f9": [498, 520],
-  certificado: [508, 491],
-  megafono: [520, 513],
-  "firma-lapiz": [520, 405],
-  paz: [470, 520],
-  cursor: [397, 520],
-  lapiz: [422, 484],
-  compu: [520, 489],
-  manos: [458, 424],
-  envivo: [458, 312],
+  carita: [520, 520],
+  reloj: [520, 520],
+  "tecla-f9": [520, 520],
+  certificado: [520, 520],
+  megafono: [520, 520],
+  "firma-lapiz": [520, 520],
+  paz: [520, 520],
+  cursor: [520, 520],
+  lapiz: [520, 520],
+  compu: [520, 520],
+  manos: [520, 520],
+  envivo: [520, 520],
 };
 
 type Props = {
@@ -64,7 +65,7 @@ export function Sticker({ name, size = 80, rotate = 0, delay = 0, float = true, 
         animate={float ? { y: [0, -9, 0], rotate: [0, 3, 0] } : undefined}
         transition={float ? { duration: 5 + (delay % 2), repeat: Infinity, ease: "easeInOut", delay } : undefined}
       >
-        <Image src={`/brand/iconos/${name}.png`} alt="" width={width} height={height} sizes={`${width}px`} draggable={false} />
+        <Image src={`/brand/iconos/${name}.png`} alt="" width={width} height={height} sizes={`${width}px`} draggable={false} className="max-w-none" />
       </motion.span>
     </motion.span>
   );

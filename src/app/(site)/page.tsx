@@ -22,8 +22,8 @@ import { whatsappUrl } from "@/lib/whatsapp";
 const FAN_SIZE = 5;
 const FAN_PHOTOS = ["/brand/fotos/hero-1.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-3.jpg", "/brand/fotos/hero-2.jpg", "/brand/fotos/hero-1.jpg"];
 const BENEFIT_ICONS: StickerName[] = ["carita", "manos", "compu", "paz"];
-// Los PNG traen distinto margen transparente: estos tamaños hacen que todos se vean iguales.
-const ICON_SIZE: Partial<Record<StickerName, number>> = { carita: 190, manos: 122, compu: 112, paz: 172 };
+// Ajuste fino, icono por icono, para que los cuatro se vean del mismo tamaño en pantalla.
+const ICON_SIZE: Partial<Record<StickerName, number>> = { carita: 184, manos: 184, compu: 194, paz: 200 };
 
 const PROGRAM_GROUPS = [
   { label: "Programas", key: "programa", image: "/brand/fotos/programas.jpg", alt: "Persona estudiando con su laptop", text: "Formación completa con instructor, módulos, certificación y acompañamiento." },
@@ -34,7 +34,7 @@ const PROGRAM_GROUPS = [
 const STEPS = [
   { title: "Elige tu programa", text: "Revisa el brochure, el instructor y la fecha de inicio." },
   { title: "Solicita tu reserva", text: "Completa el formulario en menos de un minuto." },
-  { title: "Confirma tu pago", text: "Transfiere y sube tu comprobante desde el sitio." },
+  { title: "Confirma tu pago", text: "Transfiere y sube tu comprobante desde el sitio, o paga con PayPhone." },
   { title: "Recibe tus accesos", text: "Te enviamos tus credenciales institucionales por WhatsApp para que puedas acceder al campus virtual." },
 ];
 
@@ -89,6 +89,18 @@ function fanItems(courses: CourseWithTeacher[], promoLabel: string): FanItem[] {
   });
 }
 
+// Títulos de beneficios en dos líneas (la última palabra abajo), salvo los muy cortos como «100% virtual».
+function twoLines(title: string) {
+  const words = title.trim().split(/\s+/);
+  if (words.length < 2 || title.length <= 12) return title;
+  return (
+    <>
+      {words.slice(0, -1).join(" ")}
+      <span className="block">{words[words.length - 1]}</span>
+    </>
+  );
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   const { seoDescription } = await getSettings();
   return { description: seoDescription, alternates: { canonical: "/" } };
@@ -118,8 +130,9 @@ export default async function HomePage() {
       {/* Portada */}
       <section className="relative isolate overflow-hidden bg-white pb-12 pt-8 md:pb-14 md:pt-12">
         <ParallaxOut className="container-page relative text-center">
-          <div className="relative mx-auto max-w-2xl">
-            <Sticker name="reloj" size={78} rotate={-10} className="absolute -left-2 top-[38%] hidden md:-left-10 md:block" />
+          {/* El icono va pegado al bloque del título (no al ancho de la página). */}
+          <div className="relative mx-auto inline-block max-w-2xl">
+            <Sticker name="reloj" size={84} rotate={-10} className="absolute -left-8 bottom-[12%] hidden sm:block md:-left-16" />
             <RevealText
               as="h1"
               text={hero.title}
@@ -162,10 +175,10 @@ export default async function HomePage() {
             {settings.benefits.slice(0, 4).map((benefit, i) => (
               <RevealItem key={benefit.title}>
                 <div className="flex flex-col items-center">
-                  <span className="flex size-28 items-center justify-center md:size-36">
-                    <Sticker name={BENEFIT_ICONS[i % BENEFIT_ICONS.length]} size={ICON_SIZE[BENEFIT_ICONS[i % BENEFIT_ICONS.length]] ?? 124} rotate={i % 2 ? 6 : -6} delay={i * 0.15} className="scale-[0.8] md:scale-100" />
+                  <span className="flex h-28 w-full items-center justify-center md:h-36">
+                    <Sticker name={BENEFIT_ICONS[i % BENEFIT_ICONS.length]} size={ICON_SIZE[BENEFIT_ICONS[i % BENEFIT_ICONS.length]] ?? 168} rotate={i % 2 ? 6 : -6} delay={i * 0.15} className="scale-[0.8] md:scale-100" />
                   </span>
-                  <h3 className="mt-3 max-w-[8.5rem] text-balance text-lg font-bold leading-tight md:text-xl">{benefit.title}</h3>
+                  <h3 className="mx-auto mt-3 text-center text-lg font-bold leading-tight md:text-xl">{twoLines(benefit.title)}</h3>
                 </div>
               </RevealItem>
             ))}
