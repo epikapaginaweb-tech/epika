@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps<"/programas/[slug]"
     openGraph: {
       title: course.title,
       description,
-      images: course.image_url ? [{ url: course.image_url, alt: course.title }] : undefined,
+      images: course.banner_url || course.image_url ? [{ url: (course.banner_url || course.image_url)!, alt: course.title }] : undefined,
     },
   };
 }
@@ -102,9 +102,10 @@ async function CourseView({ slug }: { slug: string }) {
       <section data-dark-hero>
         {/* Igual que el moodboard: imagen completa de borde a borde (pasa por detrás del menú), título y brochure arriba a la izquierda, fechas abajo a la derecha. */}
         <div className="relative isolate -mt-18 overflow-hidden rounded-b-[2.5rem] bg-[#140a2e] text-white">
-          {course.image_url ? (
+          {course.banner_url ? (
+            // Imagen horizontal del panel: ocupa todo el banner.
             <div className="absolute inset-0 -z-10">
-              <CourseImage src={course.image_url} title={course.title} sizes="100vw" eager label="" seed={course.title} />
+              <CourseImage src={course.banner_url} title={course.title} sizes="100vw" eager label="" seed={course.title} />
             </div>
           ) : (
             cover && (

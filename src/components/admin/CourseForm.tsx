@@ -49,7 +49,8 @@ export function CourseForm({ course, teachers }: Props) {
           <TextArea label="Descripción breve" name="short_description" defaultValue={course?.short_description ?? ""} rows={2} hint="Aparece en la tarjeta del catálogo" className="md:col-span-2" />
           <TextArea label="Resumen" name="summary" defaultValue={course?.summary ?? ""} rows={4} className="md:col-span-2" />
           <div className="md:col-span-2">
-            <MediaInput name="image_url" label="Imagen del programa" folder="cursos" defaultValue={course?.image_url} hint="Vertical u horizontal, mínimo 1200 px" />
+            <MediaInput name="image_url" label="Imagen vertical (inicio)" folder="cursos" defaultValue={course?.image_url} hint="Tarjeta del abanico del inicio. Vertical 4:5, ideal 1080 × 1350 px" />
+            <MediaInput name="banner_url" label="Imagen horizontal (página del programa)" folder="cursos" defaultValue={course?.banner_url} hint="Portada de la página del programa y tarjeta del catálogo. Horizontal 16:9, ideal 1920 × 1080 px; deja lo importante al centro y a la derecha" />
           </div>
         </div>
       </Card>

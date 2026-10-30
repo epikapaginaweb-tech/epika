@@ -29,6 +29,7 @@ create table if not exists public.courses (
   slug text not null unique,
   title text not null,
   image_url text,
+  banner_url text,
   category text not null default 'programa' check (category in ('programa', 'seminario', 'otro')),
   modality text not null default 'virtual' check (modality in ('presencial', 'virtual', 'hibrida')),
   short_description text,

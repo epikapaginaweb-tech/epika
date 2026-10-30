@@ -38,6 +38,7 @@ export type Course = {
   slug: string;
   title: string;
   image_url: string | null;
+  banner_url: string | null;
   category: Category;
   modality: Modality;
   short_description: string | null;

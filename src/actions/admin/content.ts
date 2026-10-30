@@ -76,6 +76,7 @@ export async function saveCourse(_prev: FormState, fd: FormData): Promise<FormSt
     category,
     modality,
     image_url: nullable(fd, "image_url"),
+    banner_url: nullable(fd, "banner_url"),
     short_description: nullable(fd, "short_description"),
     summary: nullable(fd, "summary"),
     objectives: lines(fd, "objectives"),
